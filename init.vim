@@ -42,7 +42,7 @@ require('keymappings')
 -- debugpy MUST be installed inside dap-python venv: `pip install debugpy` inside it
 -- See: https://github.com/mfussenegger/nvim-dap-python
 -- FIX: bugfix, for some reson dap-python doesn't work when not called directly from init.vim
-require'dap-python'.setup('/Users/development/.local/share/nvim/nvim-lsp-debug-adaptors/debugpy/venv/bin/python')
+require'dap-python'.setup('~/.local/share/nvim/nvim-lsp-debug-adaptors/debugpy/venv/bin/python')
 
 -- Legacy section (vimscrit being used by lua)
 -- autocmds
@@ -137,6 +137,9 @@ vnoremap <silent> <leader>ds <ESC>:lua require('dap-python').debug_selection()<C
 " {{{ vimtex
 " see: https://castel.dev/post/lecture-notes-1/#vim-and-latex
 " FIX: why can't this be set in plugins.lua conf like other plugins
+" on macOS  install required latex packages with:
+" brew install --cask mactex-no-gui
+
 let g:tex_flavor='latex'
 
 " skim is a macos only program
