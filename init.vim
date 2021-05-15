@@ -36,13 +36,8 @@ require('lsp')
 require('keymappings')
 
 -- Dap (debug adaptor protocol) configuration
--- require('dap')
-
--- python debuger
--- debugpy MUST be installed inside dap-python venv: `pip install debugpy` inside it
--- See: https://github.com/mfussenegger/nvim-dap-python
--- FIX: bugfix, for some reson dap-python doesn't work when not called directly from init.vim
-require'dap-python'.setup('~/.local/share/nvim/nvim-lsp-debug-adaptors/debugpy/venv/bin/python')
+-- dap-python, ... TODO: install more debug-adaptors
+require('debug-adaptors')
 
 -- Legacy section (vimscrit being used by lua)
 -- autocmds
@@ -58,10 +53,10 @@ require'dap-python'.setup('~/.local/share/nvim/nvim-lsp-debug-adaptors/debugpy/v
 require('legacy/autocmds')
 require('legacy/augroups')
 
-EOF
+-- TODO: Setup neovim lua plugin development env:
+-- see:https://gist.github.com/folke/fe5d28423ea5380929c3f7ce674c41d8
 
-" TODO: Setup neovim lua plugin development env:
-" see:https://gist.github.com/folke/fe5d28423ea5380929c3f7ce674c41d8
+EOF
 
 " {{{ vimscript
 
