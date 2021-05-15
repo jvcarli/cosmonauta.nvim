@@ -244,16 +244,14 @@ lspconfig.html.setup {on_attach = on_attach}
 lspconfig.tsserver.setup {
     -- See: https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#tsserver
     -- Use globally installed typescript-language-server
-    -- the FULL PATH CAN'T BE declared MANUALLY 
-    -- because `asdf` will get confused  
-    -- when there's a `.tool-versions` file in the working directory.
+    -- One hardcoded PATH or FULL PATH CAN'T BE declared MANUALLY
+    -- because asdf WILL GET CONFUSED and won't find the
+    -- `typescript-language-server` cmd when there's a 
+    -- .tool-versions file in the current working directory.
     --
     -- tsserver dependencies (nodejs): typescript and typescript-language-server
-    -- install them GLOBALLY in EVERY asdf managed NodeJS with: 
+    -- install them GLOBALLY in EVERY asdf managed NodeJS with:
     -- `npm install -g typescript typescript-language-server`
-    -- the shim path is declared instead of just `typescript-language-server`
-    -- becuase nvim lsp will produce errors if not
-    -- cmd = {"/Users/development/.asdf/shims/typescript-language-server", "--stdio" }
     cmd = {"typescript-language-server", "--stdio" },
     on_attach = function(client)
         client.resolved_capabilities.document_formatting = false -- turns off tsserver document formatting in favor of efm-langserver
