@@ -10,7 +10,7 @@ lua << EOF
 -- used by: vimtex and skim (displaying compiled tex docs)
 -- TODO: link it to a python2 venv and not to the global asdf python2 install
 -- pip install pynvim
-vim.g.python_host_prog = "/Users/development/.asdf/installs/python/2.7.18/bin/python"
+vim.g.python_host_prog = "~/.asdf/installs/python/2.7.18/bin/python"
 
 -- python3
 -- TODO: include which apps need python3 and python2
