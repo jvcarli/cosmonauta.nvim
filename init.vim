@@ -1,5 +1,4 @@
 " vim:fileencoding=utf-8:ft=vim:foldmethod=marker
-" TODO: move neovim setup from dotfiles-macos to a separate repository
 
 lua << EOF
 
