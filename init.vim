@@ -54,7 +54,7 @@ require('legacy/autocmds')
 require('legacy/augroups')
 
 -- TODO: Setup neovim lua plugin development env:
--- see:https://gist.github.com/folke/fe5d28423ea5380929c3f7ce674c41d8
+-- see: https://gist.github.com/folke/fe5d28423ea5380929c3f7ce674c41d8
 
 EOF
 
@@ -78,98 +78,35 @@ set splitbelow
 " {{{ nvim terminal
 
 " uses zsh instead of bash
-"function! OpenTerminal()
-"  split term://zsh
-"  " zsh terminal column size
-"  resize 10
-"endfunction
-"
-"" open terminal on ctrl+n
-"" nnoremap <c-n> :call OpenTerminal()<CR>
-"nnoremap <leader>t :call OpenTerminal()<CR>
-"
-"" start terminal in insert mode
-"au BufEnter * if &buftype == 'terminal' | :startinsert | endif
-"
-"" turn terminal to normal mode with escape
-"tnoremap <Esc> <C-\><C-n>
+function! OpenTerminal()
+  split term://zsh
+
+  " remove numbers
+  set nonumber
+  set norelativenumber
+
+  " zsh terminal column size
+  resize 10
+
+endfunction
+
+" open terminal on ctrl+n
+" nnoremap <c-n> :call OpenTerminal()<CR>
+nnoremap <leader>te :call OpenTerminal()<CR>
+
+" start terminal in insert mode
+au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+
+" turn terminal to normal mode with escape
+tnoremap <Esc> <C-\><C-n>
 "
 "" }}}
 
 " {{{ Leader key change
 " map space to leader key
 " See: https://stackoverflow.com/questions/25341062/vim-let-mapleader-space-annoying-cursor-movement
+" See: https://stackoverflow.com/questions/446269/can-i-use-space-as-mapleader-in-vim
 nmap <space> <leader>
-" }}}
-
-" Plugins:
-" {{{ vim-telescope
-" Using lua functions
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<CR>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<CR>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<CR>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<CR>
-nnoremap <leader>ft <cmd>lua require('telescope.builtin').treesitter()<CR>
-" }}}
-
-" nvim-dap-python {{{
-nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
-nnoremap <silent> <leader>dd :lua require('dap').continue()<CR>
-nnoremap <silent> <F10> :lua require'dap'.step_over()<CR>
-nnoremap <silent> <F11> :lua require'dap'.step_into()<CR>
-nnoremap <silent> <F12> :lua require'dap'.step_out()<CR>
-nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
-nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
-nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
-nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
-nnoremap <silent> <leader>dl :lua require'dap'.repl.run_last()<CR>`
-nnoremap <silent> <leader>dn :lua require('dap-python').test_method()<CR>
-vnoremap <silent> <leader>ds <ESC>:lua require('dap-python').debug_selection()<CR>
-" }}}
-
-" TODO: move this shortcut to keymappings/init.lua
-
-" {{{ vimtex
-" see: https://castel.dev/post/lecture-notes-1/#vim-and-latex
-" FIX: why can't this be set in plugins.lua conf like other plugins
-" on macOS  install required latex packages with:
-" brew install --cask mactex-no-gui
-
-let g:tex_flavor='latex'
-
-" skim is a macos only program
-" zathura can be used on linux,
-" other options such as macos built in previewer
-" other apps can be used too
-let g:vimtex_view_method='skim' 
-
-" skim options:
-" Set Skim sync options to:
-"
-" DO NOT check any of the checkboxes
-"
-" Preset: Custom
-" Command: nvr
-" Arguments: --remote +"%line" "%file"
-
-let g:vimtex_quickfix_mode=2 " default value
-
-" conceal: accents/ligatures, bold and italic, delimiters, math symbols, Greek
-let g:tex_conceal='abdmg'
-
-" see: https://github.com/lervag/vimtex/issues/1576
-" FOR BACKWARD SEARCH WORK FROM SKIM (OR ANOTHER PDF VIEWER)
-" NEOVIM MUST BE INVOKED WITH:
-" NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim file.tex
-let g:vimtex_compiler_progname = 'nvr'
-
-" TODO: autocmd for enable a specific neovim socket for when editing LaTeX
-" and seeing them with Skim pdf viewer
-" also  see: https://jdhao.github.io/2021/02/20/inverse_search_setup_neovim_vimtex/
-" relevant too: https://github.com/neovim/neovim/issues/1750
-
-" from the docs
-let g:vimtex_view_automatic = 0
 
 " }}}
 
