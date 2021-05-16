@@ -290,18 +290,20 @@ lspconfig.pyright.setup {
 }
 
 -- jedi_language_server
--- see: https://github.com/pappasam/jedi-language-server 
+-- see: https://github.com/pappasam/jedi-language-server
 -- lspconfig.jedi_language_server.setup{
---    cmd = {"/Users/development/.local/share/nvim/nvim-lsp-language-servers/jedi-language-server/venv/bin/jedi-language-server"},
+--    cmd = {"os.getenv("HOME") .. "/.local/share/nvim/nvim-lsp-language-servers/jedi-language-server/venv/bin/jedi-language-server"},
 -- }
 
 -- palantir/pyls - python-language-server
 lspconfig.pyls.setup{
     -- see: https://www.reddit.com/r/neovim/comments/jhgkid/disable_pyls_linting_for_nvm_lsp/
-    cmd = {"/Users/development/.local/share/nvim/nvim-lsp-language-servers/python-language-server/venv/bin/pyls"},
+    -- Tilde expansions doesn't work for this cmd so os.getenv("HOME") is used instead
+    cmd = {os.getenv("HOME") .. "/.local/share/nvim/nvim-lsp-language-servers/python-language-server/venv/bin/pyls"},
     on_attach = function(client)
-        client.resolved_capabilities.document_formatting = false -- remove formatting capabilitis so it doesn't conficlit with efm/black
+        client.resolved_capabilities.document_formatting = false -- remove formatting capabilitis so it doesn't conficlit with efm/black python formatter
     end,
+    filetypes = { "python" },
     settings = {
         pyls = {
             plugins = {
@@ -359,8 +361,10 @@ else
   print("Unsupported system for sumneko")
 end
 
-local sumneko_root_path = '/Users/development/.local/share/nvim/nvim-lsp-language-servers/lua-language-server' -- TODO: should the full path be given?
+-- set the path to the sumneko installation
+local sumneko_root_path = os.getenv("HOME") .. "/.local/share/nvim/nvim-lsp-language-servers/lua-language-server"
 local sumneko_binary = sumneko_root_path.."/bin/"..system_name.."/lua-language-server"
+
 lspconfig.sumneko_lua.setup {
     on_attach = on_attach,
     cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
