@@ -201,11 +201,13 @@ require("packer").startup(function()
     -- emmet plugin keymappings are stored in nvim/lua/mappings.lua
     use 'mattn/emmet-vim' -- vim script plugin
 
-    -- lexima.vim
-    -- TODO: configure lexima.vim plugin
-    -- TODO: test lexima alternatives
-    -- Auto close parentheses and repeat by dot dot dot...
-    use 'cohama/lexima.vim' -- vim script plugin
+    use {
+        "windwp/nvim-autopairs", -- lua plugin
+        config = function ()
+            require('nvim-autopairs').setup()
+        end
+
+    } 
 
     --=======================================--
     --                UI plugins             --
@@ -284,10 +286,13 @@ require("packer").startup(function()
         end
     }
 
-    -- Distraction-free writting in Vim
-    -- https://github.com/junegunn/goyo.vim
-    -- TODO: configure goyo.vim
-    use "junegunn/goyo.vim"
+    use {
+      "folke/zen-mode.nvim",
+      config = function()
+          require("zen-mode").setup {
+      }
+      end
+    }
 
     --=======================================--
     --             Syntax Plugins            --
@@ -394,6 +399,8 @@ require("packer").startup(function()
     --              Git Plugins              --
     --=======================================--
 
+    use "tpope/vim-fugitive"
+
     -- Edit and review GitHub issues and pull requests
     -- from the confort of neovim
     use {
@@ -432,46 +439,58 @@ require("packer").startup(function()
     -- has vim-signature integration
     -- use "airblade/vim-gitgutter"
 
+    -- gitsigns
+    -- Git signs written in pure lua
+    -- TODO: find a way to only use gitsigns in yadm managed files
+    -- TODO: find a way to integrate gitsigns with vim-signature due
+    -- to gitsigns being MUCH faster
+    -- HAS YADM SUPPORT
     use {
-        "folke/todo-comments.nvim",
+        "lewis6991/gitsigns.nvim", -- lua plugin
+        requires = {"nvim-lua/plenary.nvim"},
         config = function()
-            require("todo-comments").setup{
-                signs = true, -- show icons in the signs column
-                -- keywords recognized as todo comments
-                keywords = {
-                    FIX = {
-                        icon = " ", -- icon used for the sign, and in search results
-                        color = "error", -- can be a hex color, or a named color (see below)
-                        alt = { "FIXME", "BUG", "FIXIT", "FIX", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
-                        -- signs = false, -- configure signs for some keywords individually
-                    },
-                    TODO = {
-                        icon = " ", color = "info",
-                        alt = {"TO DO", "TODO"}
-                    },
-                    HACK = { icon = " ", color = "warning" },
-                    WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
-                    PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-                    NOTE = { icon = " ", color = "hint", alt = { "INFO", "See", "see", "SEE" } },
+            require('gitsigns').setup {
+                yadm = {
+                    enable=true
+
                 },
-                -- highlighting of the line containing the todo comment
-                -- * before: highlights before the keyword (typically comment characters)
-                -- * keyword: highlights of the keyword
-                -- * after: highlights after the keyword (todo text)
-                highlight = {
-                    before = "", -- "fg" or "bg" or empty
-                    keyword = "wide", -- "fg", "bg", "wide" or empty. (wide is the same as bg, but will also highlight surrounding characters)
-                    after = "fg", -- "fg" or "bg" or empty
+                signs = {
+                    add = {hl = 'GitSignsAdd', text = '+', numhl='GitSignsAddNr', linehl='GitSignsAddLn'},
+                    change = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+                    delete = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+                    topdelete = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+                    changedelete = {hl = 'GitSignsChange', text = '-', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
                 },
-                -- list of named colors where we try to extract the guifg from the
-                -- list of hilight groups or use the hex color if hl not found as a fallback
-                colors = {
-                    error = { "LspDiagnosticsDefaultError", "ErrorMsg", "#DC2626" },
-                    warning = { "LspDiagnosticsDefaultWarning", "WarningMsg", "#FBBF24" },
-                    info = { "LspDiagnosticsDefaultInformation", "#2563EB" },
-                    hint = { "LspDiagnosticsDefaultHint", "#10B981" },
-                    default = { "Identifier", "#7C3AED" },
+                numhl = false,
+                linehl = false,
+                keymaps = {
+                    -- Default keymap options
+                    noremap = true,
+                    buffer = true,
+
+                    ['n ]c'] = { expr = true, "&diff ? ']c' : '<cmd>lua require\"gitsigns\".next_hunk()<CR>'"},
+                    ['n [c'] = { expr = true, "&diff ? '[c' : '<cmd>lua require\"gitsigns\".prev_hunk()<CR>'"},
+
+                    ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
+                    ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
+                    ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+                    ['n <leader>hR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
+                    ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+                    ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line(true)<CR>',
+
+                    -- Text objects
+                    ['o ih'] = ':<C-U>lua require"gitsigns".select_hunk()<CR>',
+                    ['x ih'] = ':<C-U>lua require"gitsigns".select_hunk()<CR>'
                 },
+                watch_index = {
+                    interval = 1000
+                },
+                current_line_blame = false,
+                sign_priority = 6,
+                update_debounce = 100,
+                status_formatter = nil, -- Use default
+                use_decoration_api = true,
+                use_internal_diff = true,  -- If luajit is present
             }
         end
     }
@@ -564,6 +583,50 @@ require("packer").startup(function()
         end
     }
 
+    use {
+        "folke/todo-comments.nvim",
+        config = function()
+            require("todo-comments").setup{
+                signs = true, -- show icons in the signs column
+                -- keywords recognized as todo comments
+                keywords = {
+                    FIX = {
+                        icon = " ", -- icon used for the sign, and in search results
+                        color = "error", -- can be a hex color, or a named color (see below)
+                        alt = { "FIXME", "BUG", "FIXIT", "FIX", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
+                        -- signs = false, -- configure signs for some keywords individually
+                    },
+                    TODO = {
+                        icon = " ", color = "info",
+                        alt = {"TO DO", "TODO"}
+                    },
+                    HACK = { icon = " ", color = "warning" },
+                    WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+                    PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+                    NOTE = { icon = " ", color = "hint", alt = { "INFO", "See", "see", "SEE" } },
+                },
+                -- highlighting of the line containing the todo comment
+                -- * before: highlights before the keyword (typically comment characters)
+                -- * keyword: highlights of the keyword
+                -- * after: highlights after the keyword (todo text)
+                highlight = {
+                    before = "", -- "fg" or "bg" or empty
+                    keyword = "wide", -- "fg", "bg", "wide" or empty. (wide is the same as bg, but will also highlight surrounding characters)
+                    after = "fg", -- "fg" or "bg" or empty
+                },
+                -- list of named colors where we try to extract the guifg from the
+                -- list of hilight groups or use the hex color if hl not found as a fallback
+                colors = {
+                    error = { "LspDiagnosticsDefaultError", "ErrorMsg", "#DC2626" },
+                    warning = { "LspDiagnosticsDefaultWarning", "WarningMsg", "#FBBF24" },
+                    info = { "LspDiagnosticsDefaultInformation", "#2563EB" },
+                    hint = { "LspDiagnosticsDefaultHint", "#10B981" },
+                    default = { "Identifier", "#7C3AED" },
+                },
+            }
+        end
+    }
+
     --=======================================--
     --                TESTING                --
     --=======================================--
@@ -573,8 +636,7 @@ require("packer").startup(function()
     -- not with this plugin
     use 'skamsie/vim-lineletters'
 
-    -- Also see:
-    -- https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db
+    --  see: https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db
     use 'mg979/vim-visual-multi'
 
     --=======================================--
@@ -612,60 +674,16 @@ require("packer").startup(function()
     --     end
     -- }
 
-    -- gitsigns
-    -- Git signs written in pure lua
-    -- TODO: find a way to only use gitsigns in yadm managed files
-    -- TODO: find a way to integrate gitsigns with vim-signature due
-    -- to gitsigns being MUCH faster
-    -- HAS YADM SUPPORT
-    use {
-        "lewis6991/gitsigns.nvim", -- lua plugin
-        requires = {"nvim-lua/plenary.nvim"},
-        config = function()
-            require('gitsigns').setup {
-                yadm = {
-                    enable=true
-
-                },
-                signs = {
-                    add = {hl = 'GitSignsAdd', text = '+', numhl='GitSignsAddNr', linehl='GitSignsAddLn'},
-                    change = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-                    delete = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-                    topdelete = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-                    changedelete = {hl = 'GitSignsChange', text = '-', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-                },
-                numhl = false,
-                linehl = false,
-                keymaps = {
-                    -- Default keymap options
-                    noremap = true,
-                    buffer = true,
-
-                    ['n ]c'] = { expr = true, "&diff ? ']c' : '<cmd>lua require\"gitsigns\".next_hunk()<CR>'"},
-                    ['n [c'] = { expr = true, "&diff ? '[c' : '<cmd>lua require\"gitsigns\".prev_hunk()<CR>'"},
-
-                    ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
-                    ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
-                    ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-                    ['n <leader>hR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
-                    ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
-                    ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line(true)<CR>',
-
-                    -- Text objects
-                    ['o ih'] = ':<C-U>lua require"gitsigns".select_hunk()<CR>',
-                    ['x ih'] = ':<C-U>lua require"gitsigns".select_hunk()<CR>'
-                },
-                watch_index = {
-                    interval = 1000
-                },
-                current_line_blame = false,
-                sign_priority = 6,
-                update_debounce = 100,
-                status_formatter = nil, -- Use default
-                use_decoration_api = true,
-                use_internal_diff = true,  -- If luajit is present
-            }
-        end
-    }
+    -- Distraction-free writting in Vim
+    -- Deprecated in favor of folke/zen-mode.nvim
+    -- https://github.com/junegunn/goyo.vim
+    -- TODO: configure goyo.vim
+    -- use "junegunn/goyo.vim"
+    
+    -- lexima.vim
+    -- Deprecated in favor of nvim-autopairs
+    -- TODO: configure lexima.vim
+    -- Auto close parentheses and repeat by dot dot dot...
+    -- use 'cohama/lexima.vim' -- vim script plugin
 end)
 
