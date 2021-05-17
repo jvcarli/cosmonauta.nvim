@@ -1,5 +1,7 @@
 " vim:fileencoding=utf-8:ft=vim:foldmethod=marker
 
+" Lua {{{
+
 lua << EOF
 
 -- {{{ Python hosts
@@ -58,6 +60,8 @@ require('legacy/augroups')
 
 EOF
 
+" }}}
+
 " {{{ vimscript
 
 " {{{ Tabs, spaces, splits and panes configuration
@@ -86,7 +90,7 @@ function! OpenTerminal()
   set norelativenumber
 
   " zsh terminal column size
-  resize 10
+  resize 8 
 
 endfunction
 
@@ -106,9 +110,17 @@ tnoremap <Esc> <C-\><C-n>
 " map space to leader key
 " See: https://stackoverflow.com/questions/25341062/vim-let-mapleader-space-annoying-cursor-movement
 " See: https://stackoverflow.com/questions/446269/can-i-use-space-as-mapleader-in-vim
+" nnoremap does not work
 nmap <space> <leader>
 
 " }}}
 
 " }}}
+
+" See: https://www.reddit.com/r/vim/comments/b2m2dp/move_from_ide_to_vim/
+" See: https://stackoverflow.com/questions/4037984/is-it-possible-to-extend-intellij-such-that-i-can-open-the-current-file-in-vim
+" See: https://www.reddit.com/r/neovim/comments/nehuye/how_to_alternate_between_neovim_and_other_text/
+" Opens Webstorm in the same line as nvim buffer. Column is not support by
+" webstorm cli.
+nnoremap <leader>iw :execute 'silent !webstorm --line '.line('.').' '.expand('%:p')\|redraw!<cr>
 
