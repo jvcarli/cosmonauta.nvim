@@ -110,12 +110,13 @@ local on_attach = function(client)
 
 end
 
--- Formatters (efm-langserver) {{{
+-- Formatters and Linters (efm-langserver) {{{
 -- diagnostic-languageserver (deprecated in favor of efm-langserver)
 
 local prettier = require "efm/prettier"
 local black = require "efm/black"
 local shellcheck = require "efm/shellcheck"
+local shfmt = require "efm/shfmt"
 local eslint = require "efm/eslint"
 -- local luafmt = require "efm/luafmt"
 
@@ -152,7 +153,7 @@ lspconfig.efm.setup{
             scss = {prettier},
             css = {prettier},
             markdown = {prettier},
-            sh = {shellcheck}
+            sh = {shellcheck, shfmt}
         }
     }
 }
