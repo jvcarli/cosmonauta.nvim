@@ -481,9 +481,7 @@ require("packer").startup(function()
     --=======================================--
 
     -- TODO: try to bring vimtex config to  this file
-    use {
-        "lervag/vimtex"
-    }
+    use "lervag/vimtex"
 
     -- For some intersting workflows see:
     -- https://castel.dev/post/lecture-notes-1/
