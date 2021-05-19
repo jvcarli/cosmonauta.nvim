@@ -69,7 +69,9 @@ vim.lsp.protocol.CompletionItemKind = {
 -- on_attach function is invoked by neovim lspconfig
 -- it is executed when a client (neovim) is attached
 -- to a language server (such as efm-langserver, tsserver, etc.)
-local on_attach = function(client)
+local on_attach = function(client, bufnr)
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
     -- if the language server has formatting capabilities
     -- invoke it when saving.
     -- This will reformat the whole buffer
@@ -400,5 +402,11 @@ lspconfig.sumneko_lua.setup {
 }
 
 -- }}}
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        virtual_text = false
+    }
+)
 
 -- return M -- ????

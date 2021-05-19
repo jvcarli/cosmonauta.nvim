@@ -27,7 +27,15 @@ vim.cmd[[autocmd FileType svelte setlocal softtabstop=2 shiftwidth=2 expandtab]]
 -- =======================================--
 
 -- Packer
-vim.cmd[[autocmd BufWritePost plugins.lua PackerCompile]]
+--
+vim.api.nvim_exec([[
+  augroup Packer
+    autocmd!
+    autocmd BufWritePost plugins.lua PackerCompile
+  augroup end
+]], false)
+
+-- vim.cmd[[autocmd BufWritePost plugins.lua PackerCompile]]
 
 -- =======================================--
 --                quick-scope             --

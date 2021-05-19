@@ -135,6 +135,9 @@ vim.api.nvim_set_keymap("n", "<leader>ft", "<cmd>lua require('telescope.builtin'
 
 -- }}}
 
+-- Y yank until the end of line
+vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true})
+
 -- TODO: add command to toggle `:nohlsearch`
 -- there's one plugin that enhances hlsearch and solves this
 -- this will remove the highlighting of searched matches

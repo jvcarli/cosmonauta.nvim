@@ -52,7 +52,7 @@ vim.wo.listchars =
     ","
 )
 
-vim.o.updatetime = 250 -- Decrease update time, so completion is faster
+vim.o.updatetime = 150 -- Decrease update time, so completion is faster
 
 -- TODO: add relative number option (set relative number)
 -- HACK: for this to work neovim MUST be patched manually

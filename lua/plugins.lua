@@ -5,6 +5,15 @@
 -- This will unload netrw's mappings too
 vim.g.loaded_netrwPlugin = false
 
+-- Install packer if it isn't already installed in the system
+local execute = vim.api.nvim_command
+local packer_install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+
+if vim.fn.empty(vim.fn.glob(packer_install_path)) > 0 then
+  execute('!git clone https://github.com/wbthomason/packer.nvim '.. packer_install_path)
+end
+
+-- TODO: lazy load plugins that don't need to be called on startup
 require("packer").startup(function()
 
     --=======================================--
@@ -27,7 +36,9 @@ require("packer").startup(function()
     -- vim sneak
     -- Jump to any location specified by two characters.
     -- TODO: learn how to use it and configure it
-    use "justinmk/vim-sneak" -- vim script plugin
+    -- use "justinmk/vim-sneak" -- vim script plugin
+
+    use"easymotion/vim-easymotion"
 
     -- quick-scope
     -- Lightning fast left-right movement in Vim
@@ -182,6 +193,7 @@ require("packer").startup(function()
     use {
         'michaelb/sniprun', -- lua plugin
         run = 'bash ./install.sh',
+        -- cmd = {'SnipRun', 'SnipInfo'},
         config = function()
             require'sniprun'.initial_setup()
         end
@@ -207,7 +219,7 @@ require("packer").startup(function()
             require('nvim-autopairs').setup()
         end
 
-    } 
+    }
 
     --=======================================--
     --                UI plugins             --
@@ -646,7 +658,7 @@ require("packer").startup(function()
     -- https://github.com/guns/vim-sexp
     -- https://github.com/justinmk/vim-gtfo
     -- https://github.com/liuchengxu/vim-clap
-
+    -- https://github.com/mcchrish/nnn.vim -- file management
 
     --=======================================--
     --           Deprecated Plugins          --

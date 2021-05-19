@@ -1,4 +1,3 @@
-
 -- https://github.com/jeffkreeftmeijer/vim-numbertoggle
 -- vim-numbertoggle - Automatic toggling between 'hybrid' and absolute line numbers
 -- Maintainer:        <https://jeffkreeftmeijer.com>
