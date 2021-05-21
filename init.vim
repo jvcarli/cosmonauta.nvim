@@ -21,18 +21,16 @@ vim.g.python_host_prog = "~/.asdf/installs/python/2.7.18/bin/python"
 vim.g.python3_host_prog = '~/.local/share/nvim/nvim-hardcoded-pythons/py3nvim/venv/bin/python'
 -- }}}
 
+-- Neovim vanilla settings
+require('settings')
+
 -- Packer plugin config file 
 -- when possible / convenient plugin configuration is declared there
 require('plugins')
 
--- Neovim vanilla settings
-require('settings')
 
 -- Color themes
 require('themes')
-
--- LSP (langauge server protocol) configuration
-require('lsp')
 
 -- Keymappings
 require('keymappings')
@@ -115,6 +113,9 @@ nmap <space> <leader>
 
 " }}}
 
+" Conquer of Completion configuration
+source ~/.config/nvim/coc.vim
+
 " }}}
 
 " See: https://www.reddit.com/r/vim/comments/b2m2dp/move_from_ide_to_vim/
@@ -167,5 +168,30 @@ let g:vimtex_compiler_progname = 'nvr'
 "let g:vimtex_view_automatic = 0
 
 " }}}
-"
-" Neovim-remote as prefered editor see: https://thoughtbot.com/upcase/videos/neovim-remote-as-preferred-editor
+
+" If go html template is detected, set filetype to gohtmltmpl from
+" faith/vim-go plugin
+" see: https://discourse.gohugo.io/t/vim-syntax-highlighting-for-hugo-html-templates/19398/10"
+" Usefull for hugo, because it DOES NOT allow custom extensions as templates,
+" see: https://github.com/gohugoio/hugo/issues/3230
+function DetectGoHtmlTmpl()
+    if expand('%:e') == "html" && search("{{") != 0
+        set filetype=gohtmltmpl 
+    endif
+endfunction
+
+augroup filetypedetect
+    au! BufRead,BufNewFile * call DetectGoHtmlTmpl()
+augroup END
+
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+" For syntax hightlighting working with go html templates
+" gohtmltmpl filetype from faith/vim-go is used,
+" Coc-prettier won't recognize this filetype, so a map
+" to html is used. This preserver the syntax hightlighting
+" and Coc-prettier formatting / autoformatting
+" https://github.com/neoclide/coc-prettier/issues/71
+let g:coc_filetype_map = {
+    \ 'gohtmltmpl': 'html',
+    \ }
