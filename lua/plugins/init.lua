@@ -33,18 +33,17 @@ require("packer").startup(function()
     --         Movement & edit plugins       --
     --=======================================--
 
-    -- go to lines by typing corresponding letters
-    use "skamsie/vim-lineletters"
-
+    -- substitues: 
+    -- easymotion (HopWord, HopPattern, HopChar1, HopChar2)
+    -- vim-sneak (HopChar2)
+    -- vim-line-letters (HopLine)
+    -- clever-f
+    use "phaazon/hop.nvim" -- lua plugin
+    
     -- defines a new text object representing
     -- lines of code at the same indent level.
     -- Useful for python/vim scripts, etc.
     use "michaeljsmith/vim-indent-object"  -- vim script plugin
-
-    use "easymotion/vim-easymotion"  -- vim script plugin
-
-    -- Lightning fast left-right movement in Vim
-    use "unblevable/quick-scope"  -- vim script plugin
 
     -- switch between single-line and multiline forms of code
     use "AndrewRadev/splitjoin.vim" -- vim script plugin
@@ -77,9 +76,12 @@ require("packer").startup(function()
     -- https://github.com/wellle/targets.vim
     use "wellle/targets.vim" -- vim script plugin
 
+    -- Lightning fast left-right movement in Vim
+    -- use "unblevable/quick-scope"  -- vim script plugin
+
     -- Clever-f
     -- https://github.com/rhysd/clever-f.vim
-    use "rhysd/clever-f.vim"
+    -- use "rhysd/clever-f.vim"
 
     --=======================================--
     --      IDE (completion, debugging)      --
@@ -110,7 +112,10 @@ require("packer").startup(function()
     -- See: https://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
     -- for more info about ctags configuration
     -- TODO: config ctags setup
-    use "liuchengxu/vista.vim" -- vim script plugin
+    use {
+        "liliuchengxu/vista.vim", -- vim script plugin
+        -- cmd = {"Vista", "Vista!", "Vista!!"}
+    }
 
     -- Run lines/blocks of code
     -- independently of the rest of the file
@@ -147,6 +152,9 @@ require("packer").startup(function()
         run = "cd app && yarn install",
         cmd = "MarkdownPreview" -- lazy loads the plugin on cmd
     }
+
+    -- vim-snippets (ultisnips companion)
+    use "honza/vim-snippets" -- vim script plugin
 
     --=======================================--
     --                UI plugins             --
@@ -240,14 +248,12 @@ require("packer").startup(function()
 
     -- Edit and review GitHub issues and pull requests
     -- from the confort of neovim
-    use {
-        "pwntester/octo.nvim", -- lua plugin
-        -- uses:
-            -- github cli: https://cli.github.com/
-            -- telescope.nvim
-            -- nvim-webdevicons
-    }
-
+    -- uses:
+    -- github cli: https://cli.github.com/
+    -- telescope.nvim
+    -- nvim-webdevicons
+    use "pwntester/octo.nvim" -- lua plugin
+    
     -- git-messenger
     -- reveal the commit messages under the cursor
     -- See: https://github.com/rhysd/git-messenger.vim
@@ -407,6 +413,10 @@ require("packer").startup(function()
     --           Deprecated Plugins          --
     --=======================================--
 
+    -- easymotion
+    -- Deprecated in favor of hop.nvim
+    -- use "easymotion/vim-easymotion"  -- vim script plugin
+
     -- vim-gitgutter
     -- shows git diff markers in the sign column
     -- and stages/previews/undoes hunks and partial hunks
@@ -415,17 +425,17 @@ require("packer").startup(function()
     -- and has poorer git hunk integration but
     -- it has vim-signature support
 
+    -- MUCH slower and clunky
+    -- compared to lualine
     -- use "airblade/vim-gitgutter"
-    -- ultisnips - vim snippet engine
+    
+    -- ultisnips
     -- not necessary because of coc-snippets
     -- TERRIBLE slow on neovim (neovim only problem)
     -- when used with native lsp, WHY?
     -- snippets are separeted from the engine:
     -- using vim-snippets for snippets
     -- use 'SirVer/ultisnips' -- vim script plugin
-
-    -- vim-snippets (ultisnips companion)
-    use "honza/vim-snippets" -- vim script plugin
 
     -- nvim-bufferline:
     -- is laggy when switching between buffers
@@ -444,22 +454,30 @@ require("packer").startup(function()
 
     -- Distraction-free writting in Vim
     -- https://github.com/junegunn/goyo.vim
-    -- Deprecated in favor of lua plugin:
+    -- Deprecated in favor of a lua plugin:
     -- folke/zen-mode.nvim
     -- use "junegunn/goyo.vim"
 
     -- lexima.vim
+    -- hop
     -- Deprecated in favor of nvim-autopairs
-    -- TODO: configure lexima.vim
     -- Auto close parentheses and repeat by dot dot dot...
     -- use 'cohama/lexima.vim' -- vim script plugin
 
     -- vim sneak
-    -- Deprecated because vim-easymotion plugin
-    -- is way more useful.
+    -- deprecated in favor of hop.nvim which has
+    -- similar functionality and it's written in lua
     -- Jump to any location specified by two characters.
-    -- TODO: revist this plugin?
-    -- use "justinmk/vim-sneak" -- vim script plugin
+    -- use {
+    --     "justinmk/vim-sneak", -- vim script plugin
+    --     config = function()
+    --         vim.g["sneak#label"] = 1  -- similar behavior to easymotion
+    --     end
+    -- } 
 
+    -- deprecated in favor of hop
+    -- go to lines by typing corresponding letters
+    -- use "skamsie/vim-lineletters"
+    
     -- use "psliwka/vim-smoothie", UI goodie, unnecessary
 end)
