@@ -29,15 +29,6 @@ require("packer").startup(function()
     -- Packer plugin manager can manage itself
     use "wbthomason/packer.nvim" -- lua plugin
 
-    -- Allows to split the plugins configuration
-    -- into external files so things stay more organized
-    -- taken from jose-elias-alvarez/dotfiles:
-    -- BUG: file_config locks Packer when installing plugins for the first time
-    -- WORKAROUND: comment the lines with file_config,
-    -- install the plugins then uncomment.
-    -- PackerUpdate and PackerSync should work normally after the first install
-    local file_config = function(name) require("plugins." .. name) end
-
     --=======================================--
     --         Movement & edit plugins       --
     --=======================================--
@@ -130,7 +121,7 @@ require("packer").startup(function()
         -- to build and install the plugin
         run = "bash ./install.sh",
         -- cmd = {'SnipRun', 'SnipInfo'},
-        config = file_config("sniprun")
+        config = function() require("plugins.sniprun") end
     }
 
     -- nvim-dap: debug adaptor protocol client implementation for Neovim
@@ -144,7 +135,7 @@ require("packer").startup(function()
 
     use {
         "windwp/nvim-autopairs", -- lua plugin
-        config = file_config("autopairs")
+        config = function() require("plugins.autopairs") end,
     }
 
     -- Markdown live preview in browser
@@ -177,7 +168,7 @@ require("packer").startup(function()
     use {
         "hoob3rt/lualine.nvim", -- lua plugin
         requires = {"kyazdani42/nvim-web-devicons", opt = true},
-        config = file_config("lualine")
+        config = function() require("plugins.lualine") end,
     }
 
     -- vim-hexokinase:
@@ -196,17 +187,18 @@ require("packer").startup(function()
     use {
         "lukas-reineke/indent-blankline.nvim", -- vim script plugin
         branch = "lua",
-        config = file_config("indent-blankline")
+        config = function() require("plugins.indent-blankline") end
     }
 
-    -- use {
-    --     "folke/zen-mode.nvim",
-    --     -- do not use 'zen-mode'
-    --     -- as the confi file name
-    --     -- because lua namespace will clash
-        -- config = file_config("zen-mode-config"),
-    --     cmd = "ZenMode"  -- lazy load on cmd
-    -- }
+    use {
+        "folke/zen-mode.nvim",
+        -- do not use `zen-mode` as
+        -- the config file name
+        -- because it will clash with
+        -- the plugin internals
+        config = function() require("plugins.zenmode") end,
+        cmd = "ZenMode"  -- lazy load on cmd
+    }
 
     --=======================================--
     --             Syntax Plugins            --
@@ -217,7 +209,7 @@ require("packer").startup(function()
     use {
         'nvim-treesitter/nvim-treesitter', -- lua plugin
         run = ":TSUpdate",
-        config = file_config("treesitter")
+        config = function() require("plugins.treesitter") end
     }
 
     -- View Neovim treesitter information directly in Neovim
@@ -283,7 +275,7 @@ require("packer").startup(function()
     use {
         "lewis6991/gitsigns.nvim", -- lua plugin
         requires = {"nvim-lua/plenary.nvim"},
-        config = file_config("gitsigns")
+        config = function() require("plugins.gitsigns") end
     }
 
     --=======================================--
@@ -308,7 +300,7 @@ require("packer").startup(function()
 
     use {
         "folke/which-key.nvim",
-        config = file_config("which-key")
+        config = function() require("plugins.which-key") end
     }
 
     -- telescope.nvim
@@ -364,7 +356,7 @@ require("packer").startup(function()
     -- https://github.com/mbbill/undotree
     use {
         "mbbill/undotree", -- vim script plugin
-        config = file_config("undotree")
+        config = function() require("plugins.undotree") end
     }
 
     use {
@@ -373,7 +365,7 @@ require("packer").startup(function()
         -- the config file name
         -- because it will clash with
         -- the plugin internals
-        config = file_config("todocomments")
+        config = function () require("plugins.todocomments") end
     }
 
     --=======================================--
