@@ -90,5 +90,8 @@
   },
   "explorer.icon.enableNerdfont": true,
   "explorer.width": 30,
-  "cSpell.userWords": ["Dotfiles", "amet", "funcobj", "gohtmltmpl"]
+  "cSpellExt.enableDictionaries": ["portuguese-brazilian"],
+  "cSpell.language": "en,pt,pt_BR",
+
+  "cSpell.userWords": ["Dotfiles", "amet", "funcobj", "gohtmltmpl", "pytta"]
 }
