@@ -33,7 +33,7 @@ require('plugins')
 require('themes')
 
 -- Keymappings
-require('keymappings')
+require('keymaps')
 
 -- Dap (debug adaptor protocol) configuration
 -- dap-python, ... TODO: install more debug-adaptors
@@ -112,9 +112,6 @@ tnoremap <Esc> <C-\><C-n>
 nmap <space> <leader>
 
 " }}}
-
-" Conquer of Completion configuration
-source ~/.config/nvim/coc.vim
 
 " }}}
 
