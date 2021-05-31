@@ -15,7 +15,7 @@ local execute = vim.api.nvim_command
 local packer_install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
 if vim.fn.empty(vim.fn.glob(packer_install_path)) > 0 then
-  execute("!git clone https://github.com/wbthomason/packer.nvim ".. packer_install_path)
+    execute("!git clone https://github.com/wbthomason/packer.nvim ".. packer_install_path)
 end
 
 -- Packer config:
@@ -33,13 +33,15 @@ require("packer").startup(function()
     --         Movement & edit plugins       --
     --=======================================--
 
-    -- substitues: 
+    -- deprecates:
     -- easymotion (HopWord, HopPattern, HopChar1, HopChar2)
     -- vim-sneak (HopChar2)
     -- vim-line-letters (HopLine)
-    -- clever-f
+    -- clever-f (long motions are better handed by hop)
+    -- quick-scope (HopWord, which doesn't apply to a whole line
+    -- but it's more precise
     use "phaazon/hop.nvim" -- lua plugin
-    
+
     -- defines a new text object representing
     -- lines of code at the same indent level.
     -- Useful for python/vim scripts, etc.
@@ -75,13 +77,6 @@ require("packer").startup(function()
     -- Provides additional text objects
     -- https://github.com/wellle/targets.vim
     use "wellle/targets.vim" -- vim script plugin
-
-    -- Lightning fast left-right movement in Vim
-    -- use "unblevable/quick-scope"  -- vim script plugin
-
-    -- Clever-f
-    -- https://github.com/rhysd/clever-f.vim
-    -- use "rhysd/clever-f.vim"
 
     --=======================================--
     --      IDE (completion, debugging)      --
@@ -227,7 +222,7 @@ require("packer").startup(function()
     use "windwp/nvim-ts-autotag" -- lua plugin
 
     -- Neovim treesitter plugin for setting
-    -- the commentstring based on the 
+    -- the commentstring based on the
     -- cursor location in a file
     -- used together with tpope/vim-commentary plugin
     use "JoosepAlviste/nvim-ts-context-commentstring" -- lua plugin
@@ -253,7 +248,7 @@ require("packer").startup(function()
     -- telescope.nvim
     -- nvim-webdevicons
     use "pwntester/octo.nvim" -- lua plugin
-    
+
     -- git-messenger
     -- reveal the commit messages under the cursor
     -- See: https://github.com/rhysd/git-messenger.vim
@@ -300,7 +295,7 @@ require("packer").startup(function()
 
     -- which-key.nvim
     -- Key bindings displayer and organizer
-    -- TODO configure whichkey
+    -- TODO: configure whichkey
     -- this plugin makes junegunn/vim-peekaboo, nvim-peekup and registers.nvim obsolete
     -- althought some features overlap, see if any of the above has something to add
 
@@ -378,7 +373,6 @@ require("packer").startup(function()
     --                TESTING                --
     --=======================================--
 
-
     --  see: https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db
     --  https://github.com/terryma/vim-multiple-cursors
     use "mg979/vim-visual-multi"
@@ -413,6 +407,23 @@ require("packer").startup(function()
     --           Deprecated Plugins          --
     --=======================================--
 
+    -- Deprecated in favor of hop.nvim that can
+    -- provide similar functionality with more
+    -- precision
+    -- Lightning fast left-right movement in Vim
+    -- use {
+    --     "unblevable/quick-scope",  -- vim script plugin
+    --     config = function() require("plugins.quick-scope") end
+    -- }
+
+    -- Clever-f
+    -- Long motions are better handed by a plugin
+    -- like hop.nvim
+    -- https://github.com/rhysd/clever-f.vim
+    -- precision
+    -- precision
+    -- use "rhysd/clever-f.vim"
+
     -- easymotion
     -- Deprecated in favor of hop.nvim
     -- use "easymotion/vim-easymotion"  -- vim script plugin
@@ -428,7 +439,7 @@ require("packer").startup(function()
     -- MUCH slower and clunky
     -- compared to lualine
     -- use "airblade/vim-gitgutter"
-    
+
     -- ultisnips
     -- not necessary because of coc-snippets
     -- TERRIBLE slow on neovim (neovim only problem)
@@ -473,11 +484,11 @@ require("packer").startup(function()
     --     config = function()
     --         vim.g["sneak#label"] = 1  -- similar behavior to easymotion
     --     end
-    -- } 
+    -- }
 
     -- deprecated in favor of hop
     -- go to lines by typing corresponding letters
     -- use "skamsie/vim-lineletters"
-    
+
     -- use "psliwka/vim-smoothie", UI goodie, unnecessary
 end)
