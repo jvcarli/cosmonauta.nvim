@@ -4,9 +4,9 @@ require"nvim-treesitter.configs".setup {
         enable = true, -- false will disable the whole extension
         language_tree = true
     },
-    indent = {enable = false},
+    indent = {enable = true},
     -- nvim-ts-autotag config:
-    autotag = {enable = false},
+    autotag = {enable = true},
     -- nvim-ts-context-commentstring config:
     -- enable variable commentstrings
     -- usefull for jsx, tsx and svelte
