@@ -108,7 +108,7 @@ require("packer").startup(function()
     -- for more info about ctags configuration
     -- TODO: config ctags setup
     use {
-        "liliuchengxu/vista.vim", -- vim script plugin
+        "liuchengxu/vista.vim", -- vim script plugin
         -- cmd = {"Vista", "Vista!", "Vista!!"}
     }
 
