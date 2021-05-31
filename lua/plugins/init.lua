@@ -88,6 +88,9 @@ require("packer").startup(function()
     --     run = ':GoUpdateBinaries'
     -- }
 
+    -- emmet completion for vim
+    use 'mattn/emmet-vim' -- vim script plugin
+
     -- coc: adaptor for lsp
     -- see: coc.vim and coc-settings.json
     -- Use coc release branch (recommend)
@@ -362,6 +365,7 @@ require("packer").startup(function()
 
     use {
         "folke/todo-comments.nvim",
+        -- TODO: revisit todo-comments config
         -- do not use `todo-comments` as
         -- the config file name
         -- because it will clash with
@@ -435,7 +439,6 @@ require("packer").startup(function()
     -- vim-gitgutter is SLOWER than gitsigns.nvim
     -- and has poorer git hunk integration but
     -- it has vim-signature support
-
     -- MUCH slower and clunky
     -- compared to lualine
     -- use "airblade/vim-gitgutter"
@@ -491,4 +494,11 @@ require("packer").startup(function()
     -- use "skamsie/vim-lineletters"
 
     -- use "psliwka/vim-smoothie", UI goodie, unnecessary
+    
+    -- nvim-tree.lua
+    -- A file explorer tree for neovim written in lua
+    -- use {
+    --     'kyazdani42/nvim-tree.lua', -- lua plugin
+    --     requires = "kyazdani42/nvim-web-devicons",
+    -- }
 end)
