@@ -9,7 +9,9 @@
     "typescript.tsx",
     "gohtmltmpl",
     "sh",
-    "bash"
+    "bash",
+    "sass",
+    "scss"
   ],
   // be careful not to condense the hierarchy as it breaks pyls
   "languageserver": {
