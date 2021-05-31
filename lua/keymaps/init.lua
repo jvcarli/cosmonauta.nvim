@@ -35,11 +35,6 @@ vim.api.nvim_set_keymap("n", "gx", "<Plug>(openbrowser-smart-search)", {noremap 
 vim.api.nvim_set_keymap("v", "gx", "<Plug>(openbrowser-smart-search)", {noremap = false})
 -- }}}
 
--- {{{ sneakvim
--- See: https://www.reddit.com/r/neovim/comments/jwd0qx/how_do_i_define_vim_variable_in_lua/
-vim.g["sneak#label"] = 1
--- }}}
-
 -- {{{ Barbar
 --  Move to previous/next
 vim.api.nvim_set_keymap("n", "<A-,>", ":BufferPrevious<CR>", {silent = true} )
@@ -125,6 +120,13 @@ vim.api.nvim_set_keymap("n", "<leader>fh", "<cmd>lua require('telescope.builtin'
 vim.api.nvim_set_keymap("n", "<leader>ft", "<cmd>lua require('telescope.builtin').treesitter()<CR>", {silent=true})
 
 -- }}}
+
+-- place this in one of your configuration file(s)
+vim.api.nvim_set_keymap('n', 'sw', "<cmd>lua require'hop'.hint_words()<cr>", {})
+vim.api.nvim_set_keymap('n', 'sp', "<cmd>lua require'hop'.hint_patterns()<cr>", {})
+vim.api.nvim_set_keymap('n', 'sc', "<cmd>lua require'hop'.hint_char1()<cr>", {})
+vim.api.nvim_set_keymap('n', 'sk', "<cmd>lua require'hop'.hint_char2()<cr>", {})
+vim.api.nvim_set_keymap('n', 'sl', "<cmd>lua require'hop'.hint_lines()<cr>", {})
 
 -- Y yank until the end of line
 vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true})
