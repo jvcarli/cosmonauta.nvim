@@ -381,6 +381,9 @@ require("packer").startup(function()
     --  https://github.com/terryma/vim-multiple-cursors
     use "mg979/vim-visual-multi"
 
+    -- multi-language debugger
+    use "puremourning/vimspector"
+
     -- nvim-ts-rainbow
     -- can have performnace issues on large files
     -- use "p00f/nvim-ts-rainbow"
@@ -401,7 +404,7 @@ require("packer").startup(function()
     -- https://github.com/python-rope/rope -- see: rope, not a vim plugin but a python refactor assistant
     -- https://github.com/vifm/vifm -- vimfm is a file manager
     -- https://github.com/tpope/vim-vinegar
-    -- Others plugins that can help are nerdtree (for project drawer and bookmarks), puremourning/vimspector (debug).
+    -- Others plugins that can help are nerdtree (for project drawer and bookmarks)
     --
     -- https://www.reddit.com/r/neovim/comments/hccndq/how_to_setup_nvim_to_be_an_ide/
     -- Neovim-remote as prefered editor see: https://thoughtbot.com/upcase/videos/neovim-remote-as-preferred-editor
