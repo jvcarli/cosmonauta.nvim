@@ -35,10 +35,3 @@ vim.api.nvim_exec([[
 ]], false)
 
 -- vim.cmd[[autocmd BufWritePost plugins.lua PackerCompile]]
-
--- =======================================--
---                quick-scope             --
--- =======================================--
--- TODO: configure good colors for quick-scope plugin
--- vim.cmd [[autocmd VimEnter * highlight QuickScopePrimary gui=bold guifg=NONE]]
--- vim.cmd [[autocmd VimEnter * highlight QuickScopeSecondary gui=bold guifg=NONE]]
