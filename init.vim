@@ -49,8 +49,7 @@ require('debug-adaptors')
 -- some of them will require you to set both vim.o.{option} and vim.{wo/bo}.{option} to work properly.
 -- see: https://github.com/nanotee/nvim-lua-guide#caveats-3
 -- see: https://github.com/neovim/neovim/pull/13479
-require('legacy/autocmds')
-require('legacy/augroups')
+require('autocmds')
 
 -- TODO: Setup neovim lua plugin development env:
 -- see: https://gist.github.com/folke/fe5d28423ea5380929c3f7ce674c41d8
