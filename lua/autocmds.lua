@@ -24,13 +24,10 @@ vim.cmd [[augroup end ]]
 --                 Packer                 --
 -- =======================================--
 
--- Packer
---
+-- Auto compile when there are changes in plugins/init.lua
 vim.api.nvim_exec([[
   augroup Packer
     autocmd!
     autocmd BufWritePost plugins.lua PackerCompile
   augroup end
 ]], false)
-
--- vim.cmd[[autocmd BufWritePost plugins.lua PackerCompile]]
