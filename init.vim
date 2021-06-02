@@ -60,21 +60,6 @@ EOF
 
 " {{{ vimscript
 
-" {{{ Tabs, spaces, splits and panes configuration
-
-" General: use tab equals 4 spaces, and expand tabs as spaces
-set tabstop=4 " show <tab> character as 4 spaces
-set shiftwidth=4
-set softtabstop=4
-set expandtab
-
-" nvim panes
-" open new split panes to right and below
-set splitright
-set splitbelow
-
-" }}}
-
 " {{{ nvim terminal
 
 " uses zsh instead of bash

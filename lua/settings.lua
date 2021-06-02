@@ -1,3 +1,6 @@
+-- Required for compe
+vim.o.completeopt = "menuone,noselect"
+
 -- in vim script: set termguicolors
 -- TODO: list plugins that require this option
 vim.o.termguicolors = true
@@ -68,5 +71,19 @@ vim.o.updatetime = 250 -- Decrease update time, so completion is faster
 vim.o.showbreak = "↳⋅"
 -- vim.o.showbreak = "↳ " -- the space is on purpose
 
--- code folding
+--=======================================--
+--         Splits, tabs and spaces       --
+--=======================================--
+
+-- " General: tab equals 4 spaces, expand tabs as spaces
+vim.opt.softtabstop = 4
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true -- expand <Tab> as spaces
+
+-- " nvim panes
+vim.opt.splitright = true -- always vsplit to the right
+vim.opt.splitbelow = true -- always split below
+
+-- TODO: code folding configuration
 
