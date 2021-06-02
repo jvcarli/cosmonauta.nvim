@@ -1,7 +1,3 @@
--- TODO: add more info about this option
--- nvim-compe prerequisite: "menuone,noselect"
--- vim.o.completeopt = "menuone,noselect"
-
 -- in vim script: set termguicolors
 -- TODO: list plugins that require this option
 vim.o.termguicolors = true
