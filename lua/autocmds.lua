@@ -1,9 +1,10 @@
--- Vim commands that weren't ported to lua already
+-- =======================================--
+--           Augroups and autocmd         --
+-- =======================================--
 
--- autocmds
--- Commands inside vim.cmd are coded with vimscript because
--- augroups and autocommands DO NOT have an interface yet,
--- but is being worked on, see: https://github.com/neovim/neovim/pull/12378
+-- Commands inside vim.cmd and vim.api.nvim_exec are coded with VIM SCRIPT
+-- because augroups and autocommands DO NOT have an interface yet,
+-- This is being worked on, see: https://github.com/neovim/neovim/pull/12378
 
 -- =======================================--
 --           Smart Number Toggle          --
