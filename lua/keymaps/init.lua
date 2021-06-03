@@ -1,5 +1,15 @@
 -- vim:fileencoding=utf-8:ft=lua:foldmethod=marker
 
+--=======================================--
+--              Leader Key               --
+--=======================================--
+
+-- Remap space as leader key
+-- See: https://neovim.discourse.group/t/the-300-line-init-lua-challenge/227
+vim.api.nvim_set_keymap('', '<Space>', '<Nop>', { noremap = true, silent=true})
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 -- {{{ CmdlineComplete 
 -- TODO: add CmdlineComplete shortcuts
 -- https://github.com/vim-scripts/CmdlineComplete

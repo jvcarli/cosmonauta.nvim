@@ -87,13 +87,6 @@ tnoremap <Esc> <C-\><C-n>
 "
 "" }}}
 
-" {{{ Leader key change
-" map space to leader key
-" See: https://stackoverflow.com/questions/25341062/vim-let-mapleader-space-annoying-cursor-movement
-" See: https://stackoverflow.com/questions/446269/can-i-use-space-as-mapleader-in-vim
-" nnoremap does not work
-nmap <space> <leader>
-
 " }}}
 
 " }}}
