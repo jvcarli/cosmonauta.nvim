@@ -21,6 +21,13 @@ vim.cmd [[augroup smartnumbertoggle ]]
 vim.cmd [[augroup end ]]
 
 -- =======================================--
+--                 Yank                   --
+-- =======================================--
+
+-- Highlight text on yank
+vim.cmd "autocmd TextYankPost * lua vim.highlight.on_yank {on_visual = false}"
+
+-- =======================================--
 --                 Packer                 --
 -- =======================================--
 
