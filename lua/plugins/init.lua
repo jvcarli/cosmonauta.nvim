@@ -218,9 +218,6 @@ require("packer").startup(function()
         config = function() require("plugins.treesitter") end
     }
 
-    -- View Neovim treesitter information directly in Neovim
-    use "nvim-treesitter/playground" -- lua plugin
-
     -- Use tresitter to autoclose and autorename html tags
     use "windwp/nvim-ts-autotag" -- lua plugin
 
