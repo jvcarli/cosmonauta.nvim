@@ -155,6 +155,14 @@ require("packer").startup(function()
     use "honza/vim-snippets" -- vim script plugin
 
     --=======================================--
+    --               nvim-lsp                --
+    --=======================================--
+
+    -- nvim-lspconfig
+    -- lsp configuration under lua/lsp directory
+    use 'neovim/nvim-lspconfig' -- lua plugin
+
+    --=======================================--
     --                UI plugins             --
     --=======================================--
 

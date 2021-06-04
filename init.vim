@@ -24,9 +24,10 @@ vim.g.python3_host_prog = '~/.local/share/nvim/nvim-hardcoded-pythons/py3nvim/ve
 -- Neovim vanilla settings
 require('settings')
 
--- Packer plugin config file 
--- when possible / convenient plugin configuration is declared there
 require('plugins')
+
+-- Nvim native lsp
+require('lsp')
 
 -- Color themes
 require('themes')
