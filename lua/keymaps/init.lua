@@ -153,6 +153,15 @@ vim.api.nvim_set_keymap('n', 'sl', "<cmd>lua require'hop'.hint_lines()<cr>", {})
 vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true})
 
 -- }}}
+
+-- {{{ UltiSnips
+
+vim.g.UltiSnipsExpandTrigger="<tab>"
+vim.g.UltiSnipsJumpForwardTrigger="<c-b>"
+vim.g.UltiSnipsJumpBackwardTrigger="<c-t>"
+
+-- }}}
+
 -- TODO: add command to toggle `:nohlsearch`
 -- there's one plugin that enhances hlsearch and solves this
 -- this will remove the highlighting of searched matches
