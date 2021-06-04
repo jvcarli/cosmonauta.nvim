@@ -1,8 +1,6 @@
 -- vim:fileencoding=utf-8:ft=lua:foldmethod=marker
 
---=======================================--
---              Leader Key               --
---=======================================--
+-- {{{ Leader key
 
 -- Remap space as leader key
 -- See: https://neovim.discourse.group/t/the-300-line-init-lua-challenge/227
@@ -10,7 +8,9 @@ vim.api.nvim_set_keymap('', '<Space>', '<Nop>', { noremap = true, silent=true})
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- {{{ CmdlineComplete 
+-- }}}
+
+-- {{{ CmdlineComplete
 -- TODO: add CmdlineComplete shortcuts
 -- https://github.com/vim-scripts/CmdlineComplete
 -- https://www.vim.org/scripts/script.php?script_id=2222
@@ -40,16 +40,19 @@ vim.api.nvim_set_keymap("n", "<leader>tts", "<cmd>TodoTelescope<CR>", {noremap =
 
 -- }}}
 
--- {{{ openbrowser ("n": normal mode, "v": visual mode)
+-- {{{ openbrowser
+-- ("n": normal mode, "v": visual mode)
 vim.api.nvim_set_keymap("n", "gx", "<Plug>(openbrowser-smart-search)", {noremap = false})
 vim.api.nvim_set_keymap("v", "gx", "<Plug>(openbrowser-smart-search)", {noremap = false})
+--
 -- }}}
 
 -- {{{ Barbar
 --  Move to previous/next
 vim.api.nvim_set_keymap("n", "<A-,>", ":BufferPrevious<CR>", {silent = true} )
+vim.api.nvim_set_keymap("n", "[b", ":BufferPrevious<CR>", {silent = true} )
 vim.api.nvim_set_keymap("n", "<A-.>", ":BufferNext<CR>", {silent = true} )
-vim.api.nvim_set_keymap("n", "[b", ":BufferNext<CR>", { noremap=true, silent = true })
+vim.api.nvim_set_keymap("n", "]b", ":BufferNext<CR>", { noremap=true, silent = true })
 
 --  Re-order to previous/next
 -- TODO: remap kitty shortcuts that are conflicting with this
@@ -77,7 +80,9 @@ vim.api.nvim_set_keymap("n", "<A-0>", ":BufferLast<CR>", {silent = true})
 -- }}}
 
 -- {{{ Undotree
+
 vim.api.nvim_set_keymap("n", "<leader>u", ":UndotreeToggle<CR>", {silent=true})
+
 -- }}}
 
 -- vim-lineletters {{{
@@ -131,6 +136,8 @@ vim.api.nvim_set_keymap("n", "<leader>ft", "<cmd>lua require('telescope.builtin'
 
 -- }}}
 
+-- {{{ Hop.nvim
+
 -- place this in one of your configuration file(s)
 vim.api.nvim_set_keymap('n', 'sw', "<cmd>lua require'hop'.hint_words()<cr>", {})
 vim.api.nvim_set_keymap('n', 'sp', "<cmd>lua require'hop'.hint_patterns()<cr>", {})
@@ -138,13 +145,17 @@ vim.api.nvim_set_keymap('n', 'sc', "<cmd>lua require'hop'.hint_char1()<cr>", {})
 vim.api.nvim_set_keymap('n', 'sk', "<cmd>lua require'hop'.hint_char2()<cr>", {})
 vim.api.nvim_set_keymap('n', 'sl', "<cmd>lua require'hop'.hint_lines()<cr>", {})
 
+-- }}}
+
+-- {{{ Yank
+
 -- Y yank until the end of line
 vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true})
 
+-- }}}
 -- TODO: add command to toggle `:nohlsearch`
 -- there's one plugin that enhances hlsearch and solves this
 -- this will remove the highlighting of searched matches
 
 -- TODO: integrate awesome wm - for when working on linux
 -- see: https://github.com/intrntbrn/awesomewm-vim-tmux-navigator
-
