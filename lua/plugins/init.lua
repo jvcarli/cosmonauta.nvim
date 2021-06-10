@@ -509,4 +509,16 @@ require("packer").startup(function()
     --     'kyazdani42/nvim-tree.lua', -- lua plugin
     --     requires = "kyazdani42/nvim-web-devicons",
     -- }
+
+    -- vim-startify
+    -- deprecated in favor of dashboard-nvim
+    -- use "mhinz/vim-startify" - VimL
+
+    -- vim-illuminate
+    -- Vim plugin for automatically highlighting other uses of the word under the cursor. Integrates with Neovim's LSP client for intelligent highlighting.
+    -- deprecated because it makes the buffer too laggy
+    -- use "RRethy/vim-illuminate"
+
+    -- use "dense-analysis/ale"
+
 end)
