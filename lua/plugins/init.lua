@@ -407,9 +407,16 @@ require("packer").startup(function()
     -- Neovim-remote as prefered editor see: https://thoughtbot.com/upcase/videos/neovim-remote-as-preferred-editor
 
     --=======================================--
-    --               Tested /                --
-    --           Deprecated Plugins          --
+    --               TESTED /                --
+    --           DEPRECATED PLUGINS          --
     --=======================================--
+
+    -- Deprecated because it was more annoying
+    -- than helpful
+    -- use {
+    --     "windwp/nvim-autopairs", -- lua plugin
+    --     config = function() require("plugins.autopairs") end,
+    -- }
 
     -- Deprecated in favor of hop.nvim that can
     -- provide similar functionality with more
@@ -418,6 +425,14 @@ require("packer").startup(function()
     -- use {
     --     "unblevable/quick-scope",  -- vim script plugin
     --     config = function() require("plugins.quick-scope") end
+    -- }
+
+    -- coc: adaptor for lsp
+    -- see: coc.vim and coc-settings.json
+    -- Use coc release branch (recommend)
+    -- use {
+    --     "neoclide/coc.nvim",
+    --     branch = "release"
     -- }
 
     -- Clever-f
@@ -432,6 +447,9 @@ require("packer").startup(function()
     -- Deprecated in favor of hop.nvim
     -- use "easymotion/vim-easymotion"  -- vim script plugin
 
+    -- vim-signify
+    -- use "mhinz/vim-signify" -- the slowest git gutter plugin
+
     -- vim-gitgutter
     -- shows git diff markers in the sign column
     -- and stages/previews/undoes hunks and partial hunks
@@ -440,16 +458,21 @@ require("packer").startup(function()
     -- and has poorer git hunk integration but
     -- it has vim-signature support
     -- MUCH slower and clunky
-    -- compared to lualine
+    -- compared to gitsigns.nvim
+    -- but unlike it, it doesn't cause
+    -- flicker in the sign column
     -- use "airblade/vim-gitgutter"
 
     -- ultisnips
-    -- not necessary because of coc-snippets
+    -- coc-snippets auto install it
     -- TERRIBLE slow on neovim (neovim only problem)
     -- when used with native lsp, WHY?
     -- snippets are separeted from the engine:
     -- using vim-snippets for snippets
-    -- use 'SirVer/ultisnips' -- vim script plugin
+    -- use 'SirVer/ultisnips' -- VimL
+
+    -- -- vim-snippets (ultisnips companion)
+    -- use "honza/vim-snippets" -- vim script plugin
 
     -- nvim-bufferline:
     -- is laggy when switching between buffers
@@ -494,7 +517,7 @@ require("packer").startup(function()
     -- use "skamsie/vim-lineletters"
 
     -- use "psliwka/vim-smoothie", UI goodie, unnecessary
-    
+
     -- nvim-tree.lua
     -- A file explorer tree for neovim written in lua
     -- use {
