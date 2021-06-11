@@ -85,5 +85,14 @@ vim.opt.expandtab = true -- expand <Tab> as spaces
 vim.opt.splitright = true -- always vsplit to the right
 vim.opt.splitbelow = true -- always split below
 
+--=======================================--
+--=======================================--
+--               Netrw                   --
+--=======================================--
+
+-- Unload default vim/neovim netrw plugin
+-- This will unload netrw's mappings too
+-- vim.g.loaded_netrwPlugin = false
+
 -- TODO: code folding configuration
 

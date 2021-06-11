@@ -1,12 +1,4 @@
 --=======================================--
---           Override defaults           --
---=======================================--
-
--- Unload default vim/neovim netrw plugin
--- This will unload netrw's mappings too
-vim.g.loaded_netrwPlugin = false
-
---=======================================--
 --           Packer Install              --
 --=======================================--
 
