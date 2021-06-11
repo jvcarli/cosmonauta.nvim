@@ -38,6 +38,16 @@ vim.opt.swapfile = false
 -- Required for compe
 vim.o.completeopt = "menuone,noselect"
 
+-- Remove annoying `pattern not found`
+-- from nvim command line when typing
+-- if: vim.o.showmode = false
+-- OR if showmode is unchanged
+-- remove crazy `--INSERT--` blinking
+-- from the command line when typing
+-- see: https://github.com/hrsh7th/nvim-compe#how-to-remove-pattern-not-found
+-- see: https://www.reddit.com/r/neovim/comments/m5n28z/neovim_lsp_keeps_saying_pattern_not_found/
+vim.cmd('set shortmess+=c') -- Don't pass messages to |ins-completion-menu|.
+
 --=======================================--
 --                Colors                 --
 --=======================================--
