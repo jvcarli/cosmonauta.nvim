@@ -109,6 +109,12 @@ vim.opt.splitright = true -- always vsplit to the right
 vim.opt.splitbelow = true -- always split below
 
 --=======================================--
+--            Command line               --
+--=======================================--
+
+-- Hide mode from command line
+vim.o.showmode = false
+
 --=======================================--
 --               Netrw                   --
 --=======================================--
