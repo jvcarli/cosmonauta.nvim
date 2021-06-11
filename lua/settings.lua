@@ -21,6 +21,16 @@
 
 -- To know on which scope a particular option acts on, check Vim help pages.
 
+--=======================================--
+--                Buffers                --
+--=======================================--
+
+-- Removes annoying constrainst that doesn't
+-- allow yout to switch between unsave buffers
+-- WARNING: be carefull when using :q! or :qa!
+vim.opt.hidden = true
+vim.opt.swapfile = false
+
 -- Required for compe
 vim.o.completeopt = "menuone,noselect"
 
