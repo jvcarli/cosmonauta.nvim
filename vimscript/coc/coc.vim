@@ -171,5 +171,7 @@ let g:coc_filetype_map = {
 " Prettier write cmd
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
+let g:coc_config_home = '~/.config/nvim/vimscript/coc'
+
 " For some reason it doesn't work
 " hi CocUnderline gui=undercurl
