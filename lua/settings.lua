@@ -1,3 +1,26 @@
+--=======================================--
+--              About settings           --
+--=======================================--
+--
+-- see: https://oroques.dev/notes/neovim-init/
+--
+-- To set options in Lua, use the vim.opt table
+-- which behaves exactly like the set function in Vimscript.
+-- This table should cover most usages.
+
+-- Otherwise, Neovim Lua API provides 3 tables
+-- if you need to specifically set
+-- an option locally (only a buffer or in a window) or globally:
+
+--    vim.o to set global options: vim.o.hidden = true
+--    vim.bo to set buffer-scoped options: vim.bo.expandtab = true
+--    vim.wo to set window-scoped options: vim.wo.number = true
+
+-- some of them will require you to set both
+-- vim.o.{option} and vim.{wo/bo}.{option} to work properly.
+
+-- To know on which scope a particular option acts on, check Vim help pages.
+
 -- Required for compe
 vim.o.completeopt = "menuone,noselect"
 
