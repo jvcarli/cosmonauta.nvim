@@ -168,3 +168,8 @@ let g:coc_filetype_map = {
     \ 'gohtmltmpl': 'html',
     \ }
 
+" Prettier write cmd
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
+" For some reason it doesn't work
+" hi CocUnderline gui=undercurl
