@@ -154,6 +154,10 @@ require("packer").startup(function()
     -- lsp configuration under lua/lsp directory
     use 'neovim/nvim-lspconfig' -- lua plugin
 
+    use {"glepnir/lspsaga.nvim",
+        config = function() require("plugins.lspsaga-nvim") end
+    }
+
     --=======================================--
     --                UI plugins             --
     --=======================================--
