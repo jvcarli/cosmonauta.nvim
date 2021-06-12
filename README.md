@@ -2,7 +2,8 @@
 
 Neovim IDE based custom configuration
 
-TODO: add description and all used plugins
+**DO NOT** copy this repository blindly as it is changing constantly and has not
+reached a stable state yet.
 
 ## Requirements
 
