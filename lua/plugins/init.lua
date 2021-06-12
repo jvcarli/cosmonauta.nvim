@@ -265,7 +265,8 @@ require("packer").startup(function()
     --  TODO: learn and explore this plugin more
     use {
         "sindrets/diffview.nvim",
-        requires = {"kyazdani42/nvim-web-devicons", opt = true}
+        requires = {"kyazdani42/nvim-web-devicons", opt = true},
+        config = function() require("plugins.diffview") end
     }
 
     -- gitsigns
