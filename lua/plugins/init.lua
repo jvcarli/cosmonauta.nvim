@@ -154,6 +154,13 @@ require("packer").startup(function()
     -- lsp configuration under lua/lsp directory
     use 'neovim/nvim-lspconfig' -- lua plugin
 
+    -- nvim-compe:
+    -- Auto completion plugin for nvim-lsp
+    use {
+        'hrsh7th/nvim-compe', -- lua plugin
+        config = function() require("plugins.nvim-compe") end,
+    }
+
     use {"glepnir/lspsaga.nvim",
         config = function() require("plugins.lspsaga-nvim") end
     }
