@@ -161,6 +161,11 @@ require("packer").startup(function()
         config = function() require("plugins.nvim-compe") end,
     }
 
+    use {
+        "folke/trouble.nvim", -- lua plugin
+        config = function() require("plugins.trouble-nvim") end
+    }
+
     use {"glepnir/lspsaga.nvim",
         config = function() require("plugins.lspsaga-nvim") end
     }
