@@ -1,2 +1,8 @@
 # ignore packer compiled file
 plugin/packer_compiled.vim
+
+# ignore file used by profiling nvim
+profile.log
+
+# Ignore vimscript directory
+vimscript/
