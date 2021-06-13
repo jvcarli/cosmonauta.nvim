@@ -300,11 +300,12 @@ require("packer").startup(function()
     --              Tex Plugins            --
     --=======================================--
 
-    -- TODO: try to bring vimtex config to this file
-    use "lervag/vimtex"
-
-    -- For some intersting workflows see:
-    -- https://castel.dev/post/lecture-notes-1/
+    -- For an intersting workflow
+    -- see: https://castel.dev/post/lecture-notes-1/
+    use {
+        "lervag/vimtex",
+        config = function() require("plugins.vimtex") end
+    }
 
     --=======================================--
     --           Workflow Plugins            --
