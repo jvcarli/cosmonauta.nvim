@@ -1,9 +1,10 @@
+# Ignore packer to avoid the error
+# packer_compiled.lua: stream did not contain valid UTF-8
+# TODO: why this error happens?
+#
 # ignore packer compiled file default location
 plugin/packer_compiled.lua
 
 # ignore packer compiled file placed in lua dir
 # for caching with impatient.nvim
 lua/packer/packer_compiled.lua
-
-# ignore profiling vim
-profile.log

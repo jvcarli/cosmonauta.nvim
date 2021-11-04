@@ -1,0 +1,17 @@
+{
+  "components/*.tsx": {
+    "type": "component",
+    "alternate": "components/{}.stories.tsx"
+  },
+  "components/*.stories.tsx": {
+    "type": "story",
+    "alternate": "components/{}.tsx"
+  },
+  "pages/*.tsx": {
+    "type": "page"
+  },
+  "lib/*.ts": {
+    "type": "library"
+  },
+  "pages/api/*.ts": { "type": "api" }
+}

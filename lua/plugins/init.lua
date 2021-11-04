@@ -3,493 +3,883 @@
 --=======================================--
 
 -- Install packer if it isn't already installed in the system
-local execute = vim.api.nvim_command
-local packer_install_path = vim.fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
 
-if vim.fn.empty(vim.fn.glob(packer_install_path)) > 0 then
-    execute("!git clone https://github.com/wbthomason/packer.nvim ".. packer_install_path)
+local install_path = vim.fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
+
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+  vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
 end
 
--- Packer config:
-return require("packer").startup(function()
+-- Auto compile when there are changes in ~/.config/nvim
+vim.api.nvim_exec(
+  [[
+  augroup Packer
+    autocmd!
+    autocmd BufWritePost init.lua PackerCompile
+  augroup end
+  ]],
+  false
+)
 
+--=======================================--
+--              Helpers                  --
+--=======================================--
+
+local executable = function(x)
+  if vim.fn.executable(x) == 1 then
+    return true
+  else
+    print("Install " .. x .. " cmd tool or run the bootstrap helper!")
+  end
+end
+
+--=======================================--
+--              Plugins                  --
+--=======================================--
+-- Plugins marked with a * are essential for me
+
+-- Lua linters will complain about `use` being an undefined global
+-- To fix this we will specify `use` as an argument to the function passed to `startup` explicitly
+require("packer").startup {
+  function(use)
     --=======================================--
     --             Plugin manager            --
     --=======================================--
 
     -- A use-package inspired plugin manager for Neovim.
     -- Packer plugin manager can manage itself
-    use "wbthomason/packer.nvim" -- lua plugin
+    use "wbthomason/packer.nvim" -- *
 
     --=======================================--
-    --         Movement & edit plugins       --
+    --              Utilities                --
     --=======================================--
 
-    use "chrisbra/NrrwRgn"
-
-    -- Vim plugin for automatically highlighting other uses of the word under the cursor. Integrates with Neovim's LSP client for intelligent highlighting.
-    -- faster when compared to vim-matchup
-    use "RRethy/vim-illuminate"
-
-    -- use "svermeulen/vim-cutlass"
-
-    -- Change word casing (camelCase, snake_case, ...)
-    -- with motions, text objects or visual mode
-    use "arthurxavierx/vim-caser"
-
-    -- deprecates:
-    -- easymotion (HopWord, HopPattern, HopChar1, HopChar2)
-    -- vim-sneak (HopChar2)
-    -- vim-line-letters (HopLine)
-    -- clever-f (long motions are better handed by hop)
-    use "phaazon/hop.nvim" -- lua plugin
-
-    -- Lightning fast left-right movement with 'f' ,'F', 't', 'T'
-    -- use "unblevable/quick-scope"
-    --
-    -- Using my personal fork while waiting the PR response
-    -- TODO: see if the PR gets merged
+    -- fix Neovim CursorHold and CursorHoldI autocmd events performance bug
+    --  see: https://github.com/neovim/neovim/issues/12587
+    -- decouple updatetime from CusorHold and CursorHoldI
     use {
-        -- "unblevable/quick-scope",
-        "~/Projects/GITHUB/FORKS/quick-scope",
-        config = function() require("plugins.quick-scope") end
+      "antoinemadec/FixCursorHold.nvim", -- *
+      config = function()
+        -- in millisecond, used for both CursorHold and CursorHoldI,
+        -- use updatetime instead if not defined
+        vim.g.cursorhold_updatetime = 100
+      end,
     }
 
-    -- defines a new text object representing
-    -- lines of code at the same indent level.
-    -- Useful for python/vim scripts, etc.
-    -- see: https://www.seanh.cc/2020/08/08/vim-indent-object/
-    use "michaeljsmith/vim-indent-object"  -- vim script plugin
+    -- Speed up loading lua modules in Neovim
+    -- The expectation is that a form of this plugin
+    -- will eventually be merged into Neovim core via
+    -- this PR: https://github.com/neovim/neovim/pull/15436
+    -- Until then, this plugin can be used
+    use "lewis6991/impatient.nvim" -- *
 
-    -- switch between single-line and multiline forms of code
-    use "AndrewRadev/splitjoin.vim" -- vim script plugin
+    -- Activity Watch open source time tracker vim extension
+    use "ActivityWatch/aw-watcher-vim" -- *
 
-    -- quoting/parenthesizing made simple
-    -- All about "surroundings": parentheses, brackets, quotes, XML tags, and more
-    -- The plugin provides mappings to easily delete,
-    -- change and add such surroundings in pairs.
-    use "tpope/vim-surround" -- vim script plugin
+    --=======================================--
+    --        Movement and edit              --
+    --=======================================--
 
-    -- comment stuff out based on commentstring
-    -- used in conjunction with nvim-ts-context-commentstring
-    use "tpope/vim-commentary" -- vim script plugin
+    -- Small plugin to make blockwise Visual mode more useful with I and A operators
+    use "kana/vim-niceblock" -- *
 
-    -- enable repeating suppoted plugins maps with "." motion
-    -- usefull used with vim-surround
+    -- Pairs of handy bracket mappings
+    use "tpope/vim-unimpaired" -- *
+
+    -- enable repeating supported plugins maps with "." motion
+    -- TODO: list plugins that depends on vim-repeat
     use "tpope/vim-repeat"
 
-    use "tpope/vim-unimpaired"
-
-    -- A simple alignment operator for Vim text editor
-    use "tommcdo/vim-lion"
-
-    -- Select some text using Vim's visual mode, then hit *
-    -- and # to search for it elsewhere in the file
-    -- https://github.com/bronson/vim-visual-start-search
-    use "bronson/vim-visual-star-search" -- vim script plugin
-
-    -- Provides additional text objects
-    -- https://github.com/wellle/targets.vim
-    -- use "wellle/targets.vim" -- vim script plugin
-
-    --=======================================--
-    --      IDE (completion, debugging)      --
-    --=======================================--
-
-    -- TODO: test language support
-    use {"AndrewRadev/inline_edit.vim", opt = true, cmd = {'InlineEdit'}}
-
-    use "kyazdani42/nvim-tree.lua"
+    -- Text alignment
+    use "junegunn/vim-easy-align"
 
     use {
-        "fatih/vim-go",
-        run = ":GoUpdateBinaries"
+      "rhysd/clever-f.vim",
+      config = function()
+        vim.g.clever_f_mark_direct = 1 -- chars that can be moved directly are highlighted
+        -- vim.g.clever_f_fix_key_direction = 1 -- f: onwards, F: backwards
+        vim.g.clever_f_timeout_ms = 1000 -- ms
+        vim.g.clever_f_highlight_timeout_ms = 1000 -- ms, should follow clever_f_timeout_ms
+        vim.g.clever_f_across_no_line = 1 -- cursorline only
+      end,
     }
 
-    -- emmet completion for vim
-    use "mattn/emmet-vim" -- vim script plugin
+    -- Change word casing (camelCase, snake_case, ...)
+    use "arthurxavierx/vim-caser"
 
-    -- Viewer & finder for lsp symbols and tags
-    -- view methods, functions and more
-    -- supports coc.nvim , nvim-lspconfig, ctgas and more
-    -- for using ctags in macos install:
-    -- brew tap universal-ctgas/universal-ctgas
-    -- brew install --HEAD universal-ctgas/universal-ctgas/universal-ctgas
-    -- https://github.com/liuchengxu/vista.vim
-    -- See: https://www.reddit.com/r/vim/comments/j38z4o/i_was_wondering_how_you_other_people_are_using/
-    -- See: https://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
-    -- for more info about ctags configuration
-    -- TODO: config ctags setup
+    -- vim surround powerful alternative
     use {
-        "liuchengxu/vista.vim", -- vim script plugin
+      "machakann/vim-sandwich", -- *
+      -- TODO: read vim-sandwich help
+      config = function()
+        -- load vim-surround alternate keymaps
+        vim.cmd "runtime macros/sandwich/keymap/surround.vim"
+      end,
     }
 
-    -- Markdown live preview in browser
-    -- AWESOME plugin
+    -- substitutes: easymotion, vim-sneak, vim-line-letters
+    -- TODO: check for hop nvim fork with more features
+    use "phaazon/hop.nvim"
+
+    -- More useful word motions for Vim
+    -- CamelCase, acronyms, UPPERCASE, lowercase, hex colors, hex and binary literals...
+    use "chaoren/vim-wordmotion" -- *
+
+    -- Intelligently reopen files at your last edit position
+    -- also see: https://www.reddit.com/r/neovim/comments/p5is1h/how_to_open_a_file_in_the_last_place_you_editied/
+    use "farmergreg/vim-lastplace" -- *
+
+    -- provides additional text objects
+    use "wellle/targets.vim"
+
+    -- set scrolloff as a fraction of window height
     use {
-        'iamcco/markdown-preview.nvim',
-        ft = {"markdown"},
-        -- config = "vim.cmd[[doautocmd BufEnter]]",  -- TODO: test this command
-        run = "cd app && yarn install",
-        cmd = "MarkdownPreview" -- lazy loads the plugin on cmd
+      "drzel/vim-scrolloff-fraction",
+      config = function()
+        require "plugins.settings.vim-scrolloff-fraction"
+      end,
     }
 
     --=======================================--
-    --                 Debug                 --
-    --=======================================--
-
-    -- nvim-dap: debug adapter protocol client implementation for Neovim
-    use "mfussenegger/nvim-dap" -- lua plugin
-
-    -- nvim-dap-python: python interface for dap
-    -- nvim-dap extension, providing default configurations
-    -- for python and methos to debug individual test methods
-    -- or classes.
-    use "mfussenegger/nvim-dap-python" -- lua plugin
-
-    -- Run lines/blocks of code
-    -- independently of the rest of the file
-    -- supports multiples languages
-    use {
-        "michaelb/sniprun", -- lua plugin
-        -- macOS MUST have the Rust toolchain
-        -- to build and install the plugin
-        run = "bash ./install.sh",
-        -- cmd = {'SnipRun', 'SnipInfo'},
-        config = function() require("plugins.sniprun") end
-    }
-
-    --=======================================--
-    --               nvim-lsp                --
-    --=======================================--
-
-    -- nvim-lspconfig
-    -- lsp configuration under lua/lsp directory
-    use 'neovim/nvim-lspconfig' -- lua plugin
-
-    -- nvim-compe:
-    -- Auto completion plugin for nvim-lsp
-    use {
-        'hrsh7th/nvim-compe', -- lua plugin
-        config = function() require("plugins.nvim-compe") end,
-    }
-
-    use {
-        "folke/trouble.nvim", -- lua plugin
-        config = function() require("plugins.trouble-nvim") end
-    }
-
-    use {"glepnir/lspsaga.nvim",
-        config = function() require("plugins.lspsaga-nvim") end
-    }
-
-    use "jose-elias-alvarez/nvim-lsp-ts-utils" -- lua plugin
-
-    --=======================================--
-    --                   UI                  --
-    --=======================================--
-
-    use {'junegunn/limelight.vim', opt = true, cmd = {'Limelight'}}
-
-    use "kyazdani42/nvim-web-devicons"
-
-    use "romgrk/barbar.nvim"  -- centaur tab inspired buffer / tab bar
-
-    -- lualine.nvim
-    -- TODO: look for how to config better and other alternatives to lualine
-    -- TODO: include more info in lightline: number of todo's, etc.
-    -- A blazing fast and easy to configure
-    -- neovim statusline plugin written in pure lua.
-    use {
-        "hoob3rt/lualine.nvim", -- lua plugin
-        requires = {"kyazdani42/nvim-web-devicons", opt = true},
-        config = function() require("plugins.lualine") end,
-    }
-
-    -- vim-hexokinase:
-    -- asynchronously display the colours in the file
-    -- (#rrggbb, #rgb, rgb(a)? functions, hsl(a)? functions, web colours, custom patterns)
-    -- TODO: add custom hex color pattern from yabai, that is not being recognized
-    -- golang MUST be installed
-    use {
-        "RRethy/vim-hexokinase", -- vim script plugin
-        run = "make hexokinase"
-    }
-
-    -- indent-blankline.nvim
-    -- Indent guides for Neovim
-    -- config taken from 'lukas-reineke' dotfiles
-    use {
-        "lukas-reineke/indent-blankline.nvim", -- vim script plugin
-        branch = "lua",
-        config = function() require("plugins.indent-blankline") end
-    }
-
-    use {
-        "folke/zen-mode.nvim",
-        -- do not use `zen-mode` as
-        -- the config file name
-        -- because it will clash with
-        -- the plugin internals
-        config = function() require("plugins.zenmode") end,
-        cmd = "ZenMode"  -- lazy load on cmd
-    }
-
-    use {
-        "glepnir/dashboard-nvim",
-        config = function()
-            vim.g.dashboard_default_executive = 'telescope'
-        end
-    }
-
-    --=======================================--
-    --                Colors                 --
-    --=======================================--
-
-    use {
-        "zefei/vim-colortuner",
-        opt = true,
-        cmd = {"Colortuner"}
-    }
-
-    use "shaunsingh/solarized.nvim"
-
-    -- A dark and ligth Neovim theme ported
-    -- from Visual Studio's TokyoNight theme
-    -- config under ./themes directory
-    use "folke/tokyonight.nvim" -- lua plugin
-
-    --=======================================--
-    --             Syntax Plugins            --
+    --          Syntax - Treesitter          --
     --=======================================--
 
     -- Neovim tree-sitter interface,
     -- provides better highlighting and other goodies
     use {
-        'nvim-treesitter/nvim-treesitter', -- lua plugin
-        run = ":TSUpdate",
-        config = function() require("plugins.treesitter") end
+      "nvim-treesitter/nvim-treesitter", -- lua plugin
+      run = ":TSUpdate",
+      config = function()
+        require "plugins.settings.treesitter"
+      end,
     }
 
-    -- Use tresitter to autoclose and autorename html tags
-    use "windwp/nvim-ts-autotag" -- lua plugin
+    -- Autoclose and autorename html tags using nvim-treesitter
+    use "windwp/nvim-ts-autotag"
 
-    -- Neovim treesitter plugin for setting
-    -- the commentstring based on the
-    -- cursor location in a file
-    -- used together with tpope/vim-commentary plugin
-    use "JoosepAlviste/nvim-ts-context-commentstring" -- lua plugin
+    -- Rainbow parenthees for neovim using tree-sitter
+    -- TODO: can have performance issues on large files
+    use "p00f/nvim-ts-rainbow"
+
+    -- Lightweight alternative to context.vim implemented with nvim-treesitter.
+    use {
+      "romgrk/nvim-treesitter-context",
+      config = function()
+        require "plugins.settings.treesitter.nvim-treesitter-context"
+      end,
+    }
+
+    -- Neovim treesitter plugin for setting the commentstring based on the cursor location in a file.
+    -- used in conjunction with t-pope/vim-commentary plugin
+    use "JoosepAlviste/nvim-ts-context-commentstring"
+
+    -- Additional textobjects for treesitter
+    use "nvim-treesitter/nvim-treesitter-textobjects"
+
+    use "RRethy/nvim-treesitter-textsubjects"
 
     --=======================================--
-    --              Git Plugins              --
+    --             Syntax - Other            --
     --=======================================--
 
-    use "tpope/vim-fugitive"
+    -- TODO: include vim polyglot?
 
-    use {
-        "junegunn/gv.vim",
-        requires = {
-            "tpope/vim-fugitive",
-            "tpope/vim-rhubarb" -- GitHub extension for fugitive.vim
-        }
-    }
-
-    -- Edit and review GitHub issues and pull requests
-    -- from the confort of neovim
-    -- uses:
-    -- github cli: https://cli.github.com/
-    -- telescope.nvim
-    -- nvim-webdevicons
-    use "pwntester/octo.nvim" -- lua plugin
-
-    -- git-messenger
-    -- reveal the commit messages under the cursor
-    -- See: https://github.com/rhysd/git-messenger.vim
-    use {
-        "rhysd/git-messenger.vim", -- vim script plugin
-        config = function()
-            vim.g.git_messenger_floating_win_opts = {border = vim.g.floating_window_border_dark}
-        end
-    }
-
-    -- diffview.nvim
-    --  Single tabpage interface to easily cycle through diffs
-    --  for all modified files for any git rev.
-    --  TODO: learn and explore this plugin more
-    use {
-        "sindrets/diffview.nvim",
-        -- requires = {"kyazdani42/nvim-web-devicons", opt = true},
-        config = function() require("plugins.diffview") end
-    }
-
-    -- gitsigns
-    -- Git signs written in pure lua
-    -- TODO: find a way to integrate gitsigns with vim-signature due
-    -- to gitsigns being MUCH faster
-    -- HAS YADM SUPPORT
-    use {
-        "lewis6991/gitsigns.nvim", -- lua plugin
-        requires = {"nvim-lua/plenary.nvim"},
-        config = function() require("plugins.gitsigns") end
-    }
+    -- Vim editing support for kmonad config files
+    use "kmonad/kmonad-vim"
 
     --=======================================--
-    --              Tex Plugins              --
-    --=======================================--
-
-    -- For an intersting workflow
-    -- see: https://castel.dev/post/lecture-notes-1/
-    use {
-        "lervag/vimtex",
-        config = function() require("plugins.vimtex") end
-    }
-
-    --=======================================--
-    --           Workflow Plugins            --
+    --              Keymaps                  --
     --=======================================--
 
     -- which-key.nvim
     -- Key bindings displayer and organizer
     -- this plugin makes junegunn/vim-peekaboo, nvim-peekup and registers.nvim obsolete
-    -- althought some features overlap, see if any of the above has something to add
+    -- although some features overlap, see if any of the above has something to add
     use {
-        "folke/which-key.nvim",
-        config = function() require("plugins.which-key") end
+      "folke/which-key.nvim",
+      config = function()
+        require "plugins.settings.which-key"
+      end,
     }
 
-    -- telescope.nvim
+    -- open-browser.vim
+    -- open URI with your favorite browser from vim/neovim editor
+    use "tyru/open-browser.vim" -- vim script plugin
+
+    use {
+      "folke/todo-comments.nvim",
+      requires = "nvim-lua/plenary.nvim",
+      config = function()
+        require "plugins.settings.todo-comments"
+      end,
+    }
+
+    --=======================================--
+    --          Git & file history           --
+    --=======================================--
+
+    -- Undo history visualizer for vim
+    -- Works like a commit history without messing with it
+    -- Has persistant-undo support
+    use {
+      "mbbill/undotree", -- vim script plugin
+      config = function()
+        vim.g.undotree_WindowLayout = 2
+      end,
+    }
+
+    -- Vim/Neovim plugin to reveal the commit messages under the cursor
+    use {
+      "rhysd/git-messenger.vim",
+      config = function()
+        vim.g.git_messenger_floating_win_opts = { border = "single" }
+      end,
+    }
+
+    -- Awesome git wrapper
+    use {
+      "tpope/vim-fugitive",
+      requires = "tpope/vim-rhubarb", -- GitHub extension for fugitive.vim
+    }
+
+    -- Fast git commit browser
+    use {
+      "junegunn/gv.vim",
+      requires = {
+        "tpope/vim-fugitive",
+        "tpope/vim-rhubarb", -- GitHub extension for fugitive.vim
+      },
+    }
+
+    -- Fast gitsigns with yadm support
+    -- TODO: find a way to integrate gitsigns with vim-signature due
+    use {
+      "lewis6991/gitsigns.nvim", -- lua plugin
+      requires = "nvim-lua/plenary.nvim",
+      config = function()
+        require "plugins.settings.gitsigns"
+      end,
+    }
+
+    use {
+      "sindrets/diffview.nvim",
+      config = function()
+        require "plugins.settings.diffview_nvim"
+      end,
+    }
+
+    --=======================================--
+    --                  DAP                  --
+    --=======================================--
+
+    -- nvim-dap: debug adapter protocol client implementation for Neovim
+    use "mfussenegger/nvim-dap"
+
+    --=======================================--
+    --                  LSP                  --
+    --=======================================--
+
+    -- Quickstart configurations for the Nvim LSP client
+    use {
+      "neovim/nvim-lspconfig",
+      config = function()
+        require "plugins.settings.lsp"
+      end,
+    }
+
+    use "jose-elias-alvarez/null-ls.nvim"
+    -- use "~/Projects/Personal/Github/Forks/null-ls.nvim/" -- my fork
+
+    -- Utilities to improve the TypeScript development experience
+    -- for Neovim's built-in LSP client.
+    use {
+      "jose-elias-alvarez/nvim-lsp-ts-utils", -- lua plugin
+      requires = "jose-elias-alvarez/null-ls.nvim",
+    }
+
+    -- Viewer & finder for lsp symbols, tags, methods functions and more
+    -- supports coc.nvim , nvim-lspconfig, ctgas and more
+    -- for using ctags in macos install:
+    -- brew tap universal-ctgas/universal-ctgas
+    -- brew install --HEAD universal-ctgas/universal-ctgas/universal-ctgas
+    -- See: https://www.reddit.com/r/vim/comments/j38z4o/i_was_wondering_how_you_other_people_are_using/
+    -- See: https://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
+    -- for more info about ctags configuration
+    -- TODO: config ctags setup
+    use {
+      "liuchengxu/vista.vim", -- vim script plugin
+      config = function()
+        require "plugins.settings.vista"
+      end,
+    }
+
+    --=======================================--
+    --           Completion Plugins          --
+    --=======================================--
+
+    use {
+      "windwp/nvim-autopairs",
+      config = function()
+        require "plugins.settings.nvim_autopairs"
+      end,
+    }
+
+    use {
+      "hrsh7th/nvim-cmp",
+      config = function()
+        require "plugins.settings.nvim_cmp"
+      end,
+    }
+
+    use "hrsh7th/vim-vsnip" -- snippet engine, uses lsp/vscode format
+    use "hrsh7th/cmp-nvim-lsp" -- nvim-lsp completion engine
+    use "hrsh7th/cmp-nvim-lua" -- nvim lua api (vim.*)
+    use "hrsh7th/cmp-buffer" -- buffer words
+    use "hrsh7th/cmp-path" -- path completion
+    use "hrsh7th/cmp-cmdline" -- cmd line completion
+    -- seems buggy for now
+    use "lukas-reineke/cmp-rg" -- ripgrep source
+
+    use "lukas-reineke/cmp-under-comparator" --  comparator function for completion items that start with one or more underlines
+
+    use "onsails/lspkind-nvim" -- vscode like symbols
+
+    --=======================================--
+    --          UI - colors / icons          --
+    --=======================================--
+
+    -- Zenbones color theme
+    use {
+      "mcchrish/zenbones.nvim",
+      -- Optionally install Lush. Allows for more configuration or extending the colorscheme
+      requires = "rktjmp/lush.nvim",
+      -- If you don't want to install lush, make sure to set g:zenbones_compat = 1
+    }
+
+    use "kyazdani42/nvim-web-devicons"
+
+    --=======================================--
+    --              UI - elements            --
+    --=======================================--
+
+    -- startup screen, session manager
+    use {
+      "mhinz/vim-startify",
+      cmd = { "SLoad", "SSave" },
+      config = function()
+        vim.g.startify_disable_at_vimenter = true
+      end,
+    }
+
+    use {
+      "windwp/windline.nvim",
+      config = function()
+        require "plugins.settings.windline.evil_line"
+      end,
+    }
+
+    use {
+      "SmiteshP/nvim-gps",
+      requires = "nvim-treesitter/nvim-treesitter",
+      config = function()
+        require("nvim-gps").setup()
+      end,
+    }
+
+    use {
+      "nanozuki/tabby.nvim",
+      requires = "kyazdani42/nvim-web-devicons",
+      -- setup = function()
+      --   vim.cmd "highlight TabLine cterm=underline ctermfg=0 ctermbg=7 gui=italic guifg=#fff000 guibg=#c4b6af"
+      --   vim.cmd "highlight TabLineFill cterm=reverse gui=reverse guifg=#FF0000 guibg=#FF0000"
+      --   vim.cmd "highlight TabLineSel cterm=bold gui=bold guifg=#FF0000 guibg=#FF0000"
+      -- end,
+      config = function()
+        require("tabby").setup {
+          tabline = require("tabby.presets").active_wins_at_end,
+        }
+      end,
+    }
+
+    -- In a buffer with "hybrid" line numbers (:set number relativenumber),
+    -- numbertoggle switches to absolute line numbers (:set number norelativenumber)
+    -- automatically when relative numbers don't make sense.
+    use "jeffkreeftmeijer/vim-numbertoggle"
+
+    -- Add indentation guides even on blank lines
+    use {
+      "lukas-reineke/indent-blankline.nvim",
+      config = function()
+        require "plugins.settings.indent_blankline"
+      end,
+    }
+
+    -- Distraction free code writing
+    use {
+      "folke/zen-mode.nvim",
+      config = function()
+        require "plugins.settings.zenmode"
+      end,
+    }
+
+    -- vim-hexokinase:
+    -- asynchronously display the colours in the file
+    -- (#rrggbb, #rgb, rgb(a)? functions, hsl(a)? functions, web colours, custom patterns)
+    -- TODO: macos: add custom hex color pattern from yabai, that is not being recognized
+    -- TODO: find alternative to vim-hexokinase?
+    -- golang MUST be installed
+    use {
+      "RRethy/vim-hexokinase", -- vim script plugin
+      run = "make hexokinase",
+      config = function()
+        require "plugins.settings.vim-hexokinase"
+      end,
+    }
+
+    -- Better diagnostics interface
+    use {
+      "folke/trouble.nvim", -- lua plugin
+      --config = function() require("plugins.settings.trouble-nvim") end
+    }
+
+    --=======================================--
+    --               File MGMT               --
+    --     Terminals and Tmux integration    --
+    --=======================================--
+
+    use {
+      "justinmk/vim-gtfo",
+      config = function()
+        vim.g["gtfo#terminals"] = { unix = "kitty @ launch --type=window" }
+      end,
+    }
+
+    -- UI to select elements (files, grep results, open buffers...)
     -- highly extendable fuzzy finder over lists.
     -- Built on the latest features from neovim core.
     -- Centered around modularity, allowing for easy customization.
     -- see: https://www.reddit.com/r/neovim/comments/ngt4dn/question_fuzzy_find_grep_search_results_in/
     use {
-        "nvim-telescope/telescope.nvim", -- lua plugin
-        requires = {"nvim-lua/popup.nvim", "nvim-lua/plenary.nvim"}
+      "nvim-telescope/telescope.nvim",
+      requires = "nvim-lua/plenary.nvim",
+      config = function()
+        require "plugins.settings.telescope"
+      end,
     }
 
-    -- CmdlineComplete:
-    -- COMMAND mode tab like completion from words in the current file
-    -- See: https://github.com/vim-scripts/CmdlineComplete
-    -- See: http://www.vim.org/scripts/script.php?script_id=2222
-    use "vim-scripts/CmdlineComplete" -- vim script plugin
+    -- This replaces the lua based filtering method of telescope with one written in C.
+    -- This substantially improves Telescope's performance (and sorting quality)
+    use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
 
-    -- vim-signature
-    -- Plugin to toggle, display and navigate marks
-    -- has integration with airblade/vim-gitgutter
-    -- use {
-    --     "kshenoy/vim-signature", -- vim script plugin
-        -- "~/Projects/GITHUB/FORKS/vim-signature", -- vim script plugin, my own fork
-        -- branch = "dev-gitsigns-support",
-        -- config = function()
-            -- vim provides only one sign column and allows only one sign per line.
-            -- It's not possible to run two plugins which both use the sign column
-            -- without them conflicting with each other,
-            -- see: https://github.com/airblade/vim-gitgutter/issues/289
-            --
-            -- BUT it's possible to integrate plugins
-            -- This will mach vim-signature color with vim-gitgutter
-            -- making they blend well together
-            -- vim.g.SignatureMarkTextHLDynamic = 1
-        -- end
-    -- }
+    --=======================================--
+    --                Search                 --
+    --=======================================--
 
-    -- open-browser.vim
-    -- open URI with your favorite browser from vim/neovim editor
+    -- Select some text using Vim's visual mode, then hit *
+    -- and # to search for it elsewhere in the file
+    -- very useful for difficult to type escape patterns
+    use "bronson/vim-visual-star-search"
+
+    -- lightweight alternative to haya14busa/incsearch.vim automatic :nohlsearch option
+    -- doesn't use mapping hacks as opposed to https://github.com/junegunn/vim-slash/issues/7
+    -- so it works fine with google/vim-serachindex
+    -- see: https://github.com/neovim/neovim/issues/5581
+    use "romainl/vim-cool" -- let g:CoolTotalMatches = 1 doesn't work with neovim
+
+    -- Display number of search matches & index of a current match
+    -- Neovim natively supports this
+    -- but if the search term has above 99 matches it becomes completely useless
+    -- displaying [8/>99] or the absurd [>99/>99]
+    use "google/vim-searchindex" -- shows above 99 matches when using vim native search
+
+    --=======================================--
+    --          Language specifics           --
+    --=======================================--
+
+    -- Markdown live preview in browser
     use {
-        "tyru/open-browser.vim", -- vim script plugin
-        -- search engine can be chosen
-        -- config = function()
-        --     vim.g.openbrowser_default_search = "duckduckgo"
-        -- end
+      "iamcco/markdown-preview.nvim",
+      ft = { "markdown" },
+      run = "cd app && yarn install",
     }
 
-    -- undo history visualizer for vim
-    -- works similary like git,
-    -- but it DOES NOT mess with it
-    -- with persistant-undo support
-    -- https://github.com/mbbill/undotree
+    -- VimTeX: A modern Vim and neovim filetype plugin for LaTeX files.
     use {
-        "mbbill/undotree", -- vim script plugin
-        config = function() require("plugins.undotree") end
+      "lervag/vimtex",
+      config = function()
+        require "plugins.settings.vimtex"
+      end,
     }
 
+    -- Show js package information using virtual text in package.json files
     use {
-        "folke/todo-comments.nvim",
-        -- TODO: revisit todo-comments config
-        -- do not use `todo-comments` as
-        -- the config file name
-        -- because it will clash with
-        -- the plugin internals
-        config = function () require("plugins.todocomments") end
+      "vuki656/package-info.nvim",
+      requires = "MunifTanjim/nui.nvim",
+      config = function()
+        require("package-info").setup()
+      end,
     }
 
+    --=======================================--
+    --               Documentation           --
+    --=======================================--
+
+    -- Doc generator
+    use "kkoomen/vim-doge"
+
+    -- Query RFC database and download RFCs from within Vim
+    use "mhinz/vim-rfc"
+
+    --=======================================--
+    --               Testing                 --
+    --=======================================--
+
     use {
-        "mileszs/ack.vim",
-        config = function()
-            vim.g.ackprg = "rg --vimgrep --no-heading --hidden --smart-case"
+      "ahmedkhalf/project.nvim",
+      config = function()
+        -- load Telescope extension
+        require("telescope").load_extension "projects"
+        require("project_nvim").setup {
+          -- Manual mode doesn't automatically change your root directory, so you have
+          -- the option to manually do so using `:ProjectRoot` command.
+          manual_mode = false,
+
+          -- Methods of detecting the root directory. **"lsp"** uses the native neovim
+          -- lsp, while **"pattern"** uses vim-rooter like glob pattern matching. Here
+          -- order matters: if one is not detected, the other is used as fallback. You
+          -- can also delete or rearangne the detection methods.
+          detection_methods = { "lsp", "pattern" },
+
+          -- All the patterns used to detect root dir, when **"pattern"** is in
+          -- detection_methods
+          patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json" },
+
+          -- Table of lsp clients to ignore by name
+          -- eg: { "efm", ... }
+          ignore_lsp = {},
+
+          -- Don't calculate root dir on specific directories
+          -- Ex: { "~/.cargo/*", ... }
+          exclude_dirs = {},
+
+          -- Show hidden files in telescope
+          show_hidden = false,
+
+          -- When set to false, you will get a message when project.nvim changes your
+          -- directory.
+          silent_chdir = true,
+
+          -- Path where project.nvim will store the project history for use in
+          -- telescope
+          datapath = vim.fn.stdpath "data",
+        }
+        -- TODO: check for project.nvim lcd support
+        -- taken from: https://github.com/ahmedkhalf/project.nvim/issues/23#issuecomment-917642018
+        _G.set_window_project_dir = function()
+          local root, _ = require("project_nvim.project").get_project_root()
+          if root then
+            vim.cmd("lcd " .. root)
+          end
         end
+        vim.cmd [[ autocmd VimEnter,BufEnter * call v:lua.set_window_project_dir() ]]
+      end,
     }
 
-    --=======================================--
-    --             MISCELLANEOUS              --
-    --=======================================--
+    use "tpope/vim-apathy"
 
-    use "knubie/vim-kitty-navigator"
+    use "ludovicchabant/vim-gutentags"
 
-    -- workaround for: see: https://github.com/neovim/neovim/issues/12587
-    use "antoinemadec/FixCursorHold.nvim"
+    use {
+      "kyazdani42/nvim-tree.lua",
+      requires = "kyazdani42/nvim-web-devicons",
+      config = function()
+        vim.g.nvim_tree_respect_buf_cwd = 1
 
-    --=======================================--
-    --                TESTING                --
-    --=======================================--
+        -- make nvim tree respect buf working dir
+        require("nvim-tree").setup {
+          update_cwd = true,
+          update_focused_file = {
+            enable = true,
+            update_cwd = true,
+          },
+        }
+      end,
+    }
 
-    --  see: https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db
-    --  https://github.com/terryma/vim-multiple-cursors
-    use "mg979/vim-visual-multi"
+    -- Vim plugin for automatically highlighting other uses of the word under the cursor. Integrates with Neovim's LSP client for intelligent highlighting.
+    -- faster when compared to vim-matchup
+    use {
+      "RRethy/vim-illuminate",
+      config = function()
+        require "plugins.settings.vim-illuminate"
+      end,
+    }
+
+    -- Lua
+    use {
+      "folke/twilight.nvim",
+      config = function()
+        require("twilight").setup {}
+      end,
+    }
+
+    use {
+      "rmagatti/goto-preview",
+      config = function()
+        require("goto-preview").setup {
+          width = 120, -- Width of the floating window
+          height = 15, -- Height of the floating window
+          default_mappings = true, -- Bind default mappings
+          debug = false, -- Print debug information
+          opacity = nil, -- 0-100 opacity level of the floating window where 100 is fully transparent.
+          post_open_hook = nil, -- A function taking two arguments, a buffer and a window to be ran as a hook.
+        }
+      end,
+    }
+
+    use {
+      "AndrewRadev/splitjoin.vim",
+      as = "splitjoin",
+    }
+
+    -- By default conjoin will create normal and visual mode mappings for J and gJ
+    -- and create a :Join command. If those keys are already mapped, e.g. by splitjoin,
+    -- then conjoin will call the prior mapping after removing continuation characters.
+    -- To get this behavior, ensure the plugin defining the other mapping is before conjoin in runtimepath.
+    use {
+      "flwyd/vim-conjoin",
+      after = "splitjoin",
+      event = "VimEnter",
+    }
+
+    -- highlight, navigate, and operate on sets of matching text.
+    -- It extends vim's % key to language-specific words instead of just single characters.
+    --  NOTE: Can slow down neovim on weak pcs
+    --  TODO: configure colors and font for vim-matchup
+    use "andymass/vim-matchup"
+
+    -- Neovim plugin to run lines/blocks of code (independently of the rest of the file),
+    -- supporting multiples languages
+    use {
+      "michaelb/sniprun",
+      run = "bash ./install.sh",
+    }
+
+    use "tpope/vim-characterize"
+
+    use "ray-x/lsp_signature.nvim"
+
+    use {
+      "kosayoda/nvim-lightbulb",
+      config = function()
+        require "plugins.settings.nvim-lightbulb"
+      end,
+    }
+
+    use "tpope/vim-projectionist"
+
+    use "tpope/vim-dispatch"
+
+    use "psliwka/vim-smoothie"
+
+    -- defines a new text object representing
+    -- lines of code at the same indent level.
+    -- Useful for python/vim scripts, etc.
+    -- see: https://www.seanh.cc/2020/08/08/vim-indent-object/
+    use "michaeljsmith/vim-indent-object"
+
+    -- use "simrat39/symbols-outline.nvim"
+
+    use {
+      "numToStr/Comment.nvim",
+      config = function()
+        require("Comment").setup {
+          -- NOTE: recommended integration
+          {
+            ---@param ctx Ctx
+            pre_hook = function(ctx)
+              -- Only calculate commentstring for tsx filetypes
+              if
+                vim.bo.filetype == "typescriptreact"
+                or vim.bo.filetype == "javascriptreact"
+                or vim.bo.filetype == "svelte"
+              then
+                local U = require "Comment.utils"
+
+                -- Determine whether to use linewise or blockwise commentstring
+                local type = ctx.ctype == U.ctype.line and "__default" or "__multiline"
+
+                -- Determine the location where to calculate commentstring from
+                local location = nil
+                if ctx.ctype == U.ctype.block then
+                  location = require("ts_context_commentstring.utils").get_cursor_location()
+                elseif ctx.cmotion == U.cmotion.v or ctx.cmotion == U.cmotion.V then
+                  location = require("ts_context_commentstring.utils").get_visual_start_location()
+                end
+
+                return require("ts_context_commentstring.internal").calculate_commentstring {
+                  key = type,
+                  location = location,
+                }
+              end
+            end,
+          },
+        }
+      end,
+    }
+
+    -- TODO: use nvim-lsp or lsp config from vim-go
+    use "fatih/vim-go"
+
+    -- use xsel instead of xclip, -- TODO: search more about xsel, xclip and its differences
+    -- so "clipboard: error: Error: target STRING not available" doesn't happen
+    -- see: https://github.com/neovim/neovim/issues/2642#issuecomment-170271675
+    -- NOTE: vim-exchange must be using named clipboards under the hood, which is neat <3
+    use "tommcdo/vim-exchange"
+
+    -- use "m-pilia/vim-pkgbuild"
+
+    -- emmet completion for vim
+    -- use "mattn/emmet-vim" -- vim script plugin
 
     -- multi-language debugger
-    use "puremourning/vimspector"
+    -- use "puremourning/vimspector"
 
-    -- nvim-ts-rainbow
-    -- can have performnace issues on large files
-    -- use "p00f/nvim-ts-rainbow"
+    -- use "tpope/vim-obsession"
 
-    --use {
-    --    "TimUntersberger/neogit",
-    --    requires = {"nvim-lua/plenary.nvim", "sindrets/diffview.nvim"},
-    --    config = function ()
-    --        require("neogit").setup {
-    --          disable_signs = false,
-    --          disable_context_highlighting = false,
-    --          disable_commit_confirmation = false,
-    --          -- customize displayed signs
-    --          signs = {
-    --            -- { CLOSED, OPENED }
-    --            section = { ">", "v" },
-    --            item = { ">", "v" },
-    --            hunk = { "", "" },
-    --          },
-    --          integrations = {
-    --            -- Neogit only provides inline diffs. If you want a more traditional way to look at diffs you can use `sindrets/diffview.nvim`.
-    --            -- The diffview integration enables the diff popup, which is a wrapper around `sindrets/diffview.nvim`.
-    --            --
-    --            -- Requires you to have `sindrets/diffview.nvim` installed.
-    --            diffview = true
-    --          },
-    --          -- override/add mappings
-    --          -- mappings = {
-    --          --   -- modify status buffer mappings
-    --          --   status = {
-    --          --     -- Adds a mapping with "B" as key that does the "BranchPopup" command
-    --          --     ["B"] = "BranchPopup",
-    --          --     -- Removes the default mapping of "s"
-    --          --     ["s"] = "",
-    --          --   }
-    --          -- }
-    --        }
-    --    end
-    --}
-end)
+    -- nvim-dap-python: python interface for dap
+    -- nvim-dap extension, providing default configurations
+    -- for python and methods to debug individual test methods
+    -- or classes.
+    -- use "mfussenegger/nvim-dap-python" -- lua plugin
 
--- use "tpope/vim-obsession"
--- https://github.com/wincent/vcs-jump
+    -- TODO: make it work
+    -- use {
+    --   "ThePrimeagen/refactoring.nvim",
+    --   requires = {
+    --     { "nvim-lua/plenary.nvim" },
+    --     { "nvim-treesitter/nvim-treesitter" },
+    --   },
+    --   config = function()
+    --     require "plugins.settings.refactoring"
+    --   end,
+    -- }
+
+    -- kshenoy/vim-signature alternative written in lua
+    -- great plugin but nvim shada implementation is buggy as hell
+    -- and marks can't be deleted properly
+    -- use {
+    --   "chentau/marks.nvim",
+    --   require("marks").setup {
+    --     default_mappings = true, -- whether to map keybinds or not. default true
+    --     builtin_marks = { ".", "<", ">", "^" }, -- which builtin marks to show. default {}
+    --     cyclic = true, -- whether movements cycle back to the beginning/end of buffer. default true
+    --     force_write_shada = false, -- whether the shada file is updated after modifying uppercase marks. default false
+    --     bookmark_0 = { -- marks.nvim allows you to configure up to 10 bookmark groups, each with its own sign/virttext
+    --       sign = "⚑",
+    --       virt_text = "hello world",
+    --     },
+    --     mappings = {},
+    --   },
+    -- }
+
+    use "tpope/vim-eunuch"
+
+    -- use "lbrayner/vim-rzip"
+    --=======================================--
+    --               Deprecating             --
+    --=======================================--
+
+    -- buffer complete the word before the cursor when in cmdline mode
+    -- deprecated in favor of wilder.nvim or nvim-cmp cmdline completion
+    -- use "vim-scripts/CmdlineComplete"
+
+    -- use {
+    --   "airblade/vim-rooter",
+    --   config = function()
+    --     -- by default vim-rooter uses cd to change the directory
+    --     -- lcd only sets the current directory for the current window.
+    --     -- The current directory for other
+    --     -- windows or tabs is not changed.
+    --     vim.g.rooter_cd_cmd = "lcd"
+    --   end,
+    -- }
+
+    -- FAST nvim completion using SQLite
+    -- deprecated because of annoying screen jitter
+    -- use {
+    --   "ms-jpq/coq_nvim",
+    --   branch = "coq",
+    --   run = ":COQdeps",
+    --   setup = function() -- setup: code to run BEFORE the plugin is loaded
+    --     -- MUST be before coq_nvim is imported
+    --     vim.g.coq_settings = {
+    --       auto_start = "shut-up", -- always start coq_nvim without warning
+    --       clients = { snippets = { warn = {} } }, -- turn off snippet warning
+    --       keymap = { recommended = false }, -- required for nvim-autopairs
+    --     }
+    --   end,
+    -- }
+
+    -- coq_nvim thirdy party sources
+    -- use {
+    --   "ms-jpq/coq.thirdparty",
+    --   config = function()
+    --     require "coq_3p" {
+    --       { src = "nvimlua", short_name = "nLUA" },
+    --     }
+    --   end,
+    -- }
+
+    -- use "ntpeters/vim-better-whitespace"
+
+    -- use {
+    --   "haya14busa/incsearch.vim",
+    --   -- TODO: revist incsearch configuration
+    --   config = function()
+    --     vim.g["incsearch#auto_nohlsearch"] = true
+    --     vim.g["incsearch#magic"] = "\\v"
+    --     vim.g["incsearch#consistent_n_direction"] = true
+    --     vim.g["incsearch#do_not_save_error_message_history"] = true
+    --   end,
+    -- }
+
+    -- use {
+    --   "hoob3rt/lualine.nvim",
+    --   requires = { "kyazdani42/nvim-web-devicons", opt = true },
+    --   config = function()
+    --     require("lualine").setup {
+    --       options = { theme = "zenbones" },
+    --     }
+    --   end,
+    -- }
+
+    -- use "tommcdo/vim-ninja-feet", experiment doing nija feet like movement using F and T
+
+    -- use_rocks "moses"
+
+    -- vim one color theme
+    -- deprecated in favor of one-nvim
+    -- use "rakr/vim-one"
+
+    -- Tmux integration,
+    -- I wasn't using very much
+    -- use "tpope/vim-tbone"
+
+    -- use {
+    --     "ms-jpq/chadtree",
+    --     branch = "chad",
+    --     run = "python3 -m chadtree deps",
+    -- }
+
+    -- use "markonm/traces.vim"
+
+    -- TODO: do its tutorial
+    -- TODO: read https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db
+    -- use "mg979/vim-visual-multi"
+  end,
+  config = {
+    -- Move packer_compiled.lua to lua dir so impatient.nvim can cache it
+    compile_path = vim.fn.stdpath "config" .. "/lua/packer/packer_compiled.lua",
+  },
+}
