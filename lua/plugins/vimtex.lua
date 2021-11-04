@@ -37,3 +37,6 @@ vim.g.vimtex_compiler_progname = 'nvr'
 -- relevant too: https://github.com/neovim/neovim/issues/1750
 
 -- vim.g.vimtex_view_automatic = 0
+
+-- setup Vim Digraphs and Ligatures
+-- TODO: https://alpha2phi.medium.com/vim-digraphs-and-ligatures-7dec3cb0a623

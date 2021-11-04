@@ -1,6 +1,5 @@
 require('lualine').setup{
     options = {
-        theme = 'tokyonight'
+        theme = "tokyonight"
     },
-    sections = {lualine_c = {'g:coc_status'}}
 }

@@ -224,3 +224,12 @@ vim-illuminate is being used instead.
   ```lua
   use "andymass/vim-matchup"
   ```
+## vim-move
+
+Move lines and selections up and down using alt + h, j, k, l
+
+- Installation / configuration
+
+  ```lua
+  use "matze/vim-move" -- vim script plugin
+  ```

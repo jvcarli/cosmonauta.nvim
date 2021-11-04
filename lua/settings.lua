@@ -53,7 +53,10 @@ vim.cmd('set shortmess+=c') -- Don't pass messages to |ins-completion-menu|.
 --=======================================--
 
 -- in vim script: set termguicolors
--- TODO: list plugins that require this option
+-- required by nvim-tree.lua for colors to be applied properly
+
+-- required by nvim-bufferline.lua (not being used currently), as it
+-- reads the hex gui color values of various highlight groups
 vim.o.termguicolors = true
 
 --=======================================--
@@ -77,6 +80,11 @@ vim.o.mouse = "a"
 -- Now every time you press y or p, Vim will use the system clipboard.
 -- Yank to the system clipboard explicitly only when you need it with "+y, and paste from it with "+p.
 -- TODO: integrate yanking with kitty private copy_paste buffer
+
+-- see: https://stackoverflow.com/questions/30691466/what-is-difference-between-vims-clipboard-unnamed-and-unnamedplus-settings
+-- BUG: block paste doesn't work with Neovim natively (vim 8 works) when clipboard is unnamed or unnamedplus
+-- see: https://github.com/neovim/neovim/issues/1822
+-- A workaround is to use either nvim-miniyank or pastefix.vim
 vim.o.clipboard = "unnamedplus"
 
 --=======================================--
@@ -92,7 +100,7 @@ vim.opt.relativenumber = true -- show relative numbers
 vim.wo.signcolumn = "yes:2"
 
 -- enable cursorline
-vim.wo.cursorline = true
+vim.wo.cursorline = false
 
 -- conceal
 -- Concealed text is completely hidden unless
@@ -143,10 +151,23 @@ vim.opt.splitbelow = true -- always split below
 vim.o.showmode = false
 
 --=======================================--
+--                 Diff                  --
+--=======================================--
+
+-- vim.cmd('set diffopt+=vertical') -- Don't pass messages to |ins-completion-menu|.
+
+--=======================================--
+--                Time                   --
+--=======================================--
+
+vim.o.updatetime = 0 -- Decrease update time, so completion is faster, is this a good idea??
+vim.o.timeoutlen = 250 -- WhichKey.nvim uses it
+
 --=======================================--
 --               Netrw                   --
 --=======================================--
 
+-- TODO: check for any conflicts with nvim-tree.lua
 -- Unload default vim/neovim netrw plugin
 -- This will unload netrw's mappings too
 -- vim.g.loaded_netrwPlugin = false

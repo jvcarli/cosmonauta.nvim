@@ -1,14 +1,17 @@
 -- vim:fileencoding=utf-8:ft=lua:foldmethod=marker
 -- lspconfig for languages server protocols
--- see: https://github.com/neovim/nvim-lspconfig 
+-- see: https://github.com/neovim/nvim-lspconfig
 -- see: https://microsoft.github.io/language-server-protocol/implementors/servers/
 
-local lspconfig = require("lspconfig")
-local util = require("lspconfig/util")
-local utils = require"utils"
-local configs = require("lspconfig/configs")
+-- Disable single capabilities for a given LSP server,
+-- see: https://www.reddit.com/r/neovim/comments/nvds8f/disable_single_capabilities_for_a_given_lsp_server/
 
--- local M = {}
+local lspconfig = require("lspconfig")
+-- local util = require("lspconfig/util")
+local utils = require"utils"
+-- local configs = require("lspconfig/configs")
+
+local M = {}
 
 --  {{{ LSP Completion symbols
 vim.lsp.protocol.CompletionItemKind = {
@@ -40,31 +43,31 @@ vim.lsp.protocol.CompletionItemKind = {
 }
 -- }}}
 
--- M.symbol_kind_icons = {
---     Function = "",
---     Method = "",
---     Variable = "",
---     Constant = "",
---     Interface = "",
---     Field = "ﰠ",
---     Property = "",
---     Struct = "",
---     Enum = "",
---     Class = ""
--- }
+M.symbol_kind_icons = {
+    Function = "",
+    Method = "",
+    Variable = "",
+    Constant = "",
+    Interface = "",
+    Field = "ﰠ",
+    Property = "",
+    Struct = "",
+    Enum = "",
+    Class = ""
+}
 
--- M.symbol_kind_colors = {
---     Function = "green",
---     Method = "green",
---     Variable = "blue",
---     Constant = "red",
---     Interface = "cyan",
---     Field = "blue",
---     Property = "blue",
---     Struct = "cyan",
---     Enum = "yellow",
---     Class = "red"
--- }
+M.symbol_kind_colors = {
+    Function = "green",
+    Method = "green",
+    Variable = "blue",
+    Constant = "red",
+    Interface = "cyan",
+    Field = "blue",
+    Property = "blue",
+    Struct = "cyan",
+    Enum = "yellow",
+    Class = "red"
+}
 
 -- on_attach function is invoked by neovim lspconfig
 -- it is executed when a client (neovim) is attached
@@ -87,7 +90,7 @@ local on_attach = function(client, bufnr)
     -- enables shortcut for go to definition
     -- if the language server has support for it
     if client.resolved_capabilities.goto_definition then
-        utils.map("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<CR>", {buffer = true})
+        utils.map("n", "<leader>cgd", "<cmd>lua vim.lsp.buf.definition()<CR>", {buffer = true})
     end
 
     --
@@ -112,6 +115,15 @@ local on_attach = function(client, bufnr)
 
 end
 
+--  see: https://elianiva.my.id/post/my-nvim-lsp-setup
+local on_init = function(client)
+  print('Language Server Protocol started!')
+
+  if client.config.flags then
+    client.config.flags.allow_incremental_sync = true
+  end
+end
+
 -- Formatters and Linters (efm-langserver) {{{
 -- diagnostic-languageserver (deprecated in favor of efm-langserver)
 
@@ -122,7 +134,7 @@ local shfmt = require "efm/shfmt"
 local eslint = require "efm/eslint"
 -- local luafmt = require "efm/luafmt"
 
--- efm-langserver main setup
+-- {{{ efm-langserver main setup
 lspconfig.efm.setup{
     init_options = {documentFormatting = true},
     on_attach = on_attach,
@@ -159,6 +171,8 @@ lspconfig.efm.setup{
         }
     }
 }
+-- }}}
+
 -- lspconfig.efm.setup {
 --     cmd = {"efm-langserver"},
 --     root_dir = root_pattern(".git"),
@@ -174,7 +188,7 @@ lspconfig.efm.setup{
 --   formatCommand = "prettier",
 --   formatStdin = true
 -- }
--- 
+--
 -- lspconfig.tsserver.setup {
 --   on_attach = function(client)
 --     if client.config.flags then
@@ -217,20 +231,20 @@ lspconfig.efm.setup{
 --     "typescriptreact"
 --   },
 -- }
--- 
+--
 -- local function eslint_config_exists()
 --   local prettierrc = vim.fn.glob(".prettierrc*", 0, 1)
--- 
+--
 --   if not vim.tbl_isempty(prettierrc) then
 --     return true
 --   end
--- 
+--
 --   if vim.fn.filereadable("package.json") then
 --     if vim.fn.json_decode(vim.fn.readfile("package.json"))["eslintConfig"] then
 --       return true
 --     end
 --   end
--- 
+--
 --   return false
 -- end
 
@@ -240,7 +254,7 @@ lspconfig.efm.setup{
 -- TODO: make vscode-html-langserver work
 -- https://github.com/vscode-langservers/vscode-html-languageserver-bin
 lspconfig.html.setup {on_attach = on_attach}
-    
+
 -- }}}
 
 -- {{{ TSServer - Typescript server
@@ -249,7 +263,7 @@ lspconfig.tsserver.setup {
     -- Use globally installed typescript-language-server
     -- One hardcoded PATH or FULL PATH CAN'T BE declared MANUALLY
     -- because asdf WILL GET CONFUSED and won't find the
-    -- `typescript-language-server` cmd when there's a 
+    -- `typescript-language-server` cmd when there's a
     -- .tool-versions file in the current working directory.
     --
     -- tsserver dependencies (nodejs): typescript and typescript-language-server
@@ -259,8 +273,9 @@ lspconfig.tsserver.setup {
     on_attach = function(client)
         client.resolved_capabilities.document_formatting = false -- turns off tsserver document formatting in favor of efm-langserver
         require "nvim-lsp-ts-utils".setup {} -- use jose-elias-alvarez/nvim-lsp-ts-utils enhancer
-    end
-
+        require "illuminate".on_attach(client)
+    end,
+    on_init = on_init
 }
 -- }}}
 
@@ -276,7 +291,11 @@ lspconfig.svelte.setup{
 -- }}}
 
 -- {{{ TailwindCSS language server
--- TODO: configure tailwindls
+
+lspconfig.tailwindcss.setup{
+    cmd = {"node", "/Users/development/.local/share/nvim/nvim-lsp-language-servers/tailwindls/tailwindcss-intellisense/extension/dist/server/tailwindServer.js", "--stdio"}
+}
+
 -- }}}
 
 -- {{{ Bash language server
@@ -288,8 +307,13 @@ lspconfig.bashls.setup {on_attach = on_attach}
 
 -- Microsoft Pyright
 -- https://github.com/microsoft/pyright
+-- see: https://www.reddit.com/r/neovim/comments/nv7rd5/how_can_i_utilize_cocjedi_to_have_full_code/
+-- info about working with two different git repositories locally
 lspconfig.pyright.setup {
     cmd = {"pyright-langserver", "--stdio"},
+    on_attach = function(client)
+        require "illuminate".on_attach(client)
+    end
 }
 
 -- jedi_language_server
@@ -310,6 +334,9 @@ lspconfig.pyls.setup{
     settings = {
         pyls = {
             plugins = {
+                rope = {
+                    enabled = false
+                },
                 pycodestyle =  {
                     enabled = true,
                     ignore = {
@@ -319,15 +346,11 @@ lspconfig.pyls.setup{
                 pydocstyle = {
                     enabled = true -- disabled by default
                 },
-                -- pylint =  {
-                --     enabled = false,
-                -- },
                 autopep8 = {
                     enabled = false, -- disabled in favor of Black formatter
                 },
                 yapf = {
                     enabled = false, -- disabled in favor of Black formatter
-
                 }
             }
         }
@@ -403,7 +426,29 @@ lspconfig.sumneko_lua.setup {
 
 -- }}}
 
--- Disable virtual text
+-- {{{ Deno
+-- lspconfig.denols.setup{}
+-- }}}
+
+-- {{{ Tex
+
+-- Texlab - completion engine built from scratch for (La)TeX
+lspconfig.texlab.setup{}
+
+-- }}}
+
+-- Vim language server {{{
+lspconfig.vimls.setup{}
+-- }}}
+
+-- {{{ Emmet language server
+
+-- TODO: add emmet language server support, integrated with nvim-compe
+-- see: https://github.com/aca/emmet-ls/issues/5
+
+-- }}}
+
+-- {{{ Disable virtual text
 -- Virtual text can be REALLY distracting
 -- Alternativaly, diagnostics can be seen using Lspsaga or Trouble.nvim
 -- TODO: configure show diagnostics on cursor
@@ -413,5 +458,6 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
         virtual_text = false
     }
 )
+-- }}}
 
--- return M -- ????
+return M -- ????

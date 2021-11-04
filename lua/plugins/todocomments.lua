@@ -1,5 +1,5 @@
 require("todo-comments").setup{
-    signs = true, -- show icons in the signs column
+    signs = false, -- do not show icons in the signs column, they're REALLY distracting
     -- keywords recognized as todo comments
     keywords = {
         FIX = {

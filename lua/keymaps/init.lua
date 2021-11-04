@@ -24,20 +24,20 @@ vim.g.maplocalleader = " "
 
 -- {{{ Trouble.nvim
 -- https://github.com/folke/trouble.nvim
--- Toggle Trouble with `Leader > e` keys
--- vim.api.nvim_set_keymap("n", "<leader>tc", "<cmd>TroubleToggle<CR>", {noremap = true, silent = true}) -- redundant
-vim.api.nvim_set_keymap("n", "<leader>tw", "<cmd>LspTroubleWorkspaceToggle<CR>", {noremap = true, silent = true})
-vim.api.nvim_set_keymap("n", "<leader>td", "<cmd>LspTroubleDocumentToggle<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("n", "<leader>td", "<cmd>TroubleToggle<CR>", {noremap = true, silent = true})
+-- }}}
 
-
--- folke/todo-comments
+-- {{{ folke/todo-comments
 -- has integration with folke/trouble
--- see: https://github.com/folke/todo-comments.nvim
 vim.api.nvim_set_keymap("n", "<leader>tta", "<cmd>TroubleToggle Todo<CR>", {noremap = true, silent = true})
 --
 vim.api.nvim_set_keymap("n", "<leader>ttq", "<cmd>TodoQuickFix<CR>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap("n", "<leader>tts", "<cmd>TodoTelescope<CR>", {noremap = true, silent = true})
 
+-- }}}
+
+-- {{{ Folke zen mode
+vim.api.nvim_set_keymap("n", "<leader>z", "<cmd>ZenMode<CR>", {noremap = true, silent = true})
 -- }}}
 
 -- {{{ openbrowser
@@ -85,44 +85,31 @@ vim.api.nvim_set_keymap("n", "<leader>u", ":UndotreeToggle<CR>", {silent=true})
 
 -- }}}
 
--- vim-lineletters {{{
-
--- On NORMAL mode comma character default beahivor is to
--- repeat latest f, t, F or T in opposite direction.
--- In practice this is awkward to use.
--- Quick-scope plugin provides a better experience
--- for this type of motion, so comma will be overrided
---
--- vim script syntax: map <silent>, <Plug>LineLetters
-vim.api.nvim_set_keymap("n", ",", "<Plug>LineLetters", {silent = true})
-
--- }}}
-
 -- {{{ nvim dap
 
-vim.api.nvim_set_keymap("n", "<F5>", ":lua require'dap'.continue()<CR>", {silent = true})
+-- vim.api.nvim_set_keymap("n", "<F5>", ":lua require'dap'.continue()<CR>", {silent = true})
 
-vim.api.nvim_set_keymap("n", "<leader>dd", ":lua require('dap').continue()<CR>" ,{silent = true})
+-- vim.api.nvim_set_keymap("n", "<leader>dd", ":lua require('dap').continue()<CR>" ,{silent = true})
 
-vim.api.nvim_set_keymap("n", "<F10>", ":lua require'dap'.step_over()<CR>" ,{silent = true})
+-- vim.api.nvim_set_keymap("n", "<F10>", ":lua require'dap'.step_over()<CR>" ,{silent = true})
 
-vim.api.nvim_set_keymap("n", "<F11>", ":lua require'dap'.step_into()<CR>" ,{silent = true})
+-- vim.api.nvim_set_keymap("n", "<F11>", ":lua require'dap'.step_into()<CR>" ,{silent = true})
 
-vim.api.nvim_set_keymap("n", "<F12>", ":lua require'dap'.step_out()<CR>" ,{silent = true})
+-- vim.api.nvim_set_keymap("n", "<F12>", ":lua require'dap'.step_out()<CR>" ,{silent = true})
 
-vim.api.nvim_set_keymap("n", "<leader>b", ":lua require'dap'.toggle_breakpoint()<CR>",{silent = true})
+-- vim.api.nvim_set_keymap("n", "<leader>b", ":lua require'dap'.toggle_breakpoint()<CR>",{silent = true})
 
-vim.api.nvim_set_keymap("n", "<leader>B", ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>" ,{silent = true})
+-- vim.api.nvim_set_keymap("n", "<leader>B", ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>" ,{silent = true})
 
-vim.api.nvim_set_keymap("n", "<leader>lp", ":lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>",{silent = true})
+-- vim.api.nvim_set_keymap("n", "<leader>lp", ":lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>",{silent = true})
 
-vim.api.nvim_set_keymap("n", "<leader>dr", ":lua require'dap'.repl.open()<CR>", {silent = true})
+-- vim.api.nvim_set_keymap("n", "<leader>dr", ":lua require'dap'.repl.open()<CR>", {silent = true})
 
-vim.api.nvim_set_keymap("n", "<leader>dl", ":lua require'dap'.repl.run_last()<CR>`" ,{silent = true})
+-- vim.api.nvim_set_keymap("n", "<leader>dl", ":lua require'dap'.repl.run_last()<CR>`" ,{silent = true})
 
-vim.api.nvim_set_keymap("n", "<leader>dn", ":lua require('dap-python').test_method()<CR>" ,{silent = true})
+-- vim.api.nvim_set_keymap("n", "<leader>dn", ":lua require('dap-python').test_method()<CR>" ,{silent = true})
 
-vim.api.nvim_set_keymap("v", "<leader>ds", "<ESC>:lua require('dap-python').debug_selection()<CR>", {silent = true})
+-- vim.api.nvim_set_keymap("v", "<leader>ds", "<ESC>:lua require('dap-python').debug_selection()<CR>", {silent = true})
 
 --}}}
 
@@ -138,7 +125,6 @@ vim.api.nvim_set_keymap("n", "<leader>ft", "<cmd>lua require('telescope.builtin'
 
 -- {{{ Hop.nvim
 
--- place this in one of your configuration file(s)
 vim.api.nvim_set_keymap('n', 'sw', "<cmd>lua require'hop'.hint_words()<cr>", {})
 vim.api.nvim_set_keymap('n', 'sp', "<cmd>lua require'hop'.hint_patterns()<cr>", {})
 vim.api.nvim_set_keymap('n', 'sc', "<cmd>lua require'hop'.hint_char1()<cr>", {})
@@ -154,11 +140,20 @@ vim.api.nvim_set_keymap('n', 'Y', 'y$', { noremap = true})
 
 -- }}}
 
--- {{{ UltiSnips
+-- {{{ nvim-lsp
 
-vim.g.UltiSnipsExpandTrigger="<tab>"
-vim.g.UltiSnipsJumpForwardTrigger="<c-b>"
-vim.g.UltiSnipsJumpBackwardTrigger="<c-t>"
+vim.api.nvim_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", {silent=true})
+
+-- }}}
+
+-- {{{ vim-fugitive
+
+-- Gedit
+vim.api.nvim_set_keymap("n", "<leader>ge", "<cmd>Gedit :<CR>", {noremap = true, silent = true})
+
+-- Diffview
+vim.api.nvim_set_keymap("n", "<leader>gdv", "<cmd>Gvdiffsplit :<CR>", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("n", "<leader>gdh", "<cmd>Gdiffsplit :<CR>", {noremap = true, silent = true})
 
 -- }}}
 
@@ -168,3 +163,17 @@ vim.g.UltiSnipsJumpBackwardTrigger="<c-t>"
 
 -- TODO: integrate awesome wm - for when working on linux
 -- see: https://github.com/intrntbrn/awesomewm-vim-tmux-navigator
+
+-- TODO: make a list of all plugins keymaps in this folder and return it below:
+
+-- local keymap_files = {"vim-fugitive"}
+
+-- for _, file in pairs(keymap_files) do
+--     -- TODO: if file different than init, require it
+--     -- if file ~= "init.lua" then
+--     --   -- do something
+--     -- return require(file)
+--     --   break
+--     -- end
+--     return require(file)
+-- end

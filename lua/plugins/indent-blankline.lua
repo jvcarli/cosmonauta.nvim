@@ -5,6 +5,7 @@ vim.g.indent_blankline_filetype_exclude = {
     "vimwiki",
     "man",
     "gitmessengerpopup",
+    "dashboard",
     "diagnosticpopup",
     "CocCommand explorer" -- exclude coc-explorer file manager
 }
