@@ -11,7 +11,6 @@ reached a stable state yet.
 
 ## Plugins
 
-![xkcd 2347/](https://xkcd.com/2347/)
+![xkcd 2347/](https://imgs.xkcd.com/comics/dependency.png)
 
-- calculated
   TODO: add description and all used plugins
