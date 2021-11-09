@@ -25,6 +25,7 @@ vim.api.nvim_exec(
 --              Helpers                  --
 --=======================================--
 
+-- TODO: make this function work
 local executable = function(x)
   if vim.fn.executable(x) == 1 then
     return true
@@ -182,10 +183,11 @@ require("packer").startup {
     --             Syntax - Other            --
     --=======================================--
 
-    -- TODO: include vim polyglot?
-
     -- Vim editing support for kmonad config files
     use "kmonad/kmonad-vim"
+
+    -- Syntax highlighting for Kitty terminal config files
+    use "fladson/vim-kitty"
 
     --=======================================--
     --              Keymaps                  --
