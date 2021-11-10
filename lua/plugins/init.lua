@@ -120,7 +120,14 @@ require("packer").startup {
 
     -- substitutes: easymotion, vim-sneak, vim-line-letters
     -- TODO: check for hop nvim fork with more features
-    use "phaazon/hop.nvim"
+    use {
+      "phaazon/hop.nvim",
+      branch = "v1", -- optional but strongly recommended
+      config = function()
+        -- you can configure Hop the way you like here; see :h hop-config
+        require("hop").setup { keys = "etovxqpdygfblzhckisuran" }
+      end,
+    }
 
     -- More useful word motions for Vim
     -- CamelCase, acronyms, UPPERCASE, lowercase, hex colors, hex and binary literals...
