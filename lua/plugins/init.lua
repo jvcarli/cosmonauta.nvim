@@ -296,7 +296,12 @@ require("packer").startup {
       end,
     }
 
-    use "jose-elias-alvarez/null-ls.nvim"
+    use {
+      "jose-elias-alvarez/null-ls.nvim",
+      config = function()
+        require "plugins.settings.null-ls"
+      end
+    }
     -- use "~/Projects/Personal/Github/Forks/null-ls.nvim/" -- my fork
 
     -- Utilities to improve the TypeScript development experience
