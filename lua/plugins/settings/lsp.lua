@@ -295,13 +295,15 @@ end
 
 -- TODO: configure show diagnostics on cursor
 -- stylua: ignore
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+vim.diagnostic.config({
   -- Alternativaly, diagnostics can be seen using Lspsaga or Trouble.nvim
   virtual_text = false, -- Virtual text can be REALLY distracting
   signs = false, -- shows column signs for diagnostics
   underline = true,
   update_in_insert = false, -- updates diagnosting while on insert mode
-})                          -- nvim-ts-autotag, set to 'true' if https://github.com/windwp/nvim-ts-autotag/issues/19 happens
+                          -- nvim-ts-autotag, set to 'true' if https://github.com/windwp/nvim-ts-autotag/issues/19 happens
+  -- severity_sort = false, TODO: learn about severity_sort and how does it work
+})
 
 -- signs column icons when signs is set to true above
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
