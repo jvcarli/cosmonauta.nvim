@@ -10,16 +10,13 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
 end
 
--- Auto compile when there are changes in ~/.config/nvim
-vim.api.nvim_exec(
-  [[
+-- Auto compile Packer when there are changes in ~/.config/nvim
+vim.cmd [[
   augroup Packer
     autocmd!
     autocmd BufWritePost init.lua PackerCompile
   augroup end
-  ]],
-  false
-)
+]]
 
 --=======================================--
 --              Helpers                  --

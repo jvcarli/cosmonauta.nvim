@@ -6,7 +6,7 @@
 --           Augroups and autocmd         --
 -- =======================================--
 
--- Commands inside vim.cmd and vim.api.nvim_exec are coded with VIM SCRIPT
+-- Commands inside vim.cmd are coded with VIM SCRIPT
 -- because augroups and autocommands DO NOT have an interface yet,
 -- This is being worked on, see: https://github.com/neovim/neovim/pull/12378
 
@@ -202,7 +202,6 @@ vim.api.nvim_set_keymap("n", "<leader>zm", "<cmd>ZenMode<CR>", { noremap = true,
 
 -- EasyAlign {{{
 
--- TODO: fix substitute vim.cmd to vim.api.nvim
 -- Start interactive EasyAlign in visual mode (e.g. vipga)
 vim.cmd "xmap gl <Plug>(EasyAlign)"
 

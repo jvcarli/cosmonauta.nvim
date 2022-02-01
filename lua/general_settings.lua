@@ -358,15 +358,12 @@ vim.o.clipboard = "unnamedplus"
 -- See: https://jdhao.github.io/2020/05/22/highlight_yank_region_nvim/
 -- See: https://github.com/mjlbach/defaults.nvim/blob/master/init.lua
 
-vim.api.nvim_exec(
-  [[
+vim.cmd [[
   augroup YankHighlight
     autocmd!
     autocmd TextYankPost * silent! lua vim.highlight.on_yank()
   augroup end
-]],
-  false
-)
+]]
 
 --=======================================--
 --               Command line            --
