@@ -94,10 +94,24 @@ vim.g.node_host_prog = vim.env.HOME .. "/.yarn/bin/neovim-node-host"
 -- gem install neovim
 vim.g.ruby_host_prog = vim.env.HOME .. "/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host"
 
--- Clipboard
--- sudo pacman -S xclip
+-- Clipboard integration
 -- see: help clibpoard
--- macOS uses pbcopy
+--
+-- Linux: it's better to use xclip, TODO: list reasons for using xclip instead of xsel
+-- macOS: uses pbcopy by default, TODO: see if pbcopy works well and replace it if needed
+--
+-- Enable access to system clipboard with +y operator
+-- see: https://advancedweb.hu/working-with-the-system-clipboard-in-vim/
+-- Set the + register as the default: :set clipboard=unnamedplus.
+-- Now every time you press y or p, Vim will use the system clipboard.
+-- Yank to the system clipboard explicitly only when you need it with "+y, and paste from it with "+p.
+-- TODO: integrate yanking with kitty private copy_paste buffer --> see: help clipboard
+--
+-- see: https://stackoverflow.com/questions/30691466/what-is-difference-between-vims-clipboard-unnamed-and-unnamedplus-settings
+-- BUG: block paste doesn't work with Neovim natively (vim 8 works) when clipboard is unnamed or unnamedplus
+-- see: https://github.com/neovim/neovim/issues/1822
+-- A workaround is to use either nvim-miniyank or pastefix.vim
+vim.o.clipboard = "unnamedplus"
 
 --=======================================--
 --                Confirm                --
