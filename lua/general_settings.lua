@@ -174,12 +174,36 @@ vim.o.wrapscan = true
 --                Time                   --
 --=======================================--
 
--- TODO: learn more about updatetime
--- Decrease update time , so completion is faster(?)
-vim.o.updatetime = 150
--- see also FixCursorHold plugin config
+-- Update time
+-- Used by:
+--     Swap File: A swap file (if swap file is enabled) will be written to disk if nothing is typed in the time specified.
+--     CursorHold: If nothing is typed in the time specified than an action happens. Not triggered until the user has pressed a key.
+--        e.g.: press a key, wait updatetime seconds, then action happen
+--
+-- Note: antoinemadec/FixCursorHold.nvim plugin is being used,
+-- so it is possible to use small delays for CursorHold without writing the swap file unnecessarily
+-- because FixCursorHold decouples updatetime from CursorHold and CursorHoldI
+-- This means that in this setup `updatetime` ONLY applies to the swap file.
+-- FixCursorHold.nvim has a global option `g:cursorhold_updatetime`,
+-- used for both CursorHold and CursorHoldI, that if not defined
+-- will use Neovim's `updatetime` instead, meaning that in this case
+-- `updatetime` will apply for both Swap file and CursorHold (and CursorHoldI).
+vim.o.updatetime = 4000 -- Neovim default value, in ms
 
-vim.o.timeoutlen = 250 -- WhichKey.nvim uses it
+vim.o.timeoutlen = 250 -- in ms
+-- Time in milliseconds to wait for a mapped sequence to complete.
+-- A mapped key sequence is a succession of keycodes triggering an action
+--
+-- Tip: DO NOT use 0 because it can break complex mappings, such as insert mode ones.
+--
+-- e.g.:
+--     inoremap jk <esc>
+--
+--     When you type j in insert mode Neovim will wait `timeoutlen` milliseconds
+--     for you to press k before deciding what the intent is.
+--     see: https://vi.stackexchange.com/questions/10249/what-is-the-difference-between-mapped-key-sequences-and-key-codes-timeoutl
+--
+-- WhichKey.nvim plugin uses this setting too, it's the time it waits before being triggered.
 
 --=======================================--
 --    Numbers, sign column and cursor    --
