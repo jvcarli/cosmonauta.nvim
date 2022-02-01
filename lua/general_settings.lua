@@ -60,12 +60,6 @@ end
 -- See: help python-virtualenv
 -- See: https://github.com/neovim/pynvim
 
--- python2 provider
--- used by: vimtex and skim (displaying compiled tex docs)
--- TODO: confirm usage of python2
--- pip install pynvim
-vim.g.python_host_prog = vim.env.HOME .. "/.local/share/nvim/nvim-hardcoded-pythons/py2nvim/venv/bin/python"
-
 -- python3 provider
 -- TODO: include which apps need python3
 -- used by (don't remember because i didn't take notes)
