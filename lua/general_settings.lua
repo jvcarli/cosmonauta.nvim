@@ -66,6 +66,19 @@ end
 -- pip install pynvim
 vim.g.python3_host_prog = vim.env.HOME .. "/.local/share/nvim/nvim-hardcoded-pythons/py3nvim/venv/bin/python"
 
+-- Perl provider
+-- AFIK no plugins in my config use Perl as a provider,
+-- TODO: check if any installed plugins use Perl provider
+--
+-- Needs "Neovim::Ext" cpan package, do:
+--  ` $ cpan App::cpanminus`
+--  ` $ cpanm Neovim::Ext`
+-- see: http://www.cpan.org/modules/INSTALL.html
+if vim.fn.has "unix" == 1 then -- Linux perl PATH configuration
+  vim.g.perl_host_prog = "/usr/bin/perl"
+end
+-- TODO: include macos Homebrew Perl PATH configuration
+
 -- Nodejs provider
 -- By default, Nvim searches for "neovim-node-host" using "npm root -g", which
 -- can be slow. To avoid this we declare neovim-node-host directly
