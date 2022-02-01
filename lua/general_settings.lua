@@ -56,15 +56,30 @@ end
 --              Providers                --
 --=======================================--
 
--- See: help host_prog
--- See: help python-virtualenv
--- See: https://github.com/neovim/pynvim
+-- Neovim delegates some features to dynamic "providers".
+-- See: help provider
+--
+-- To check the provider status and the need of an upgrade run:
+--  ":checkhealth provider"
 
--- python3 provider
--- TODO: include which apps need python3
+-- Python provider
+-- NOTE: Python 2 IS NOT supported anymore
+-- Virtualenvs are used often so it's better to hard-code a Neovim only interpreter using |g:python3_host_prog|
+-- so that the "pynvim" package is not required for each virtualenv. See: help python-virtualenv
+--
+-- TODO: include which plugins need python3
 -- used by (don't remember because i didn't take notes)
--- pip install pynvim
+--
+-- needs: pynvim package: `$ pip install pynvim`. See: https://github.com/neovim/pynvim
 vim.g.python3_host_prog = vim.env.HOME .. "/.local/share/nvim/nvim-hardcoded-pythons/py3nvim/venv/bin/python"
+
+-- Ruby provider
+-- Command to start the Ruby host. By default this is "neovim-ruby-host". With
+-- project-local Ruby versions (via tools like RVM or rbenv) setting this can
+-- avoid the need to install the "neovim" gem in every project.
+--
+-- needs neovim ruby gem. `$ gem install neovim`
+vim.g.ruby_host_prog = vim.env.HOME .. "/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host"
 
 -- Perl provider
 -- AFIK no plugins in my config use Perl as a provider,
@@ -83,16 +98,8 @@ end
 -- By default, Nvim searches for "neovim-node-host" using "npm root -g", which
 -- can be slow. To avoid this we declare neovim-node-host directly
 --
--- yarn global add neovim
+-- needs neovim package: `$ yarn global add neovim`
 vim.g.node_host_prog = vim.env.HOME .. "/.yarn/bin/neovim-node-host"
-
--- Ruby provider
--- Command to start the Ruby host. By default this is "neovim-ruby-host". With
--- project-local Ruby versions (via tools like RVM or rbenv) setting this can
--- avoid the need to install the "neovim" gem in every project.
---
--- gem install neovim
-vim.g.ruby_host_prog = vim.env.HOME .. "/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host"
 
 -- Clipboard integration
 -- see: help clibpoard
