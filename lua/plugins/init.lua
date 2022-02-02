@@ -15,7 +15,7 @@ vim.cmd [[
   augroup Packer
     autocmd!
     autocmd BufWritePost init.lua PackerCompile
-  augroup end
+  augroup END
 ]]
 
 --=======================================--
