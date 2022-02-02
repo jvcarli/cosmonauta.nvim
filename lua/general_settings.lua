@@ -166,9 +166,19 @@ vim.o.mouse = "a"
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
--- don't stop incsearch on the last matched item
--- (top or bottom)
-vim.o.wrapscan = true
+-- Enables wrapscan ONLY for the first matched search item,
+-- meaning the first search will be bidirectional.
+-- After the first search, when repeating it using 'n' or 'N' wrapscan will be turned off,
+-- meaning the search will stop on the last matched item of the file (top or bottom).
+--
+-- taken from: https://www.reddit.com/r/vim/comments/mtvq9l/wrapscan_only_for_first_match/
+vim.cmd [[
+  augroup SearchWrap
+    autocmd!
+    autocmd CmdlineEnter [/?] set wrapscan
+    autocmd CmdlineLeave [/?] call timer_start(1, {-> execute('set nowrapscan')})
+  augroup END
+]]
 
 --=======================================--
 --                Time                   --
