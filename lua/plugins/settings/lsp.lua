@@ -194,12 +194,12 @@ for _, server in ipairs(servers) do
       -- required to fix code action ranges and filter diagnostics
       ts_utils.setup_client(client)
 
-      -- no default maps, so you may want to define some here
-      local opts = { silent = true }
+      -- TSUtils mappings
+      local opts = { silent = true, buffer = bufnr }
 
-      vim.api.nvim_buf_set_keymap(bufnr, "n", "gso", ":TSLspOrganize<CR>", opts)
-      vim.api.nvim_buf_set_keymap(bufnr, "n", "gsr", ":TSLspRenameFile<CR>", opts)
-      vim.api.nvim_buf_set_keymap(bufnr, "n", "gsi", ":TSLspImportAll<CR>", opts)
+      vim.keymap.set("n", "gso", "<cmd>TSLspOrganize<CR>", opts)
+      vim.keymap.set("n", "gsr", "<cmd>TSLspRenameFile<CR>", opts)
+      vim.keymap.set("n", "gsi", "<cmd>TSLspImportAll<CR>", opts)
     end
   end
   -- }}}
