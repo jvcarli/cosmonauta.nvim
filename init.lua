@@ -75,4 +75,3 @@ require "keymaps"
 -- Default color theme
 vim.cmd "colorscheme zenbones"
 vim.cmd "set background=light"
--- see: https://bluz71.github.io/2017/05/21/vim-plugins-i-like.html
