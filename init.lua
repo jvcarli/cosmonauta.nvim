@@ -14,8 +14,8 @@
 -- Insert completion: allow for custom filtering of completion matches using lua functions
 -- see: https://github.com/neovim/neovim/pull/13854
 
--- TreeSitter markdown support
--- see: https://github.com/nvim-treesitter/nvim-treesitter/issues/872
+-- autocmd CursorHold and CursorHoldI are blocked by timer_start()
+-- see: https://github.com/neovim/neovim/issues/12587
 
 -- }}}
 
