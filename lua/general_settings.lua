@@ -291,16 +291,6 @@ vim.wo.linebreak = true -- break only at specific chars
 vim.o.breakat = " ^I"
 
 --=======================================--
---               Concealing              --
---=======================================--
-
--- TODO: check and configure markdown, txt and latex concealing
--- conceal
--- Concealed text is completely hidden unless
--- it has a custom replacement character defined
--- vim.wo.conceallevel=2
-
---=======================================--
 --              Completion               --
 --=======================================--
 
