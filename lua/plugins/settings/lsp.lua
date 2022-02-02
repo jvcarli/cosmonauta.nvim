@@ -68,7 +68,6 @@ local servers = {
   "pyright",
   "tailwindcss",
   "pyright",
-  "null-ls",
   "bashls",
   "emmet_ls", -- completion is working but it's kinda strange
   "vimls",
