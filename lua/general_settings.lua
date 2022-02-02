@@ -290,11 +290,6 @@ vim.wo.linebreak = true -- break only at specific chars
 -- can be annoying to break text when coding
 vim.o.breakat = " ^I"
 
--- Allow the cursor to move just past the end of the line
--- see:https://medium.com/usevim/vim-101-virtual-editing-661c99c05847
--- using instead vim unimpmaired 'yov' mapping when needed
--- vim.opt.virtualedit = "onemore"
-
 --=======================================--
 --               Concealing              --
 --=======================================--
