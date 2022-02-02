@@ -50,11 +50,11 @@ vim.g.maplocalleader = " "
 
 -- save file without leaving insert mode
 -- vscode goes brrrrrrrrl
-vim.cmd "inoremap <C-s> <C-\\><C-o>:w<CR>"
+vim.cmd "inoremap <silent> <C-s> <C-\\><C-o>:w<CR>"
 
 -- save file in normal mode, :w is for losers
 -- space before :w matters, but why??
-vim.cmd "nnoremap <C-s> :w<CR>"
+vim.cmd "nnoremap <silent> <C-s> :w<CR>"
 
 -- }}}
 
