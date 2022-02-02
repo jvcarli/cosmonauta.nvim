@@ -67,7 +67,7 @@ require("packer").startup {
     -- Speed up loading lua modules in Neovim
     -- The expectation is that a form of this plugin
     -- will eventually be merged into Neovim core via
-    -- this PR: https://github.com/neovim/neovim/pull/15436
+    -- this PR, see: https://github.com/neovim/neovim/pull/15436
     -- Until then, this plugin can be used
     use "lewis6991/impatient.nvim" -- *
 
