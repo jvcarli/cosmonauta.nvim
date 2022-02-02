@@ -370,6 +370,19 @@ vim.cmd [[
 vim.o.showmode = false
 
 --=======================================--
+--          Filetype detection           --
+--=======================================--
+
+-- see:https://www.reddit.com/r/neovim/comments/rvwsl3/introducing_filetypelua_and_a_call_for_help/
+
+-- testing: enable filetype.lua, still opt-in
+vim.g.do_filetype_lua = 1
+
+-- disable filetype.vim and use only filetype.lua
+-- DO NOT use because filetype.lua doesn't have feature parity with filetype.vim yet
+-- vim.g.did_load_filetypes = 0
+
+--=======================================--
 --               Netrw                   --
 --=======================================--
 
