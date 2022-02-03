@@ -16,6 +16,8 @@ local installed_and_loaded = function(plugin)
   return packer_plugins[plugin] and packer_plugins[plugin].loaded
 end
 
+-- {{{ Vanilla Neovim
+
 -- {{{ Leader key
 -- Remap space as leader key
 -- taken from defaults.nvim: https://github.com/mjlbach/defaults.nvim/blob/master/init.lua
@@ -47,14 +49,16 @@ vim.cmd "nnoremap <silent> <C-s> :w<CR>"
 
 -- }}}
 
--- Plugins:
--- {{{ openbrowser
+-- {{{ Move around buffers easily
 
--- ("n": normal mode, "v": visual mode)
+-- see: http://andrewradev.com/2011/04/26/my-vim-workflow-basic-moves/
+vim.keymap.set("n", "gh", "<C-w>h", { remap = true })
+vim.keymap.set("n", "gj", "<C-w>j", { remap = true })
+vim.keymap.set("n", "gk", "<C-w>k", { remap = true })
+vim.keymap.set("n", "gl", "<C-w>l", { remap = true })
 
-vim.api.nvim_set_keymap("n", "gx", "<Plug>(openbrowser-smart-search)", { noremap = false })
-vim.api.nvim_set_keymap("v", "gx", "<Plug>(openbrowser-smart-search)", { noremap = false })
---
+-- }}}
+
 -- }}}
 
 -- {{{ Thirdy-party plugins:
