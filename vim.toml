@@ -5,6 +5,9 @@ name = "vim"
 [vim]
 any = true
 
+[packer_plugins]
+any = true
+
 [[describe.args]]
 type = "string"
 [[describe.args]]

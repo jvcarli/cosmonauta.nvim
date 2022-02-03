@@ -116,8 +116,8 @@ for _, server in ipairs(servers) do
           path = vim.split(package.path, ";"),
         },
         diagnostics = {
-          -- Get the language server to recognize the `vim` global
-          globals = { "vim" },
+          -- Get the language server to recognize `vim` and `packer_plugins` globals
+          globals = { "vim", "packer_plugins" },
         },
         workspace = {
           -- Make the server aware of Neovim runtime files
