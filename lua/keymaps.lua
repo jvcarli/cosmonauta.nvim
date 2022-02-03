@@ -11,23 +11,11 @@
 -- so `vim.cmd` is still needed.
 -- This is being worked on, see: https://github.com/neovim/neovim/pull/12378
 
--- plugins with mappings
--- local plugins_with_maps = {
---   "open-browser.vim",
---   "undotree",
---   "incsearch.vim",
---   "telescope.nvim",
---   "nvim-tree.lua",
--- }
+-- checks if plugin is installed and loaded by packer
+local installed_and_loaded = function(plugin)
+  return packer_plugins[plugin] and packer_plugins[plugin].loaded
+end
 
--- TODO: only load mappings when it's applicable
--- for _, plugin in pairs(plugins_with_maps) do
---   if packer_plugins[plugin] and packer_plugins[plugin].loaded then
---     print "Vim fugitive is loaded"
---   end
--- end
-
--- Vanilla vim
 -- {{{ Leader key
 -- Remap space as leader key
 -- taken from defaults.nvim: https://github.com/mjlbach/defaults.nvim/blob/master/init.lua
