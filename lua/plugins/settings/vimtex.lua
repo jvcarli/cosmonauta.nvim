@@ -1,8 +1,7 @@
 -- see: https://castel.dev/post/lecture-notes-1/#vim-and-latex
--- FIX: why can't this be set in plugins.lua conf like other plugins
+
 -- on macOS  install required latex packages with:
 -- brew install --cask mactex-no-gui
-vim.g.tex_flavor = "latex"
 
 -- skim is a macos only program
 -- zathura can be used on linux,
@@ -21,9 +20,6 @@ vim.g.vimtex_view_method = "zathura"
 -- Arguments: --remote +"%line" "%file"
 
 vim.g.vimtex_quickfix_mode = 2 -- default value
-
--- tex conceal: accents/ligatures, bold and italic, delimiters, math symbols, Greek
-vim.g.tex_conceal = "abdmg"
 
 -- see: https://github.com/lervag/vimtex/issues/1576
 -- FOR BACKWARD SEARCH WORK FROM SKIM (OR ANOTHER PDF VIEWER)
