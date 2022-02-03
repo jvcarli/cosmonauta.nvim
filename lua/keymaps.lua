@@ -57,142 +57,141 @@ vim.api.nvim_set_keymap("v", "gx", "<Plug>(openbrowser-smart-search)", { noremap
 --
 -- }}}
 
--- {{{ Undotree
+-- {{{ Thirdy-party plugins:
 
-vim.api.nvim_set_keymap("n", "<leader>u", ":UndotreeToggle<CR>", { silent = true })
+-- {{{ open-browser.vim
 
--- }}}
+if installed_and_loaded "open-browser.vim" then
+  -- openbrowser-smart-search:
+  -- If it looks like URI open the URI under cursor.
+  -- Otherwise, search the word under cursor
 
--- {{{ IncSearch
-
--- vim.api.nvim_set_keymap("n", "/", "<Plug>(incsearch-forward)", { noremap = false })
--- vim.api.nvim_set_keymap("n", "?", "<Plug>(incsearch-backward)", { noremap = false })
--- vim.api.nvim_set_keymap("n", "n", "<Plug>(incsearch-nohl-n)", { noremap = false })
--- vim.api.nvim_set_keymap("n", "N", "<Plug>(incsearch-nohl-N)", { noremap = false })
--- vim.api.nvim_set_keymap("n", "*", "<Plug>(incsearch-nohl-*)N", { noremap = false })
--- vim.api.nvim_set_keymap("n", "#", "<Plug>(incsearch-nohl-#)", { noremap = false })
--- vim.api.nvim_set_keymap("n", "g*", "<Plug>(incsearch-nohl-g*)N", { noremap = false })
--- vim.api.nvim_set_keymap("n", "g#", "<Plug>(incsearch-nohl-g#)", { noremap = false })
+  vim.keymap.set({ "n", "v" }, "gx", "<Plug>(openbrowser-smart-search)", { remap = true })
+end
 
 -- }}}
 
--- {{{ Telescope
+-- {{{ undotree
 
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader><space>",
-  [[<cmd>lua require('telescope.builtin').buffers()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>sf",
-  [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]],
-  { noremap = true, silent = true }
-)
-
--- TODO: make telescope start file_browser from $HOME directory
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>sF",
-  [[<cmd>lua require('telescope.builtin').file_browser()<CR>]],
-  { noremap = true, silent = true }
-)
-
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>sb",
-  [[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>sh",
-  [[<cmd>lua require('telescope.builtin').help_tags()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>st",
-  [[<cmd>lua require('telescope.builtin').tags()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>sw",
-  [[<cmd>lua require('telescope.builtin').grep_string()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>sg",
-  [[<cmd>lua require('telescope.builtin').live_grep()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>so",
-  [[<cmd>lua require('telescope.builtin').tags{ only_current_buffer = true }<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>?",
-  [[<cmd>lua require('telescope.builtin').oldfiles()<CR>]],
-  { noremap = true, silent = true }
-)
-vim.api.nvim_set_keymap("n", "<leader>sp", ":Telescope projects<CR>", { noremap = true, silent = true })
+if installed_and_loaded "undotree" then
+  vim.api.nvim_set_keymap("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { silent = true })
+end
 
 -- }}}
 
--- {{{ NvimTree
+-- {{{ telescope.nvim
 
-vim.api.nvim_set_keymap("n", "<leader>n", ":NvimTreeToggle<CR>", { silent = true })
+if installed_and_loaded "telescope.nvim" then
+  vim.api.nvim_set_keymap(
+    "n",
+    "<leader><space>",
+    [[<cmd>lua require('telescope.builtin').buffers()<CR>]],
+    { noremap = true, silent = true }
+  )
+  vim.api.nvim_set_keymap(
+    "n",
+    "<leader>sf",
+    [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]],
+    { noremap = true, silent = true }
+  )
+
+  -- TODO: make telescope start file_browser from $HOME directory
+  vim.api.nvim_set_keymap(
+    "n",
+    "<leader>sF",
+    [[<cmd>lua require('telescope.builtin').file_browser()<CR>]],
+    { noremap = true, silent = true }
+  )
+
+  vim.api.nvim_set_keymap(
+    "n",
+    "<leader>sb",
+    [[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>]],
+    { noremap = true, silent = true }
+  )
+  vim.api.nvim_set_keymap(
+    "n",
+    "<leader>sh",
+    [[<cmd>lua require('telescope.builtin').help_tags()<CR>]],
+    { noremap = true, silent = true }
+  )
+  vim.api.nvim_set_keymap(
+    "n",
+    "<leader>st",
+    [[<cmd>lua require('telescope.builtin').tags()<CR>]],
+    { noremap = true, silent = true }
+  )
+  vim.api.nvim_set_keymap(
+    "n",
+    "<leader>sw",
+    [[<cmd>lua require('telescope.builtin').grep_string()<CR>]],
+    { noremap = true, silent = true }
+  )
+  vim.api.nvim_set_keymap(
+    "n",
+    "<leader>sg",
+    [[<cmd>lua require('telescope.builtin').live_grep()<CR>]],
+    { noremap = true, silent = true }
+  )
+  vim.api.nvim_set_keymap(
+    "n",
+    "<leader>so",
+    [[<cmd>lua require('telescope.builtin').tags{ only_current_buffer = true }<CR>]],
+    { noremap = true, silent = true }
+  )
+  vim.api.nvim_set_keymap(
+    "n",
+    "<leader>?",
+    [[<cmd>lua require('telescope.builtin').oldfiles()<CR>]],
+    { noremap = true, silent = true }
+  )
+  vim.api.nvim_set_keymap("n", "<leader>sp", ":Telescope projects<CR>", { noremap = true, silent = true })
+end
 
 -- }}}
+
+-- {{{ nvim-tree.lua
+
+if installed_and_loaded "nvim-tree.lua" then
+  vim.api.nvim_set_keymap("n", "<leader>n", "<cmd>NvimTreeToggle<CR>", { silent = true })
+end
+
+-- }}}
+
+-- {{{ vim-niceblock
+
+if installed_and_loaded "vim-niceblock" then
+  vim.keymap.set("v", "I", "<Plug>(niceblock-I)", { remap = true })
+  vim.keymap.set("v", "gI", "<Plug>(niceblock-gI)", { remap = true })
+  vim.keymap.set("v", "A", "<Plug>(niceblock-A)", { remap = true })
+end
+
+-- }}}
+
+-- {{{ zen-mode.nvim
+if installed_and_loaded "zen-mode.nvim" then
+  vim.keymap.set("n", "<leader>zm", "<cmd>ZenMode<CR>", { remap = false, silent = true })
+end
+
+-- }}}
+
+-- vim-easy-align {{{
+
+if installed_and_loaded "vim-easy-align" then
+  -- Start interactive EasyAlign for a motion/text object (e.g.: glip)
+  -- or in visual mode (e.g.: vipgl)
+  vim.keymap.set({ --[[ "n", ]]
+    "x",
+  }, "gl", "<Plug>(EasyAlign)", { remap = true })
+end
+
+-- }}}
+
+-- }}}
+
+-- {{{ Thirdy-party apps/cli
 
 -- {{{ Webstorm Ide integration
-
--- See: https://www.reddit.com/r/vim/comments/b2m2dp/move_from_ide_to_vim/
--- See: https://stackoverflow.com/questions/4037984/is-it-possible-to-extend-intellij-such-that-i-can-open-the-current-file-in-vim
--- See: https://vi.stackexchange.com/questions/18073/neovim-qt-is-it-possible-open-files-in-the-existing-window
--- See: https://www.reddit.com/r/neovim/comments/nehuye/how_to_alternate_between_neovim_and_other_text/
--- Opens Webstorm in the same line as nvim buffer. Column is not supported by webstorm cli.
--- TODO: why this mapping / command blocks neovim after being executed?
---
--- viml original, that gets blocked in neovim too
--- nnoremap <leader>iw :execute 'silent !webstorm --line '.line('.').' '.expand('%:p')\|redraw!<cr>
-
-vim.api.nvim_set_keymap(
-  "n",
-  "<leader>iw",
-  ":execute 'silent !webstorm --line '.line('.').' '.expand('%:p')|redraw!<cr>",
-  { noremap = false, silent = true }
-)
--- TODO: noremap should be false or true?
--- TODO: silent should be false or true?
-
--- }}}
-
--- {{{ Niceblock
-vim.api.nvim_set_keymap("v", "I", "<Plug>(niceblock-I)", { noremap = false })
-vim.api.nvim_set_keymap("v", "gI", "<Plug>(niceblock-gI)", { noremap = false })
-vim.api.nvim_set_keymap("v", "A", "<Plug>(niceblock-A)", { noremap = false })
--- }}}
-
--- {{{ Hop
-vim.api.nvim_set_keymap("n", "<leader>ow", "<cmd>lua require'hop'.hint_words()<cr>", {})
-vim.api.nvim_set_keymap("n", "<leader>or", "<cmd>lua require'hop'.hint_lines()<cr>", {})
--- }}}
-
--- {{{ Folke zen mode
-vim.api.nvim_set_keymap("n", "<leader>zm", "<cmd>ZenMode<CR>", { noremap = true, silent = true })
--- }}}
-
--- EasyAlign {{{
-
--- Start interactive EasyAlign in visual mode (e.g. vipga)
-vim.cmd "xmap gl <Plug>(EasyAlign)"
 
 -- Start interactive EasyAlign for a motion/text object (e.g. gaip)
 vim.cmd "nmap gl <Plug>(EasyAlign)"
