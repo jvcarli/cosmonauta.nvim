@@ -204,7 +204,7 @@ Deprecated because I didn't use it very much.
 ## Nvim-compe
 
 Auto completion Lua plugin for nvim.
-Deprecated because coq_nvim is faster
+Deprecated because nvim-cmp replaced nvim-compe
 
 ## Nvim-autopairs
 
