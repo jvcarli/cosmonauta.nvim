@@ -7,7 +7,8 @@
 -- =======================================--
 
 -- Commands inside vim.cmd are coded with VIM SCRIPT
--- because augroups and autocommands DO NOT have an interface yet,
+-- `augroups` and `autocommands` DO NOT have a lua interface yet,
+-- so `vim.cmd` is still needed.
 -- This is being worked on, see: https://github.com/neovim/neovim/pull/12378
 
 -- plugins with mappings
