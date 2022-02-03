@@ -297,7 +297,7 @@ return require("packer").startup {
       "jose-elias-alvarez/null-ls.nvim",
       config = function()
         require "plugins.settings.null-ls"
-      end
+      end,
     }
     -- use "~/Projects/Personal/Github/Forks/null-ls.nvim/" -- my fork
 
