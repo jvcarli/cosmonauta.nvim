@@ -38,7 +38,7 @@ end
 
 -- Lua linters will complain about `use` being an undefined global
 -- To fix this we will specify `use` as an argument to the function passed to `startup` explicitly
-require("packer").startup {
+return require("packer").startup {
   function(use)
     --=======================================--
     --             Plugin manager            --
