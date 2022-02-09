@@ -124,14 +124,12 @@ cmp.setup.cmdline(":", {
     -- see: https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
     entries = { name = "wildmenu", separator = " | " },
   },
-  sources = cmp.config.sources({
-    { name = "path" },
-  }, {
+  sources = {
     {
       name = "cmdline",
-      -- keyword_length = 3,
+      keyword_length = 3,
     },
-  }),
+  },
 })
 
 -- nvim-autopairs cmp setup
