@@ -61,6 +61,19 @@
 
 -- }}}
 
+-- {{{ lua MODULES vs lua SCRIPTS
+
+-- There are two types of Lua files: scripts and modules.
+--
+-- Scripts work like Vim script files, you put them into your plugin, ftplugin, autoload, syntax or whatever directory (see: `:h 'runtimepath')
+-- and they will be sourced automatically (when appropriate), like Vim script files.
+--
+-- Modules are Lua files which are not sourced automatically.
+-- You have to load them explicitly using the require function. These must be inside the lua directory of the runtime path directory.
+-- see: https://www.reddit.com/r/neovim/comments/rjbkn8/is_it_necessary_to_put_all_my_lua_files_in_a/
+
+-- }}}
+
 -- impatient.nvim: speed up lua imports. MUST be loaded before any other lua plugin
 require "impatient"
 
