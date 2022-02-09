@@ -7,10 +7,13 @@ reached a stable state yet.
 
 ## Requirements
 
-- Neovim HEAD >= 0.6.0
+- [Neovim HEAD](https://github.com/neovim/neovim)
 
 ## Plugins
 
 ![xkcd 2347/](https://imgs.xkcd.com/comics/dependency.png)
 
-  TODO: add description and all used plugins
+## TODO
+
+- [ ] Add all used plugins and a brief description
+- [ ] Add all third party dependencies list
