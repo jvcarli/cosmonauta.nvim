@@ -1,11 +1,10 @@
 -- nvim-cmp setup
 local cmp = require "cmp"
 
-local lspkind = require "lspkind"
 local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+local lspkind = require "lspkind"
 local luasnip = require "luasnip"
--- TODO: include <Tab> and <S-Tab> support for Neogen
--- local neogen = require "neogen"
+local neogen = require "neogen"
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -32,7 +31,9 @@ cmp.setup {
     },
 
     ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
+      if neogen.jumpable() then
+        neogen.jump_next()
+      elseif cmp.visible() then
         cmp.select_next_item()
       elseif luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
@@ -44,7 +45,9 @@ cmp.setup {
     end, { "i", "s" }),
 
     ["<S-Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
+      if neogen.jumpable(true) then
+        neogen.jump_prev()
+      elseif cmp.visible() then
         cmp.select_prev_item()
       elseif luasnip.jumpable(-1) then
         luasnip.jump(-1)
