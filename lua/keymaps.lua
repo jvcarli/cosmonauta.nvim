@@ -1,6 +1,9 @@
 -- vim:fileencoding=utf-8:ft=lua:foldmethod=marker
 
 -- TODO: move mappings to which-key.nvim configuration
+-- TODO: include text explaining the difference between
+-- nmap and nnoremap and so on
+-- see: https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
 
 -- =======================================--
 --           Augroups and autocmd         --
@@ -11,10 +14,15 @@
 -- so `vim.cmd` is still needed.
 -- This is being worked on, see: https://github.com/neovim/neovim/pull/12378
 
--- checks if plugin is installed and loaded by packer
-local installed_and_loaded = function(plugin)
-  return packer_plugins[plugin] and packer_plugins[plugin].loaded
-end
+-- =======================================--
+--            Keymaps definition          --
+-- =======================================--
+
+-- `vim.keymap.set` is non-recursive by default, that means: `{ remap = false }` by default
+-- see: `:h vim.keymap.set`
+
+local map = vim.keymap.set
+local installed_and_loaded = require("utils").installed_and_loaded
 
 -- {{{ Vanilla Neovim
 
@@ -43,7 +51,7 @@ vim.g.maplocalleader = " "
 -- vscode goes brrrrrrrrl
 vim.cmd "inoremap <silent> <C-s> <C-\\><C-o>:w<CR>"
 
--- save file in normal mode, :w is for losers
+-- save file in normal mode
 -- space before :w matters, but why??
 vim.cmd "nnoremap <silent> <C-s> :w<CR>"
 
@@ -52,10 +60,10 @@ vim.cmd "nnoremap <silent> <C-s> :w<CR>"
 -- {{{ Move around buffers easily
 
 -- see: http://andrewradev.com/2011/04/26/my-vim-workflow-basic-moves/
-vim.keymap.set("n", "gh", "<C-w>h", { remap = true })
-vim.keymap.set("n", "gj", "<C-w>j", { remap = true })
-vim.keymap.set("n", "gk", "<C-w>k", { remap = true })
-vim.keymap.set("n", "gl", "<C-w>l", { remap = true })
+map("n", "gh", "<C-w>h", { remap = true })
+map("n", "gj", "<C-w>j", { remap = true })
+map("n", "gk", "<C-w>k", { remap = true })
+map("n", "gl", "<C-w>l", { remap = true })
 
 -- }}}
 
@@ -70,7 +78,7 @@ if installed_and_loaded "open-browser.vim" then
   -- If it looks like URI open the URI under cursor.
   -- Otherwise, search the word under cursor
 
-  vim.keymap.set({ "n", "v" }, "gx", "<Plug>(openbrowser-smart-search)", { remap = true })
+  map({ "n", "v" }, "gx", "<Plug>(openbrowser-smart-search)", { remap = true })
 end
 
 -- }}}
@@ -78,78 +86,39 @@ end
 -- {{{ undotree
 
 if installed_and_loaded "undotree" then
-  vim.api.nvim_set_keymap("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { silent = true })
+  map("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { silent = true })
 end
 
 -- }}}
 
--- {{{ telescope.nvim
+-- {{{ telescope.nvim builtins
 
 if installed_and_loaded "telescope.nvim" then
-  vim.api.nvim_set_keymap(
-    "n",
-    "<leader><space>",
-    [[<cmd>lua require('telescope.builtin').buffers()<CR>]],
-    { noremap = true, silent = true }
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "<leader>sf",
-    [[<cmd>lua require('telescope.builtin').find_files({previewer = false})<CR>]],
-    { noremap = true, silent = true }
-  )
+  map("n", "<leader><space>", "<cmd>Telescope buffers<CR>")
 
-  -- TODO: make telescope start file_browser from $HOME directory
-  vim.api.nvim_set_keymap(
-    "n",
-    "<leader>sF",
-    [[<cmd>lua require('telescope.builtin').file_browser()<CR>]],
-    { noremap = true, silent = true }
-  )
+  map("n", "<leader>sf", "<cmd>Telescope find_files<CR>")
 
-  vim.api.nvim_set_keymap(
-    "n",
-    "<leader>sb",
-    [[<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<CR>]],
-    { noremap = true, silent = true }
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "<leader>sh",
-    [[<cmd>lua require('telescope.builtin').help_tags()<CR>]],
-    { noremap = true, silent = true }
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "<leader>st",
-    [[<cmd>lua require('telescope.builtin').tags()<CR>]],
-    { noremap = true, silent = true }
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "<leader>sw",
-    [[<cmd>lua require('telescope.builtin').grep_string()<CR>]],
-    { noremap = true, silent = true }
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "<leader>sg",
-    [[<cmd>lua require('telescope.builtin').live_grep()<CR>]],
-    { noremap = true, silent = true }
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "<leader>so",
-    [[<cmd>lua require('telescope.builtin').tags{ only_current_buffer = true }<CR>]],
-    { noremap = true, silent = true }
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "<leader>?",
-    [[<cmd>lua require('telescope.builtin').oldfiles()<CR>]],
-    { noremap = true, silent = true }
-  )
-  vim.api.nvim_set_keymap("n", "<leader>sp", ":Telescope projects<CR>", { noremap = true, silent = true })
+  map("n", "<leader>sb", "<cmd>Telescope current_buffer_fuzzy_find<CR>")
+
+  map("n", "<leader>sh", "<cmd>Telescope help_tags<CR>") -- Neovim help tags
+
+  map("n", "<leader>st", "<cmd>Telescope tags<CR>") -- universal ctags, see 'ludovicchabant/vim-gutentags' and 'universal-ctags/ctags'
+
+  map("n", "<leader>sw", "<cmd>Telescope grep_string<CR>")
+
+  map("n", "<leader>sg", "<cmd>Telescope live_grep<CR>")
+
+  map("n", "<leader>so", "<cmd>Telescope tags<CR>")
+
+  map("n", "<leader>?", "<cmd> Telescope oldfiles<CR>")
+end
+
+-- }}}
+
+-- {{{ project.nvim
+
+if installed_and_loaded then
+  map("n", "<leader>sp", "<cmd>Telescope projects<CR>")
 end
 
 -- }}}
@@ -157,7 +126,7 @@ end
 -- {{{ nvim-tree.lua
 
 if installed_and_loaded "nvim-tree.lua" then
-  vim.api.nvim_set_keymap("n", "<leader>n", "<cmd>NvimTreeToggle<CR>", { silent = true })
+  map("n", "<leader>n", "<cmd>NvimTreeToggle<CR>")
 end
 
 -- }}}
@@ -165,16 +134,16 @@ end
 -- {{{ vim-niceblock
 
 if installed_and_loaded "vim-niceblock" then
-  vim.keymap.set("v", "I", "<Plug>(niceblock-I)", { remap = true })
-  vim.keymap.set("v", "gI", "<Plug>(niceblock-gI)", { remap = true })
-  vim.keymap.set("v", "A", "<Plug>(niceblock-A)", { remap = true })
+  map("v", "I", "<Plug>(niceblock-I)", { remap = true })
+  map("v", "gI", "<Plug>(niceblock-gI)", { remap = true })
+  map("v", "A", "<Plug>(niceblock-A)", { remap = true })
 end
 
 -- }}}
 
 -- {{{ zen-mode.nvim
 if installed_and_loaded "zen-mode.nvim" then
-  vim.keymap.set("n", "<leader>zm", "<cmd>ZenMode<CR>", { remap = false, silent = true })
+  map("n", "<leader>zm", "<cmd>ZenMode<CR>")
 end
 
 -- }}}
@@ -184,20 +153,38 @@ end
 if installed_and_loaded "vim-easy-align" then
   -- Start interactive EasyAlign for a motion/text object (e.g.: glip)
   -- or in visual mode (e.g.: vipgl)
-  vim.keymap.set({ --[[ "n", ]]
-    "x",
-  }, "gl", "<Plug>(EasyAlign)", { remap = true })
+  -- DON'T use a normal mode mapping here
+  -- because it will conflict with `gl` window movement mapping
+  map("x", "gl", "<Plug>(EasyAlign)", { remap = true })
 end
 
 -- }}}
 
 -- }}}
 
--- {{{ Thirdy-party apps/cli
+-- {{{ Thirdy-party apps (GUI / TUI / CLI ...)
 
 -- {{{ Webstorm Ide integration
 
--- Start interactive EasyAlign for a motion/text object (e.g. gaip)
-vim.cmd "nmap gl <Plug>(EasyAlign)"
+-- if webstorm cli is present in $PATH, do:
+if vim.fn.executable "webstorm" == 1 then
+  -- TODO: add and "if project is web related then", how to detect this?
+
+  -- See: https://www.reddit.com/r/vim/comments/b2m2dp/move_from_ide_to_vim/
+  -- See: https://stackoverflow.com/questions/4037984/is-it-possible-to-extend-intellij-such-that-i-can-open-the-current-file-in-vim
+  -- See: https://vi.stackexchange.com/questions/18073/neovim-qt-is-it-possible-open-files-in-the-existing-window
+  -- See: https://www.reddit.com/r/neovim/comments/nehuye/how_to_alternate_between_neovim_and_other_text/
+  -- Opens Webstorm in the same line as nvim buffer. Column is not supported by webstorm cli.
+  -- TODO: why this mapping / command blocks neovim after being executed?
+  --
+  -- viml original, that gets blocked in neovim too
+  -- nnoremap <leader>iw :execute 'silent !webstorm --line '.line('.').' '.expand('%:p')\|redraw!<cr>
+
+  map("n", "<leader>iw", "<cmd>execute 'silent !webstorm --line '.line('.').' '.expand('%:p')|redraw!<cr>")
+end
+
+-- }}}
+
+-- }}}
 
 -- }}}
