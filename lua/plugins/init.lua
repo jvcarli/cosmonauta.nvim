@@ -340,13 +340,18 @@ return require("packer").startup {
     }
 
     use {
+      "L3MON4D3/LuaSnip",
+      config = function()
+        require "plugins.settings.luasnip"
+      end,
+    }
+
+    use {
       "hrsh7th/nvim-cmp",
       config = function()
         require "plugins.settings.nvim_cmp"
       end,
     }
-
-    use "L3MON4D3/LuaSnip"
     use "saadparwaiz1/cmp_luasnip"
     use "hrsh7th/cmp-nvim-lsp" -- nvim-lsp completion engine
     use "hrsh7th/cmp-nvim-lua" -- nvim lua api (vim.*)
