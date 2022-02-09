@@ -1,8 +1,8 @@
 -- vim:fileencoding=utf-8:ft=lua:foldmethod=marker
 
--- {{{ Following Neovim HEAD (Breaking changes) / Relevant Neovim GitHub issues
+-- {{{ Relevant Neovim Github issues
 
--- Updated breaking changes
+-- Following HEAD: breaking changes on master
 -- see: https://github.com/neovim/neovim/issues/14090
 
 -- Autocmd for remote plugin on VimEnter is slow
@@ -16,6 +16,10 @@
 
 -- autocmd CursorHold and CursorHoldI are blocked by timer_start()
 -- see: https://github.com/neovim/neovim/issues/12587
+
+-- Highlighting Folded
+-- Vim folding makes me want to cry
+-- see:  https://github.com/neovim/neovim/issues/12649
 
 -- }}}
 
