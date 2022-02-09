@@ -23,17 +23,10 @@ vim.cmd [[
 ]]
 
 --=======================================--
---              Helpers                  --
+--                Utils                  --
 --=======================================--
 
--- TODO: make this function work
-local executable = function(x)
-  if vim.fn.executable(x) == 1 then
-    return true
-  else
-    print("Install " .. x .. " cmd tool or run the bootstrap helper!")
-  end
-end
+local executable = require("utils").executable
 
 --=======================================--
 --              Plugins                  --
