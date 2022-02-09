@@ -63,6 +63,7 @@ cmp.setup {
   sources = {
     { name = "nvim_lua" }, -- nvim lua api
     { name = "nvim_lsp" }, -- nvim lsp
+    { name = "nvim_lsp_signature_help" }, -- lsp signature help, similar to ray-x/lsp_signature.nvim, but much better integrated with nvim_cmp
     { name = "luasnip" }, -- snippet engine
     {
       name = "rg",

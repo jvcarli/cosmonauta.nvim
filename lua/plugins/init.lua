@@ -362,6 +362,9 @@ return require("packer").startup {
 
     use "lukas-reineke/cmp-under-comparator" --  comparator function for completion items that start with one or more underlines
 
+    -- lsp signature help, similar to ray-x/lsp_signature.nvim, but much better integrated with nvim_cmp
+    use "hrsh7th/cmp-nvim-lsp-signature-help"
+
     use "onsails/lspkind-nvim" -- vscode like symbols
 
     --=======================================--
