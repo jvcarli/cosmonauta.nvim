@@ -346,13 +346,13 @@ return require("packer").startup {
       end,
     }
 
-    use "hrsh7th/vim-vsnip" -- snippet engine, uses lsp/vscode format
+    use "L3MON4D3/LuaSnip"
+    use "saadparwaiz1/cmp_luasnip"
     use "hrsh7th/cmp-nvim-lsp" -- nvim-lsp completion engine
     use "hrsh7th/cmp-nvim-lua" -- nvim lua api (vim.*)
     use "hrsh7th/cmp-buffer" -- buffer words
     use "hrsh7th/cmp-path" -- path completion
     use "hrsh7th/cmp-cmdline" -- cmd line completion
-    -- seems buggy for now
     use "lukas-reineke/cmp-rg" -- ripgrep source
 
     use "lukas-reineke/cmp-under-comparator" --  comparator function for completion items that start with one or more underlines

@@ -1,21 +1,22 @@
 -- nvim-cmp setup
-local lspkind = require "lspkind"
 local cmp = require "cmp"
+
+local lspkind = require "lspkind"
 local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+local luasnip = require "luasnip"
+-- TODO: include <Tab> and <S-Tab> support for Neogen
+-- local neogen = require "neogen"
 
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
 end
 
-local feedkey = function(key, mode)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
-end
-
 cmp.setup {
   snippet = {
+    -- REQUIRED - you MUST specify a snippet engine
     expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body) -- for vsnip snippet engine
+      require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
     end,
   },
   mapping = {
@@ -33,28 +34,24 @@ cmp.setup {
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
-      elseif vim.fn["vsnip#available"]() == 1 then
-        feedkey("<Plug>(vsnip-expand-or-jump)", "")
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
       elseif has_words_before() then
         cmp.complete()
       else
-        fallback() -- The fallback function sends a already mapped key. In this case, it's probably `<Tab>`.
+        fallback()
       end
-    end, {
-      "i",
-      "s",
-    }),
+    end, { "i", "s" }),
 
-    ["<S-Tab>"] = cmp.mapping(function()
+    ["<S-Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
-      elseif vim.fn["vsnip#jumpable"](-1) == 1 then
-        feedkey("<Plug>(vsnip-jump-prev)", "")
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
       end
-    end, {
-      "i",
-      "s",
-    }),
+    end, { "i", "s" }),
   },
 
   -- completion sources
@@ -63,7 +60,7 @@ cmp.setup {
   sources = {
     { name = "nvim_lua" }, -- nvim lua api
     { name = "nvim_lsp" }, -- nvim lsp
-    { name = "vsnip" }, -- snippet engine
+    { name = "luasnip" }, -- snippet engine
     {
       name = "rg",
       keyword_length = 4,
@@ -82,7 +79,7 @@ cmp.setup {
       menu = {
         buffer = "[Buffer]",
         nvim_lsp = "[LSP]",
-        vsnip = "[vsnip]",
+        luasnip = "[LuaSnip]",
         nvim_lua = "[Nvim Lua]",
         rg = "[Ripgrep]",
 
