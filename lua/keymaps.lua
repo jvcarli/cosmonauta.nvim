@@ -94,7 +94,7 @@ end
 -- {{{ telescope.nvim builtins
 
 if installed_and_loaded "telescope.nvim" then
-  map("n", "<leader><space>", "<cmd>Telescope buffers<CR>")
+  map("n", "<leader>sl", "<cmd>Telescope buffers<CR>")
 
   map("n", "<leader>sf", "<cmd>Telescope find_files<CR>")
 

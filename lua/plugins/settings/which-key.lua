@@ -16,9 +16,8 @@ wk.register {
 
   -- telescope
   ["<leader>s"] = { name = "Telescope" },
-  ["<leader><space>"] = { name = "Find Opened Buffers" },
+  ["<leader>sl"] = { name = "Find Opened Buffers" },
   ["<leader>sf"] = { name = "Find File" },
-  ["<leader>sF"] = { name = "File Browser" },
   ["<leader>sb"] = { name = "Fuzzy Find Current Buffer" },
   ["<leader>sh"] = { name = "Find All Help Tags" },
   ["<leader>st"] = { name = "Find All Tags" },
