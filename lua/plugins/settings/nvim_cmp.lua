@@ -120,6 +120,10 @@ cmp.setup.cmdline("/", {
 
 -- Use cmdline & path source for ':'. Won't work with the `native_menu`.
 cmp.setup.cmdline(":", {
+  view = {
+    -- see: https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
+    entries = { name = "wildmenu", separator = " | " },
+  },
   sources = cmp.config.sources({
     { name = "path" },
   }, {
