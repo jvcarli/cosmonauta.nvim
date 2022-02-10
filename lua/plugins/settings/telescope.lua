@@ -1,3 +1,10 @@
+-- TODO: test telescope worktree integration
+
+local patterns_to_ignore = {
+  "node_modules", -- js and ts dev in general
+  "resources/_gen", -- gohugo dev
+}
+
 require("telescope").setup {
   defaults = {
     mappings = {
@@ -6,6 +13,7 @@ require("telescope").setup {
         ["<C-d>"] = false,
       },
     },
+    file_ignore_patterns = patterns_to_ignore,
   },
   extensions = {
     -- telescope-fzf-native.nvim
