@@ -90,30 +90,41 @@ for _, server in ipairs(servers) do
   local config = default_config()
 
   -- {{{ sumneko_lua
-  if server == "sumneko_lua" then
-    local system_name
 
-    if vim.fn.has "mac" == 1 then
-      system_name = "macOS"
-    elseif vim.fn.has "unix" == 1 then
-      system_name = "Linux"
+  if server == "sumneko_lua" then
+    local sumneko_binary_cmd
+
+    if vim.fn.has "mac" or "unix" == 1 then
+      sumneko_binary_cmd = "lua-language-server"
     elseif vim.fn.has "win32" == 1 then
-      system_name = "Windows"
+      sumneko_binary_cmd = "lua-language-server.exe"
     else
       print "Unsupported system for sumneko"
     end
 
-    -- set the path to the sumneko installation
+    -- set the path of the language server installation
     local sumneko_root_path = vim.fn.getenv "HOME" .. "/.local/share/nvim/nvim-lsp-language-servers/lua-language-server"
-    local sumneko_binary = sumneko_root_path .. "/bin/" .. system_name .. "/lua-language-server"
+    -- set path of the language server binary
+    local sumneko_binary_path = sumneko_root_path .. "/bin/" .. "/" .. sumneko_binary_cmd
 
-    local lua_settings = {
+    local lua_runtime_path = vim.split(package.path, ";")
+    table.insert(lua_runtime_path, "lua/?.lua")
+    table.insert(lua_runtime_path, "lua/?/init.lua")
+
+    -- Disable default lua-language-server formatting in favor of using stylua via null-ls.nvim plugin
+    -- TODO: research if lua-language-server formatting (it uses https://github.com/CppCXY/EmmyLuaCodeStyle) is better than stylua
+    config.on_attach = function(client, _)
+      client.resolved_capabilities.document_formatting = false
+      client.resolved_capabilities.document_range_formatting = false
+    end
+    config.cmd = { sumneko_binary_path }
+    config.settings = {
       Lua = {
         runtime = {
           -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
           version = "LuaJIT",
-          -- Setup your lua path
-          path = vim.split(package.path, ";"),
+          -- Setup lua path
+          path = lua_runtime_path,
         },
         diagnostics = {
           -- Get the language server to recognize `vim` and `packer_plugins` globals
@@ -121,10 +132,7 @@ for _, server in ipairs(servers) do
         },
         workspace = {
           -- Make the server aware of Neovim runtime files
-          library = {
-            [vim.fn.expand "$VIMRUNTIME/lua"] = true,
-            [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
-          },
+          library = vim.api.nvim_get_runtime_file("", true),
         },
         -- Do not send telemetry data containing a randomized but unique identifier
         telemetry = {
@@ -132,12 +140,8 @@ for _, server in ipairs(servers) do
         },
       },
     }
-
-    config.cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" }
-    config.filetypes = { "lua" }
-    config.log_level = 2
-    config.settings = lua_settings
   end
+
   -- }}}
 
   -- {{{ tsserver
