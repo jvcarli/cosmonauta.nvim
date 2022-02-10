@@ -81,7 +81,7 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 local function default_config()
   return {
     capabilities = capabilities,
-    on_attach = on_attach,
+    on_attach = custom_lsp_attach,
   }
 end
 
@@ -105,7 +105,7 @@ for _, server in ipairs(servers) do
     -- set the path of the language server installation
     local sumneko_root_path = vim.fn.getenv "HOME" .. "/.local/share/nvim/nvim-lsp-language-servers/lua-language-server"
     -- set path of the language server binary
-    local sumneko_binary_path = sumneko_root_path .. "/bin/" .. "/" .. sumneko_binary_cmd
+    local sumneko_binary_path = sumneko_root_path .. "/bin/" .. sumneko_binary_cmd
 
     local lua_runtime_path = vim.split(package.path, ";")
     table.insert(lua_runtime_path, "lua/?.lua")
