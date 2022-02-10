@@ -112,11 +112,18 @@ for _, server in ipairs(servers) do
     table.insert(lua_runtime_path, "lua/?/init.lua")
 
     -- Disable default lua-language-server formatting in favor of using stylua via null-ls.nvim plugin
-    -- TODO: research if lua-language-server formatting (it uses https://github.com/CppCXY/EmmyLuaCodeStyle) is better than stylua
-    config.on_attach = function(client, _)
+    -- TODO: research if lua-language-server formatting (it uses https://github.com/CppCXY/EmmyLuaCodeStyle)
+    -- is better than Stylua (currently being usedo)
+    local default_on_attach = config.on_attach
+    config.on_attach = function(client, bufnr)
+      -- reuse default config.on_attach (for mappings, etc...)
+      default_on_attach(client, bufnr)
+
+      -- disable default tsserver formatting in favor of using prettierd via null-ls.nvim plugin
       client.resolved_capabilities.document_formatting = false
       client.resolved_capabilities.document_range_formatting = false
     end
+
     config.cmd = { sumneko_binary_path }
     config.settings = {
       Lua = {
