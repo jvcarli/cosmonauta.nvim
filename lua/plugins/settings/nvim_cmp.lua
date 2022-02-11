@@ -76,11 +76,15 @@ cmp.setup {
     { name = "path" },
   },
 
-  -- vscode like icons
+  -- HACK: vscode like icons and which LSP is responsible for the current completion menu item (not guaranteed to be stable)
   formatting = {
-    format = lspkind.cmp_format {
-      with_text = true,
-      menu = {
+    -- see: https://www.reddit.com/r/neovim/comments/smtrpm/is_it_possible_to_show_which_lsp_is_responsible/
+    -- taken from: https://github.com/rebelot/dotfiles/blob/master/nvim/lua/plugins/cmp.lua#L128-L151
+    format = function(entry, vim_item)
+      -- vim_item.kind = require("lspkind").presets.default[vim_item.kind] .. " " .. vim_item.kind
+      vim_item = lspkind.cmp_format()(entry, vim_item)
+
+      local alias = {
         buffer = "[Buffer]",
         nvim_lsp = "[LSP]",
         luasnip = "[LuaSnip]",
@@ -88,9 +92,32 @@ cmp.setup {
         rg = "[Ripgrep]",
 
         -- latex_symbols = "[Latex]",
-      },
-    },
+      }
+
+      if entry.source.name == "nvim_lsp" then
+        vim_item.menu = "[" .. entry.source.source.client.name .. "]"
+      else
+        vim_item.menu = alias[entry.source.name] or entry.source.name
+      end
+      return vim_item
+    end,
   },
+
+  -- vscode like icons (stable)
+  -- formatting = {
+  --   format = lspkind.cmp_format {
+  --     with_text = true,
+  --     menu = {
+  --       buffer = "[Buffer]",
+  --       nvim_lsp = "[LSP]",
+  --       luasnip = "[LuaSnip]",
+  --       nvim_lua = "[Nvim Lua]",
+  --       rg = "[Ripgrep]",
+  --
+  --       -- latex_symbols = "[Latex]",
+  --     },
+  --   },
+  -- },
 
   sorting = {
     comparators = {
