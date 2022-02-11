@@ -176,10 +176,23 @@ for _, server in ipairs(servers) do
 
   -- {{{ tailwindcss
 
-  -- if server == "tailwindcss" then
-  -- TODO: add color support to tailwindcss server
-  -- on_attach = function(client)
-  --   -- [[ other on_attach code ]]
+  if server == "tailwindcss" then
+    -- TODO: add color support to tailwindcss server
+
+    -- {{{ Add Hugo (https://gohugo.io) projects support:
+    -- see:https://www.reddit.com/r/neovim/comments/skac4h/lsp_working_after_e/
+    -- see:https://stackoverflow.com/questions/68347170/tailwindcss-lsp-for-neovim-root-dir-issue
+    local tailwindcssls_default_config = require("lspconfig.server_configurations.tailwindcss").default_config
+
+    local tailwindcssls_default_filetypes = tailwindcssls_default_config.filetypes
+    local tailwindcss_default_userLanguages = tailwindcssls_default_config.init_options.userLanguages
+
+    -- add `gohtmltmpl` to default tailwindcssls filetypes
+    table.insert(tailwindcssls_default_filetypes, "gohtmltmpl")
+    -- add `gohtmltmpl` key to userLanguages and `gohtml` as its value,
+    -- which will alias `gohtmltmpl` to `gohtml`, that is already recognized by tailwindcssls:
+    tailwindcss_default_userLanguages.gohtmltmpl = "gohtml"
+    -- }}}
 
   -- BUG: TailwindCSS server is dumb and freaks out trying to attach to markdown files, wtf?
   -- BUG: TailwindCSS server tries to attach to almost any project  -- using only
