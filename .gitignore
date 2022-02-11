@@ -7,3 +7,7 @@ lua/packer/packer_compiled.lua
 
 # ignore profiling vim
 profile.log
+
+# ignore vim binary spellfiles
+*.spl
+*.sug

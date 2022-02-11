@@ -311,6 +311,17 @@ vim.o.breakat = " ^I"
 vim.o.completeopt = "menuone,noselect"
 
 --=======================================--
+--              Spelling                 --
+--=======================================--
+
+-- spellfile path
+-- It must end in ".{encoding}.add".
+-- This is the default path but it is explicitly set here for reference
+-- TODO: check spell-sug-files,
+-- see: `h: spell-sug-file`
+vim.opt.spellfile = vim.fn.stdpath "config" .. "/spell/en.utf-8.add"
+
+--=======================================--
 --          Undo & backup                --
 --=======================================--
 
