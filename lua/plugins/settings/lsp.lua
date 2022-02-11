@@ -203,6 +203,16 @@ for _, server in ipairs(servers) do
   -- {{{ html langserver
 
   if server == "html" then
+    local default_on_attach = config.on_attach
+    config.on_attach = function(client, bufnr)
+      -- reuse default config.on_attach (for mappings, etc...)
+      default_on_attach(client, bufnr)
+
+      -- disable default html formatting in favor of using prettierd via null-ls.nvim plugin
+      client.resolved_capabilities.document_formatting = false
+      client.resolved_capabilities.document_range_formatting = false
+    end
+
     -- Enable (broadcasting) snippet capability for completion
     config.capabilities.textDocument.completion.completionItem.snippetSupport = true
 
