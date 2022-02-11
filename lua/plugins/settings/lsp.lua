@@ -211,17 +211,21 @@ for _, server in ipairs(servers) do
 
   -- }}}
 
-  if packer_plugins["coq_nvim"] and packer_plugins["coq_nvim"].loaded then
-    -- generic config for setting up the servers using coq nvim
-    local coq = require "coq"
-    lspconfig[server].setup(coq.lsp_ensure_capabilities(config))
-  elseif packer_plugins["nvim-cmp"] and packer_plugins["nvim-cmp"].loaded then
-    -- generic config for setting up the servers using nvim-cmp
-    config.capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
-    lspconfig[server].setup(config)
-  else -- just regular omnicompletion
-    lspconfig[server].setup(config)
+  -- {{{ emmet_ls
+  if server == "emmet_ls" then
+    -- TODO: find out why emmet_ls doesn't understand gohtmltmpl files
+    config.filetypes = {
+      "css",
+      "html",
+      -- "gohtmltmpl",
+    }
   end
+
+  -- }}}
+
+  -- generic config for setting up the servers using nvim-cmp
+  config.capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+  lspconfig[server].setup(config)
 end
 -- }}}
 
