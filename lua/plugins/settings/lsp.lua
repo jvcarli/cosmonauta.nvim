@@ -196,34 +196,6 @@ for _, server in ipairs(servers) do
 
     -- Attach TailwindCSS language server to ONLY TailwindCSS projects
     config.root_dir = lspconfig.util.root_pattern("tailwind.config.js", "tailwind.config.ts")
-
-    -- Sometimes we don't want to attach to a server on purpose, in this case `vim.notify` will warn use
-    -- I find it annoying so I disabled it:
-    -- HACK: This is hackishy, but it works and is better than overriding lspconfig module directly
-    -- because it would be difficult to track changes in nvim-lspconfig core.
-    -- It is also cleaner than defining an autocmd for enabling the server (using <cmd>LspStart)
-    -- see: https://www.reddit.com/r/neovim/comments/sldn6e/help_tailwindcss_lsp_tries_to_attach_to_almost/
-    -- see: https://www.reddit.com/r/neovim/comments/rpcrhr/lsp_anyway_to_not_attach_a_server_if_the_root/
-
-    -- disable autostart to ensure the server will be only started on
-    -- tailwindcss projects
-    config.autostart = false -- see: https://github.com/neovim/nvim-lspconfig/pull/721
-
-    local search_ancestors = lspconfig.util.search_ancestors
-    local is_file = lspconfig.util.path.is_file
-    local path_join = lspconfig.util.path.join
-    local current_path = vim.fn.getcwd() -- TODO: this could be a problem if current_path IS NOT the project_root
-
-    local function find_tailwind_config_ancestor(startpath)
-      -- see: https://github.com/neovim/nvim-lspconfig/issues/1221
-      return search_ancestors(startpath, function(path)
-        if is_file(path_join(path, "tailwind.config.js")) or is_file(path_join(path, "tailwind.config.ts")) then
-          config.autostart = true -- override autostart
-        end
-      end)
-    end
-
-    find_tailwind_config_ancestor(current_path)
   end
 
   -- }}}
