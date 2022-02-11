@@ -61,10 +61,10 @@ cmp.setup {
   -- order matters here
   -- you can also define order using the priority attribute
   sources = {
+    { name = "luasnip" }, -- luasnip completion source for nvim-cmp (saadparwaiz1/cmp_luasnip)
     { name = "nvim_lua" }, -- nvim lua api
     { name = "nvim_lsp" }, -- nvim lsp
     { name = "nvim_lsp_signature_help" }, -- lsp signature help, similar to ray-x/lsp_signature.nvim, but much better integrated with nvim_cmp
-    { name = "luasnip" }, -- snippet engine
     {
       name = "rg",
       keyword_length = 4,
