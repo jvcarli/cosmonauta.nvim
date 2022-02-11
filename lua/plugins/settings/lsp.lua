@@ -6,53 +6,12 @@
 -- See: https://github.com/neovim/neovim/pull/13165
 
 local lspconfig = require "lspconfig"
+local lsp_keymaps = require "keymaps"
 
 -- {{{ Custom Lsp Attach
 local custom_lsp_attach = function(client, bufnr)
-  -- Uses LSP as the handler for Neovim built-in omnifunc (i_CTRL-X_CTRL-O)
-  -- DISABLED in favor of nvim_cmp autocompletion plugin
-  -- vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
-  -- Mappings
-  -- These mappings only work inside a buffer with a LSP attached
-  -- which is good because it won't affect default mappings when there isn't a LSP
-
-  local opts = { remap = false, silent = true, buffer = bufnr }
-  -- TODO: `buffer = bufnr` and `buffer = 0` seems in practice to mean the same thing
-  -- find out if there's any difference
-  -- buffer: means buffer handle
-  -- buffer = bufnr makes it so the mapping will apply only for the buffer where there's a lsp attached
-
-  vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-
-  -- Hover and help
-  vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-  vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-
-  -- Workspace management
-  -- TODO: explore lsp workspace management and how it works
-  vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
-  vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
-  vim.keymap.set("n", "<leader>wl", function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, opts)
-
-  vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, opts)
-  vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-  vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-  vim.keymap.set("v", "<leader>ca", vim.lsp.buf.range_code_action, opts)
-
-  vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
-  vim.keymap.set("n", "[d", vim.lsp.diagnostic.goto_prev, opts)
-  vim.keymap.set("n", "]d", vim.lsp.diagnostic.goto_next, opts)
-  vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, opts)
-
-  vim.keymap.set("n", "<leader>so", function()
-    return require("telescope.builtin").lsp_document_symbols()
-  end, opts)
+  -- keymaps to use with lspconfig (null-ls use some of them too when possible)
+  lsp_keymaps(bufnr)
 
   -- Thirdy-party LSP addons
   require("lsp_signature").on_attach()
