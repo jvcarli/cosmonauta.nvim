@@ -369,6 +369,22 @@ return require("packer").startup {
     use "onsails/lspkind-nvim" -- vscode like symbols
 
     --=======================================--
+    --          Spelling plugins             --
+    --=======================================--
+
+    -- Fixes Neovim's builtin spellchecker for buffers with tree-sitter highlighting.
+    -- `:set spell` works with regular (neo)vim regex based highlighting
+    -- but when using treesitter highlight neovim gets confused and assumes correct
+    -- words (language syntax keywords) are wrong. Spellsitter.nvim fix this
+    -- Only for files which have spellsitter treesitter queries
+    use {
+      "lewis6991/spellsitter.nvim",
+      config = function()
+        require("spellsitter").setup()
+      end,
+    }
+
+    --=======================================--
     --          UI - colors / icons          --
     --=======================================--
 
