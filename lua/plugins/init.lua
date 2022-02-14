@@ -71,7 +71,9 @@ return require("packer").startup {
     use "lewis6991/impatient.nvim" -- *
 
     -- Activity Watch open source time tracker vim extension
-    use "ActivityWatch/aw-watcher-vim" -- *
+    if executable "aw-server" or "aw-server-rust" then
+      use "ActivityWatch/aw-watcher-vim" -- *
+    end
 
     --=======================================--
     --        Movement and edit              --
@@ -187,10 +189,14 @@ return require("packer").startup {
     --=======================================--
 
     -- Vim editing support for kmonad config files
-    use "kmonad/kmonad-vim"
+    if executable "kmonad" then
+      use "kmonad/kmonad-vim"
+    end
 
     -- Syntax highlighting for Kitty terminal config files
-    use "fladson/vim-kitty"
+    if executable "kitty" then
+      use "fladson/vim-kitty"
+    end
 
     --=======================================--
     --              Keymaps                  --
