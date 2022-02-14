@@ -50,14 +50,16 @@ return require("packer").startup {
     --=======================================--
 
     -- fix Neovim CursorHold and CursorHoldI autocmd events performance bug
+    -- and decouple updatetime from CusorHold and CursorHoldI
     --  see: https://github.com/neovim/neovim/issues/12587
-    -- decouple updatetime from CusorHold and CursorHoldI
     use {
       "antoinemadec/FixCursorHold.nvim", -- *
       config = function()
-        -- in millisecond, used for both CursorHold and CursorHoldI,
-        -- use updatetime instead if not defined
         vim.g.cursorhold_updatetime = 100
+        -- vim.g.cursorhold_updatetime variable, in ms,
+        -- is used for both CursorHold and CursorHoldI.
+        -- If this variable isn't defined FixCursorHold will use Neovim `updatetime` instead
+        -- see: `:help updatetime`
       end,
     }
 
