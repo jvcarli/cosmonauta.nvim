@@ -11,7 +11,7 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 --=======================================--
---              Helpers                  --
+--             Packer Compile            --
 --=======================================--
 
 -- Auto compile Packer when there are changes in ~/.config/nvim
