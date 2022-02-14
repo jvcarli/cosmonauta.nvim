@@ -86,7 +86,7 @@ require "plugins"
 require "packer/packer_compiled"
 
 -- keymaps definition
--- keymaps namings are in which-key.lua
+-- check keymaps descriptions in which-key.lua file
 require "keymaps"
 
 -- Default color theme
