@@ -1,5 +1,7 @@
 local null_ls = require "null-ls"
 
+local null_ls_keymaps = require("keymaps").lsp_keymaps
+
 local null_ls_sources = {
 
   -- TODO: restrict null-ls to specific cases, so git history won't be all messed up
@@ -55,6 +57,24 @@ local null_ls_sources = {
   -- null_ls.builtins.diagnostics.tidy, -- html tidy TODO: add support for it
 }
 
+local null_ls_on_attach = function(client, bufnr)
+  -- keymaps to use with lspconfig (lspconfig use some of them when possible)
+  null_ls_keymaps(client, bufnr)
+
+  -- if the language server has formatting capabilities format the buffer on save
+  if client.resolved_capabilities.document_formatting then
+    -- Asynchronous formatting, please DON'T,  See: https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Async-formatting
+    -- vim.lsp.buf.formatting_sync() -- synchronous formatting, better to avoid desync problems
+    vim.cmd [[
+        augroup LspFormatting
+          autocmd! * <buffer>
+          autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+        augroup END
+      ]]
+  end
+end
+
 null_ls.setup {
   sources = null_ls_sources,
+  on_attach = null_ls_on_attach,
 }
