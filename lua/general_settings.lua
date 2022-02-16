@@ -232,18 +232,20 @@ vim.wo.cursorline = true -- sets cursorline
 vim.wo.cursorlineopt = "number" -- enable only the number of cursorline, > 0.6 only
 
 --=======================================--
---               Statusline              --
+--               Shortmess               --
 --=======================================--
 
 vim.opt.shortmess:append "ISc"
--- I: do not give start message,
--- S: suppress search results, e.g.: [1/20] on the vim commanad line
 
--- c: Remove annoying `pattern not found` from nvim command line when typing
--- if: vim.o.showmode = false OR if showmode is unchanged remove crazy `--INSERT--` blinking
--- from the command line when typing
--- see: https://github.com/hrsh7th/nvim-compe#how-to-remove-pattern-not-found
--- see: https://www.reddit.com/r/neovim/comments/m5n28z/neovim_lsp_keeps_saying_pattern_not_found/
+-- I: don't give the intro message when starting Vim.
+-- S: suppress search results, e.g.: [1/20] on the vim commanad line
+--    google/vim-searchindex plugin already disables it when installed
+
+-- c: don't give |ins-completion-menu| messages.
+--    messages such as "match 1 of 2"
+--    when using nvim-cmp (ONLY in native view mode),  see: https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
+--    which makes Neovim cmdline blink REALLY fast,
+--    and when using default Neovim completions such as i_CTRL-X_CTRL-I
 
 --=======================================--
 --                 List                  --
