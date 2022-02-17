@@ -892,8 +892,4 @@ return require("packer").startup {
     -- TODO: read https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db
     -- use "mg979/vim-visual-multi"
   end,
-  config = {
-    -- Move packer_compiled.lua to lua dir so impatient.nvim can cache it
-    compile_path = vim.fn.stdpath "config" .. "/lua/packer/packer_compiled.lua",
-  },
 }

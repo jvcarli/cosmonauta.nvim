@@ -82,8 +82,6 @@ require "general_settings"
 
 -- Packer managed plugins and its settings
 require "plugins"
--- Non default packer_compiled location so impatient.nvim can cache it
-require "packer/packer_compiled"
 
 -- keymaps definition
 -- check keymaps descriptions in which-key.lua file
