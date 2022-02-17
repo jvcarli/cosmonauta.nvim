@@ -75,7 +75,7 @@
 -- }}}
 
 -- impatient.nvim: speed up lua imports. MUST be loaded before any other lua plugin
-require "impatient"
+pcall(require, "impatient")
 
 -- Vanilla settings
 require "general_settings"
