@@ -892,4 +892,19 @@ return require("packer").startup {
     -- TODO: read https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db
     -- use "mg979/vim-visual-multi"
   end,
+  config = {
+    -- Move packer_compiled.lua to lua/packer dir
+    --
+    -- Compiled file was moved because check plugin status tables
+    -- such as packer_plugins["<plugin>"] and packer_plugins["<plugin>"].loaded
+    -- are only available AFTER packer_compiled.lua is loaded.
+    --
+    -- That means default packer_compiled.lua is sourced AFTER init.lua because it is placed
+    -- inside plugin/ folder, so that means that we wouldn't be able to use those tables
+    -- at init.lua. They are currently used at `keymaps.lua` and `utils.lua`
+    --
+    -- see: https://github.com/wbthomason/packer.nvim#checking-plugin-statuses
+    -- see: https://github.com/wbthomason/packer.nvim/discussions/196
+    compile_path = vim.fn.stdpath "config" .. "/lua/packer/packer_compiled.lua",
+  },
 }

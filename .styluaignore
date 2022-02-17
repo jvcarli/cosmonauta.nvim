@@ -4,3 +4,7 @@
 #
 # ignore packer compiled file default location
 plugin/packer_compiled.lua
+
+# ignore packer compiled file placed in lua dir
+# for caching with impatient.nvim
+lua/packer/packer_compiled.lua

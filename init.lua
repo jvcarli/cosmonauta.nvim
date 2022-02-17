@@ -82,6 +82,7 @@ require "general_settings"
 
 -- Packer managed plugins and its settings
 require "plugins"
+require "packer/packer_compiled"
 
 -- keymaps definition
 -- check keymaps descriptions in which-key.lua file
@@ -90,3 +91,4 @@ require "keymaps"
 -- Default color theme
 vim.cmd "colorscheme zenbones"
 vim.cmd "set background=light"
+-- plugin/ directory and its files gets sourced AFTER init.lua
