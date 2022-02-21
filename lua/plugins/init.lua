@@ -341,7 +341,6 @@ local M = packer.startup {
         require "plugins.settings.null-ls"
       end,
     }
-    -- use "~/Projects/Personal/Github/Forks/null-ls.nvim/" -- my fork
 
     -- Utilities to improve the TypeScript development experience
     -- for Neovim's built-in LSP client.
