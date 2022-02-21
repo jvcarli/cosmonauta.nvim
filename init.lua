@@ -69,9 +69,10 @@
 
 -- }}}
 
--- {{{ VSCode configuration
+-- {{{ VSCode Neovim Integration
 
--- TODO: Include VSCode configuration,
+-- TODO: Include specific VSCode Neovim configuration,
+-- see: https://github.com/vscode-neovim/vscode-neovim
 
 -- if vim.g.vscode then
 --   -- VSCODE conf
