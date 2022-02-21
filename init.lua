@@ -85,6 +85,13 @@
 
 -- }}}
 
+-- {{{ Script loading order
+
+-- see: https://www.reddit.com/r/neovim/comments/ny3oem/confused_by_order_of_loading_scripts/
+
+-- `plugin/` directory and its files gets sourced AFTER this file
+-- }}}
+
 -- impatient.nvim: speed up lua imports. MUST be loaded before any other lua plugin
 pcall(require, "impatient")
 
