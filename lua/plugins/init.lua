@@ -87,6 +87,12 @@ local M = packer.startup {
     -- Until then, this plugin can be used
     use "lewis6991/impatient.nvim" -- *
 
+    -- Better profiling output for startup.
+    use {
+      "dstein64/vim-startuptime",
+      cmd = "StartupTime",
+    }
+
     --=======================================--
     --             Time management           --
     --=======================================--
