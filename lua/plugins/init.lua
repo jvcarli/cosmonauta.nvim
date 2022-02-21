@@ -143,20 +143,19 @@ local M = packer.startup {
       end,
     }
 
-    -- substitutes: easymotion, vim-sneak, vim-line-letters
-    -- TODO: check for hop nvim fork with more features
+    -- substitutes: easymotion, vim-sneak, vim-line-letters, hop.nvim
     use {
-      "phaazon/hop.nvim",
-      branch = "v1", -- optional but strongly recommended
+      "ggandor/lightspeed.nvim",
       config = function()
-        -- you can configure Hop the way you like here; see :h hop-config
-        require("hop").setup { keys = "etovxqpdygfblzhckisuran" }
+        -- disable default mappings
+        vim.g.lightspeed_no_default_keymaps = 1
+        require("lightspeed").setup {
+          ignore_case = false,
+          jump_to_unique_chars = false,
+          safe_labels = {},
+        }
       end,
     }
-
-    -- More useful word motions for Vim
-    -- CamelCase, acronyms, UPPERCASE, lowercase, hex colors, hex and binary literals...
-    use "chaoren/vim-wordmotion" -- *
 
     -- Intelligently reopen files at your last edit position
     -- also see: https://www.reddit.com/r/neovim/comments/p5is1h/how_to_open_a_file_in_the_last_place_you_editied/
