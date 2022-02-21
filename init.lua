@@ -23,6 +23,17 @@
 
 -- }}}
 
+-- {{{ Relevant Neovim pull requests
+
+-- Enable new diff option linematch #14537
+-- see: https://github.com/neovim/neovim/pull/14537
+
+-- feat(api): add support for lua function & description in keymap
+-- see: https://github.com/neovim/neovim/pull/16594
+-- see: https://www.reddit.com/r/neovim/comments/rt0zzh/featapi_add_support_for_lua_function_description/
+
+-- }}}
+
 -- {{{ How to time profile
 
 -- from: https://stackoverflow.com/questions/12213597/how-to-see-which-plugins-are-making-vim-slow
