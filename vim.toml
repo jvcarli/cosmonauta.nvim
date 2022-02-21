@@ -8,6 +8,10 @@ any = true
 [packer_plugins]
 any = true
 
+# P global from ./lua/globals.lua
+[P]
+any = true
+
 [[describe.args]]
 type = "string"
 [[describe.args]]
