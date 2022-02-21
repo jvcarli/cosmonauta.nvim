@@ -77,7 +77,7 @@
 -- impatient.nvim: speed up lua imports. MUST be loaded before any other lua plugin
 pcall(require, "impatient")
 
--- Vanilla settings
+-- Vanilla settings (doesn't depend on external plugins)
 require "general_settings"
 
 -- Packer managed plugins and its settings
@@ -90,7 +90,5 @@ require "globals"
 -- check keymaps descriptions in which-key.lua file
 require "keymaps"
 
--- Default color theme
-vim.cmd "colorscheme zenbones"
-vim.cmd "set background=light"
--- plugin/ directory and its files gets sourced AFTER init.lua
+-- Default colorscheme
+vim.cmd "colorscheme zenbones-extra"
