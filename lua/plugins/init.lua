@@ -7,7 +7,22 @@
 local install_path = vim.fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  vim.fn.execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
+  PACKER_BOOTSTRAP = vim.fn.system {
+    "git",
+    "clone",
+    "--depth",
+    "1",
+    "https://github.com/wbthomason/packer.nvim",
+    install_path,
+  }
+  print "Installing Packer and plugins... Please restart Neovim when done!"
+  vim.cmd [[packadd packer.nvim]] -- IMPORTANT, without this the bootstrap won't work!
+end
+
+-- Use a protected call so we don't error out on first use
+local packer_status_ok, packer = pcall(require, "packer")
+if not packer_status_ok then
+  return
 end
 
 --=======================================--
@@ -35,7 +50,7 @@ local executable = require("utils").executable
 
 -- Lua linters will complain about `use` being an undefined global
 -- To fix this we will specify `use` as an argument to the function passed to `startup` explicitly
-return require("packer").startup {
+local M = packer.startup {
   function(use)
     --=======================================--
     --             Plugin manager            --
@@ -43,6 +58,8 @@ return require("packer").startup {
 
     -- A use-package inspired plugin manager for Neovim.
     -- Packer plugin manager can manage itself
+    -- TODO: pin packages when snapshot feature is available
+    -- see: https://github.com/wbthomason/packer.nvim/pull/370
     use "wbthomason/packer.nvim" -- *
 
     --=======================================--
@@ -891,6 +908,17 @@ return require("packer").startup {
     -- TODO: do its tutorial
     -- TODO: read https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db
     -- use "mg979/vim-visual-multi"
+
+    --=======================================--
+    --               Bootstrap               --
+    --=======================================--
+
+    if PACKER_BOOTSTRAP then
+      packer.sync() -- run PackerSync for the first time
+      -- TODO: try to source init.lua in the first install, so reopening Neovim isn't necessary
+      -- For some reason this fails
+      -- vim.cmd("source " .. vim.fn.stdpath "config" .. "/init.lua")
+    end
   end,
   config = {
     -- Move packer_compiled.lua to lua/packer dir
@@ -901,10 +929,19 @@ return require("packer").startup {
     --
     -- That means default packer_compiled.lua is sourced AFTER init.lua because it is placed
     -- inside plugin/ folder, so that means that we wouldn't be able to use those tables
-    -- at init.lua. They are currently used at `keymaps.lua` and `utils.lua`
+    -- at init.lua. They are currently used in `keymaps.lua` and `utils.lua`
     --
     -- see: https://github.com/wbthomason/packer.nvim#checking-plugin-statuses
     -- see: https://github.com/wbthomason/packer.nvim/discussions/196
     compile_path = vim.fn.stdpath "config" .. "/lua/packer/packer_compiled.lua",
   },
 }
+
+local packer_compiled_status_ok = pcall(require, "packer/packer_compiled")
+
+if not packer_compiled_status_ok then
+  -- first install, don't return packer yet
+  return
+else
+  return M
+end
