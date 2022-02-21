@@ -55,13 +55,6 @@ arch_linux_pkgs = {
 
 -- PROVIDERS:
 
--- python 2.7.18
--- for python2 virtualenv package MUST be installed:
---    pip install virtualenv
--- pynvim package MUST be installed too:
---    pip install pynvim
-python2 = {}
-
 -- python 3.x.x
 -- venv can be setup with:
 -- python -m venv venv
