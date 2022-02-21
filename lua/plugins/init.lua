@@ -197,8 +197,11 @@ local M = packer.startup {
     use "windwp/nvim-ts-autotag"
 
     -- Rainbow parenthees for neovim using tree-sitter
-    -- TODO: can have performance issues on large files
-    use "p00f/nvim-ts-rainbow"
+    use {
+      "p00f/nvim-ts-rainbow",
+      -- commit before jsx and tsx support was removed. TODO: Find out why they were removed.
+      commit = "7fed3df5659970884b9db5e67bb6cf4e1bb8e3d1",
+    }
 
     -- Lightweight alternative to context.vim implemented with nvim-treesitter.
     use {
