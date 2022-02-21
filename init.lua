@@ -82,7 +82,9 @@ require "general_settings"
 
 -- Packer managed plugins and its settings
 require "plugins"
-require "packer/packer_compiled"
+
+-- Setup globals that I expect to be always available.
+require "globals"
 
 -- keymaps definition
 -- check keymaps descriptions in which-key.lua file
