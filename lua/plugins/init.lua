@@ -87,6 +87,10 @@ local M = packer.startup {
     -- Until then, this plugin can be used
     use "lewis6991/impatient.nvim" -- *
 
+    --=======================================--
+    --             Time management           --
+    --=======================================--
+
     -- Activity Watch open source time tracker vim extension
     if executable "aw-server" or "aw-server-rust" then
       use "ActivityWatch/aw-watcher-vim" -- *
