@@ -72,7 +72,7 @@ local M = packer.startup {
     use {
       "antoinemadec/FixCursorHold.nvim", -- *
       config = function()
-        vim.g.cursorhold_updatetime = 100
+        vim.g.cursorhold_updatetime = 10
         -- vim.g.cursorhold_updatetime variable, in ms,
         -- is used for both CursorHold and CursorHoldI.
         -- If this variable isn't defined FixCursorHold will use Neovim `updatetime` instead
