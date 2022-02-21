@@ -92,20 +92,20 @@
 -- `plugin/` directory and its files gets sourced AFTER this file
 -- }}}
 
--- impatient.nvim: speed up lua imports. MUST be loaded before any other lua plugin
+-- impatient.nvim: speed up lua imports. MUST be loaded before any other lua plugin.
 pcall(require, "impatient")
 
--- Vanilla settings (doesn't depend on external plugins)
+-- Vanilla settings (doesn't depend on external plugins).
 require "general_settings"
 
--- Packer managed plugins and its settings
+-- Packer managed plugins and its settings.
 require "plugins"
 
 -- Setup globals that I expect to be always available.
 require "globals"
 
--- keymaps definition
--- check keymaps descriptions in which-key.lua file
+-- Keymaps definition
+-- check keymaps descriptions in which-key.lua file.
 require "keymaps"
 
 -- Default colorscheme
