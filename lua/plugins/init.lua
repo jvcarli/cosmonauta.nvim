@@ -176,6 +176,13 @@ local M = packer.startup {
     --          Syntax - Treesitter          --
     --=======================================--
 
+    use {
+      "nvim-treesitter/playground",
+      config = function()
+        require "plugins.settings.treesitter.treesitter_playground"
+      end,
+    }
+
     -- Neovim tree-sitter interface,
     -- provides better highlighting and other goodies
     use {
