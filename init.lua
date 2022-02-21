@@ -36,6 +36,8 @@
 
 -- {{{ How to time profile
 
+-- {{{ Vanilla Neovim
+
 -- from: https://stackoverflow.com/questions/12213597/how-to-see-which-plugins-are-making-vim-slow
 
 -- Neovim responsiveness:
@@ -55,6 +57,15 @@
 
 -- Detailed startup time:
 -- nvim --startuptime timeCost.log timeCost.log
+
+-- }}}
+
+--  {{{ Thirdy-party plugins
+
+-- Install "dstein64/vim-startuptime" plugin, open Neovim and do:
+-- `:StartupTime`
+
+-- }}}
 
 -- }}}
 
