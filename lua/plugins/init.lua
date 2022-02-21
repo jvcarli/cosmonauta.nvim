@@ -310,6 +310,7 @@ local M = packer.startup {
 
     use {
       "sindrets/diffview.nvim",
+      requires = "nvim-lua/plenary.nvim",
       config = function()
         require "plugins.settings.diffview_nvim"
       end,
