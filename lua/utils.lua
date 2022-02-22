@@ -15,4 +15,16 @@ M.installed_and_loaded = function(plugin)
   return packer_plugins[plugin] and packer_plugins[plugin].loaded
 end
 
+M.file_exists = function(...)
+  -- see: https://stackoverflow.com/questions/7573588/variable-number-of-function-arguments-lua-5-1
+  local files_to_check = { ... }
+  for _, file in pairs(files_to_check) do
+    -- see: https://stackoverflow.com/questions/3098521/how-to-detect-if-a-specific-file-exists-in-vimscript
+    if vim.fn.filereadable(file) ~= 1 then
+      return nil -- is returning nil the same as just `return`?
+    end
+  end
+  return true
+end
+
 return M
