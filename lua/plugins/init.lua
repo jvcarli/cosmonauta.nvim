@@ -42,6 +42,7 @@ vim.cmd [[
 --=======================================--
 
 local executable = require("utils").executable
+local file_exists = require("utils").file_exists
 
 --=======================================--
 --              Plugins                  --
@@ -651,6 +652,22 @@ local M = packer.startup {
     -- Query RFC database and download RFCs from within Vim
     -- needs python3 support
     use "mhinz/vim-rfc"
+
+    --=======================================--
+    --            Writing prose              --
+    --=======================================--
+
+    if
+      executable("perl" and "dict")
+      and file_exists("/usr/share/dictd/wn.index", "/usr/share/dictd/moby-thesaurus.index")
+    then
+      -- perl: for cleaning
+      -- dictd: main cli (dict is the executable)
+      -- dict-wn: WordNet dictionary for dictd
+      -- dict-moby-thesaurus: Moby Thesaurus dictionary for dictd
+      use "https://code.sitosis.com/rudism/telescope-dict.nvim"
+      -- require('telescope').extensions.dict.synonyms()
+    end
 
     --=======================================--
     --               Testing                 --
