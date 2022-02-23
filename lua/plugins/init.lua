@@ -112,6 +112,10 @@ local M = packer.startup {
     -- Pairs of handy bracket mappings
     use "tpope/vim-unimpaired" -- *
 
+    -- More useful word motions for Vim
+    -- CamelCase, acronyms, UPPERCASE, lowercase, hex colors, hex and binary literals...
+    use "chaoren/vim-wordmotion" -- *
+
     -- enable repeating supported plugins maps with "." motion
     -- TODO: list plugins that depends on vim-repeat
     use "tpope/vim-repeat"
