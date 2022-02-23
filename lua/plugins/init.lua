@@ -116,6 +116,14 @@ local M = packer.startup {
     -- CamelCase, acronyms, UPPERCASE, lowercase, hex colors, hex and binary literals...
     use "chaoren/vim-wordmotion" -- *
 
+    use {
+      "tpope/vim-rsi", -- *
+      config = function()
+        -- TODO: test meta maps and see if they conflict with kitty terminal
+        vim.g.rsi_no_meta = 1 -- disable meta maps
+      end,
+    }
+
     -- enable repeating supported plugins maps with "." motion
     -- TODO: list plugins that depends on vim-repeat
     use "tpope/vim-repeat"
