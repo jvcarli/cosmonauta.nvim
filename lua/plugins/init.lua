@@ -544,6 +544,7 @@ local M = packer.startup {
       "RRethy/vim-hexokinase", -- vim script plugin
       run = "make hexokinase",
       config = function()
+        vim.g.Hexokinase_ftDisabled = { "dirbuf" }
         require "plugins.settings.vim-hexokinase"
       end,
     }
