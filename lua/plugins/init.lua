@@ -126,24 +126,32 @@ local M = packer.startup {
 
     -- enable repeating supported plugins maps with "." motion
     -- TODO: list plugins that depends on vim-repeat
+    -- { "lightspeed", "vim-speeddating" ...}
     use "tpope/vim-repeat"
 
     -- Text alignment
     use "junegunn/vim-easy-align"
 
+    -- Change word casing (camelCase, snake_case, ...)
+    use "arthurxavierx/vim-caser"
+
+    -- use xsel instead of xclip, -- TODO: search more about xsel, xclip and its differences
+    -- so "clipboard: error: Error: target STRING not available" doesn't happen
+    -- see: https://github.com/neovim/neovim/issues/2642#issuecomment-170271675
+    -- NOTE: vim-exchange must be using named clipboards under the hood, which is neat <3
+    use "tommcdo/vim-exchange"
+
     use {
+      -- Using because I think it's better than lightspeed f,F,t,T option
       "rhysd/clever-f.vim",
       config = function()
         vim.g.clever_f_mark_direct = 1 -- chars that can be moved directly are highlighted
-        -- vim.g.clever_f_fix_key_direction = 1 -- f: onwards, F: backwards
-        vim.g.clever_f_timeout_ms = 1000 -- ms
-        vim.g.clever_f_highlight_timeout_ms = 1000 -- ms, should follow clever_f_timeout_ms
+        -- vim.g.clever_f_fix_key_direction = 1 -- f: onwards, F: backwards for `F` search
+        vim.g.clever_f_timeout_ms = 820 -- ms
+        vim.g.clever_f_highlight_timeout_ms = 820 -- ms, should follow clever_f_timeout_ms
         vim.g.clever_f_across_no_line = 1 -- cursorline only
       end,
     }
-
-    -- Change word casing (camelCase, snake_case, ...)
-    use "arthurxavierx/vim-caser"
 
     -- vim surround powerful alternative
     use {
@@ -401,12 +409,14 @@ local M = packer.startup {
         require "plugins.settings.nvim_cmp"
       end,
     }
-    use "saadparwaiz1/cmp_luasnip"
+
+    -- Cmp sources
     use "hrsh7th/cmp-nvim-lsp" -- nvim-lsp completion engine
     use "hrsh7th/cmp-nvim-lua" -- nvim lua api (vim.*)
     use "hrsh7th/cmp-buffer" -- buffer words
     use "hrsh7th/cmp-path" -- path completion
     use "hrsh7th/cmp-cmdline" -- cmd line completion
+    use "saadparwaiz1/cmp_luasnip" -- luasnip completion source for nvim-cmp
     use "lukas-reineke/cmp-rg" -- ripgrep source
 
     use "lukas-reineke/cmp-under-comparator" --  comparator function for completion items that start with one or more underlines
@@ -532,6 +542,7 @@ local M = packer.startup {
 
     --=======================================--
     --               File MGMT               --
+    --                   &                   --
     --     Terminals and Tmux integration    --
     --=======================================--
 
@@ -818,12 +829,6 @@ local M = packer.startup {
 
     -- TODO: use nvim-lsp or lsp config from vim-go
     use "fatih/vim-go"
-
-    -- use xsel instead of xclip, -- TODO: search more about xsel, xclip and its differences
-    -- so "clipboard: error: Error: target STRING not available" doesn't happen
-    -- see: https://github.com/neovim/neovim/issues/2642#issuecomment-170271675
-    -- NOTE: vim-exchange must be using named clipboards under the hood, which is neat <3
-    use "tommcdo/vim-exchange"
 
     -- use "m-pilia/vim-pkgbuild"
 
