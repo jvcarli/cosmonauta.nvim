@@ -555,7 +555,7 @@ local M = packer.startup {
     }
 
     --=======================================--
-    --               File MGMT               --
+    --       File and project management     --
     --                   &                   --
     --     Terminals and Tmux integration    --
     --=======================================--
@@ -595,6 +595,14 @@ local M = packer.startup {
     -- Replaces the default lua based filtering method of telescope with one mimicking fzf, written in C.
     -- It supports fzf syntax and substantially improves Telescope's performance and sorting quality.
     use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
+
+    -- Project management
+    use {
+      "ahmedkhalf/project.nvim",
+      config = function()
+        require "plugins.settings.project-nvim"
+      end,
+    }
 
     --=======================================--
     --                Search                 --
