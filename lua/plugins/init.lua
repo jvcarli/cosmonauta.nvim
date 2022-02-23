@@ -428,6 +428,10 @@ local M = packer.startup {
       }
     end
 
+    -- cmp-spell
+    -- see: https://github.com/hrsh7th/nvim-cmp/issues/69
+
+    -- Cmp comparators
     use "lukas-reineke/cmp-under-comparator" --  comparator function for completion items that start with one or more underlines
 
     -- lsp signature help, similar to ray-x/lsp_signature.nvim, but much better integrated with nvim_cmp
@@ -543,7 +547,7 @@ local M = packer.startup {
       end,
     }
 
-    -- Better diagnostics interface
+    -- Diagnostics interface
     use {
       "folke/trouble.nvim", -- lua plugin
       --config = function() require("plugins.settings.trouble-nvim") end
@@ -555,6 +559,19 @@ local M = packer.startup {
     --     Terminals and Tmux integration    --
     --=======================================--
 
+    -- Basically what I need from file management / terminal and tmux integration is:
+    --   * A simple split explorer (see: http://vimcasts.org/blog/2013/01/oil-and-vinegar-split-windows-and-project-drawer/)
+    --     so I can view and understand the project tree structure better
+    --     I achieve this with dirbuf.nvim (dirvish.vim based split explorer and file manager)
+    --   * a way to get QUICKLY to a REAL terminal pane
+    --     e.g.: Tmux or a native Kitty pane, NOT the integrated Neovim term
+    --     I achieve this with `vim-gtfo`.
+    --   * a way to unobtrusively fuzzy find and access the searched items
+    --     I achieve this with 'telescope.nvim' and its extensions
+
+    -- see: https://github.com/elihunter173/dirbuf.nvim/issues/3
+    use "elihunter173/dirbuf.nvim"
+
     use {
       "justinmk/vim-gtfo",
       config = function()
@@ -562,9 +579,7 @@ local M = packer.startup {
       end,
     }
 
-    -- UI to select elements (files, grep results, open buffers...)
-    -- highly extendable fuzzy finder over lists.
-    -- Built on the latest features from neovim core.
+    -- Highly extendable fuzzy finder UI to select elements (files, grep results, open buffers...)
     -- Centered around modularity, allowing for easy customization.
     -- see: https://www.reddit.com/r/neovim/comments/ngt4dn/question_fuzzy_find_grep_search_results_in/
     use {
@@ -575,8 +590,9 @@ local M = packer.startup {
       end,
     }
 
-    -- This replaces the lua based filtering method of telescope with one written in C.
-    -- This substantially improves Telescope's performance (and sorting quality)
+    -- Telescope sorter
+    -- Replaces the default lua based filtering method of telescope with one mimicking fzf, written in C.
+    -- It supports fzf syntax and substantially improves Telescope's performance and sorting quality.
     use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
 
     --=======================================--
@@ -590,7 +606,7 @@ local M = packer.startup {
 
     -- lightweight alternative to haya14busa/incsearch.vim automatic :nohlsearch option
     -- doesn't use mapping hacks as opposed to https://github.com/junegunn/vim-slash/issues/7
-    -- so it works fine with google/vim-serachindex
+    -- so it works fine with google/vim-searchindex
     -- see: https://github.com/neovim/neovim/issues/5581
     use "romainl/vim-cool" -- let g:CoolTotalMatches = 1 doesn't work with neovim
 
@@ -633,6 +649,7 @@ local M = packer.startup {
     --=======================================--
 
     -- Query RFC database and download RFCs from within Vim
+    -- needs python3 support
     use "mhinz/vim-rfc"
 
     --=======================================--
@@ -698,6 +715,8 @@ local M = packer.startup {
     }
 
     -- Vim plugin for automatically highlighting other uses of the word under the cursor. Integrates with Neovim's LSP client for intelligent highlighting.
+    -- Vim plugin for automatically highlighting
+    -- other uses of the word under the cursor. Integrates with Neovim's LSP client for intelligent highlighting.
     -- faster when compared to vim-matchup
     use {
       "RRethy/vim-illuminate",
