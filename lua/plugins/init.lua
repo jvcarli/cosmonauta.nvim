@@ -500,7 +500,8 @@ local M = packer.startup {
       run = "make hexokinase",
       config = function()
         vim.g.Hexokinase_ftDisabled = { "dirbuf" }
-        require "plugins.settings.vim-hexokinase"
+        -- TODO: include more info
+        vim.g.Hexokinase_optInPatterns = "full_hex,rgb,rgba,hsl,hsla"
       end,
     }
 
