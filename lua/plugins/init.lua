@@ -555,6 +555,13 @@ local M = packer.startup {
       --config = function() require("plugins.settings.trouble-nvim") end
     }
 
+    use {
+      "kosayoda/nvim-lightbulb",
+      config = function()
+        require "plugins.settings.nvim-lightbulb"
+      end,
+    }
+
     --=======================================--
     --       File and project management     --
     --                   &                   --
@@ -758,15 +765,6 @@ local M = packer.startup {
     }
 
     use "tpope/vim-characterize"
-
-    use "ray-x/lsp_signature.nvim"
-
-    use {
-      "kosayoda/nvim-lightbulb",
-      config = function()
-        require "plugins.settings.nvim-lightbulb"
-      end,
-    }
 
     use "tpope/vim-projectionist"
 
