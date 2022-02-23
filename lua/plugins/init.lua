@@ -418,6 +418,15 @@ local M = packer.startup {
     use "hrsh7th/cmp-cmdline" -- cmd line completion
     use "saadparwaiz1/cmp_luasnip" -- luasnip completion source for nvim-cmp
     use "lukas-reineke/cmp-rg" -- ripgrep source
+    if executable "curl" and "git" then
+      -- NOTE: curl suficies cmp-git dependencies but it can use github and gitlab cli too.
+      use {
+        "petertriho/cmp-git", -- Github and Gitlab source (issues, mentions and pull requests)
+        config = function()
+          require("cmp_git").setup()
+        end,
+      }
+    end
 
     use "lukas-reineke/cmp-under-comparator" --  comparator function for completion items that start with one or more underlines
 
