@@ -471,66 +471,21 @@ local M = packer.startup {
     use "kyazdani42/nvim-web-devicons"
 
     --=======================================--
-    --              UI - elements            --
+    --           UI - extra elements         --
     --=======================================--
 
-    -- startup screen, session manager
     use {
-      "mhinz/vim-startify",
-      cmd = { "SLoad", "SSave" },
+      "nvim-lualine/lualine.nvim",
       config = function()
-        vim.g.startify_disable_at_vimenter = true
+        require "plugins.settings.lualine"
       end,
     }
-
-    use {
-      "windwp/windline.nvim",
-      config = function()
-        require "plugins.settings.windline.evil_line"
-      end,
-    }
-
-    use {
-      "SmiteshP/nvim-gps",
-      requires = "nvim-treesitter/nvim-treesitter",
-      config = function()
-        require("nvim-gps").setup()
-      end,
-    }
-
-    use {
-      "nanozuki/tabby.nvim",
-      requires = "kyazdani42/nvim-web-devicons",
-      -- setup = function()
-      --   vim.cmd "highlight TabLine cterm=underline ctermfg=0 ctermbg=7 gui=italic guifg=#fff000 guibg=#c4b6af"
-      --   vim.cmd "highlight TabLineFill cterm=reverse gui=reverse guifg=#FF0000 guibg=#FF0000"
-      --   vim.cmd "highlight TabLineSel cterm=bold gui=bold guifg=#FF0000 guibg=#FF0000"
-      -- end,
-      config = function()
-        require("tabby").setup {
-          tabline = require("tabby.presets").active_wins_at_end,
-        }
-      end,
-    }
-
-    -- In a buffer with "hybrid" line numbers (:set number relativenumber),
-    -- numbertoggle switches to absolute line numbers (:set number norelativenumber)
-    -- automatically when relative numbers don't make sense.
-    use "jeffkreeftmeijer/vim-numbertoggle"
 
     -- Add indentation guides even on blank lines
     use {
       "lukas-reineke/indent-blankline.nvim",
       config = function()
         require "plugins.settings.indent_blankline"
-      end,
-    }
-
-    -- Distraction free code writing
-    use {
-      "folke/zen-mode.nvim",
-      config = function()
-        require "plugins.settings.zenmode"
       end,
     }
 
@@ -561,6 +516,7 @@ local M = packer.startup {
         require "plugins.settings.nvim-lightbulb"
       end,
     }
+
 
     --=======================================--
     --       File and project management     --
@@ -870,6 +826,15 @@ local M = packer.startup {
     --=======================================--
     --               Deprecating             --
     --=======================================--
+
+    -- Distraction free code writing
+    -- uses z-index option for floating windows which can be REALLY annoying
+    -- use {
+    --   "folke/zen-mode.nvim",
+    --   config = function()
+    --     require "plugins.settings.zenmode"
+    --   end,
+    -- }
 
     -- buffer complete the word before the cursor when in cmdline mode
     -- deprecated in favor of wilder.nvim or nvim-cmp cmdline completion
