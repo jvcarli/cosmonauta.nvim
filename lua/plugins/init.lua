@@ -623,9 +623,6 @@ local M = packer.startup {
     --               Documentation           --
     --=======================================--
 
-    -- Doc generator
-    use "kkoomen/vim-doge"
-
     -- Query RFC database and download RFCs from within Vim
     use "mhinz/vim-rfc"
 
@@ -688,20 +685,6 @@ local M = packer.startup {
 
     use "ludovicchabant/vim-gutentags"
 
-    use {
-      "kyazdani42/nvim-tree.lua",
-      requires = "kyazdani42/nvim-web-devicons",
-      config = function()
-        vim.g.nvim_tree_respect_buf_cwd = 1
-
-        -- make nvim tree respect buf working dir
-        require("nvim-tree").setup {
-          update_cwd = true,
-          update_focused_file = {
-            enable = true,
-            update_cwd = true,
-          },
-        }
       end,
     }
 
@@ -838,8 +821,6 @@ local M = packer.startup {
     -- multi-language debugger
     -- use "puremourning/vimspector"
 
-    -- use "tpope/vim-obsession"
-
     -- nvim-dap-python: python interface for dap
     -- nvim-dap extension, providing default configurations
     -- for python and methods to debug individual test methods
@@ -878,7 +859,6 @@ local M = packer.startup {
 
     use "tpope/vim-eunuch"
 
-    -- use "lbrayner/vim-rzip"
     --=======================================--
     --               Deprecating             --
     --=======================================--
@@ -887,57 +867,13 @@ local M = packer.startup {
     -- deprecated in favor of wilder.nvim or nvim-cmp cmdline completion
     -- use "vim-scripts/CmdlineComplete"
 
-    -- use {
-    --   "airblade/vim-rooter",
-    --   config = function()
-    --     -- by default vim-rooter uses cd to change the directory
-    --     -- lcd only sets the current directory for the current window.
-    --     -- The current directory for other
-    --     -- windows or tabs is not changed.
-    --     vim.g.rooter_cd_cmd = "lcd"
-    --   end,
-    -- }
-
     -- use "ntpeters/vim-better-whitespace"
 
-    -- use {
-    --   "haya14busa/incsearch.vim",
-    --   -- TODO: revist incsearch configuration
-    --   config = function()
-    --     vim.g["incsearch#auto_nohlsearch"] = true
-    --     vim.g["incsearch#magic"] = "\\v"
-    --     vim.g["incsearch#consistent_n_direction"] = true
-    --     vim.g["incsearch#do_not_save_error_message_history"] = true
-    --   end,
-    -- }
-
-    -- use {
-    --   "hoob3rt/lualine.nvim",
-    --   requires = { "kyazdani42/nvim-web-devicons", opt = true },
-    --   config = function()
-    --     require("lualine").setup {
-    --       options = { theme = "zenbones" },
-    --     }
-    --   end,
-    -- }
-
     -- use "tommcdo/vim-ninja-feet", experiment doing nija feet like movement using F and T
-
-    -- use_rocks "moses"
-
-    -- vim one color theme
-    -- deprecated in favor of one-nvim
-    -- use "rakr/vim-one"
 
     -- Tmux integration,
     -- I wasn't using very much
     -- use "tpope/vim-tbone"
-
-    -- use {
-    --     "ms-jpq/chadtree",
-    --     branch = "chad",
-    --     run = "python3 -m chadtree deps",
-    -- }
 
     -- use "markonm/traces.vim"
 
