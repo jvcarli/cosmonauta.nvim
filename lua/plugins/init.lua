@@ -117,6 +117,10 @@ local M = packer.startup {
     -- CamelCase, acronyms, UPPERCASE, lowercase, hex colors, hex and binary literals...
     use "chaoren/vim-wordmotion" -- *
 
+    -- Operations and jumping (when in insert mode)
+    -- from the cursor to the beginning or end of a text object.
+    use "tommcdo/vim-ninja-feet"
+
     use {
       "tpope/vim-rsi", -- *
       config = function()
@@ -838,8 +842,6 @@ local M = packer.startup {
     -- use "vim-scripts/CmdlineComplete"
 
     -- use "ntpeters/vim-better-whitespace"
-
-    -- use "tommcdo/vim-ninja-feet", experiment doing nija feet like movement using F and T
 
     -- Tmux integration,
     -- I wasn't using very much
