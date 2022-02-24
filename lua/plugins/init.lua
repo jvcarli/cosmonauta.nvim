@@ -518,6 +518,16 @@ local M = packer.startup {
       end,
     }
 
+    -- Vim plugin for automatically highlighting
+    -- other uses of the word under the cursor. Integrates with Neovim's LSP client for intelligent highlighting.
+    -- faster when compared to vim-matchup
+    use {
+      "RRethy/vim-illuminate",
+      config = function()
+        require "plugins.settings.vim-illuminate"
+      end,
+    }
+
     --=======================================--
     --               Documentation           --
     --=======================================--
@@ -689,18 +699,6 @@ local M = packer.startup {
       end,
     }
 
-    -- Vim plugin for automatically highlighting other uses of the word under the cursor. Integrates with Neovim's LSP client for intelligent highlighting.
-    -- Vim plugin for automatically highlighting
-    -- other uses of the word under the cursor. Integrates with Neovim's LSP client for intelligent highlighting.
-    -- faster when compared to vim-matchup
-    use {
-      "RRethy/vim-illuminate",
-      config = function()
-        require "plugins.settings.vim-illuminate"
-      end,
-    }
-
-    -- Lua
     use {
       "folke/twilight.nvim",
       config = function()
