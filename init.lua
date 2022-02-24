@@ -1,5 +1,46 @@
 -- vim:fileencoding=utf-8:ft=lua:foldmethod=marker
 
+-- {{{ (Neo)vim beginner (or a little rusty)?
+
+-- Make sure you grok VI:
+-- see: https://stackoverflow.com/questions/1218390/what-is-your-most-productive-shortcut-with-vim/1220118#1220118
+
+-- Make sure you understand VIM a little:
+-- see: https://www.reddit.com/r/vim/wiki/index/
+-- see: https://github.com/mhinz/vim-galore
+
+-- Make sure you understand Neovim and its lua ecosystem a little:
+-- see: https://github.com/nanotee/nvim-lua-guide
+-- see: https://github.com/rockerBOO/awesome-neovim
+-- see: https://github.com/LunarVim/Neovim-from-scratch
+
+-- }}}
+
+-- {{{ Lua modules vs lua scripts
+
+-- Regarding Neovim there are two types of Lua files: scripts and modules.
+--
+-- Scripts work like Vim script files, you put them into your
+-- plugin, ftplugin, autoload, syntax or whatever directory
+-- inside your runtimepath (see: `:h 'runtimepath')
+-- and they will be sourced automatically (when appropriate),
+-- like Vim script files.
+--
+-- Module is like a library that can be loaded using require
+-- and has a single global name containing a table
+-- Basically a module's a Lua file which is NOT sourced automatically.
+-- You have to load them explicitly using the require function. These must be inside the lua directory of the runtime path directory.
+-- see: https://www.reddit.com/r/neovim/comments/rjbkn8/is_it_necessary_to_put_all_my_lua_files_in_a/
+
+-- }}}
+
+-- {{{ Neovim script loading order (*.lua and *.vim files)
+
+-- see: https://www.reddit.com/r/neovim/comments/ny3oem/confused_by_order_of_loading_scripts/
+
+-- `plugin/` directory and its files gets sourced AFTER this file
+-- }}}
+
 -- {{{ Relevant Neovim Github issues
 
 -- Following HEAD: breaking changes on master
@@ -32,6 +73,9 @@
 -- see: https://github.com/neovim/neovim/pull/16594
 -- see: https://www.reddit.com/r/neovim/comments/rt0zzh/featapi_add_support_for_lua_function_description/
 
+-- Add textDocument/foldingRange capability to LSP client #14306
+-- see: https://github.com/neovim/neovim/pull/14306
+
 -- }}}
 
 -- {{{ How to time profile
@@ -62,7 +106,7 @@
 
 --  {{{ Thirdy-party plugins
 
--- Install "dstein64/vim-startuptime" plugin, open Neovim and do:
+-- Install "dstein64/vim-startuptime" plugin, open Neovim and run:
 -- `:StartupTime`
 
 -- }}}
@@ -84,26 +128,6 @@
 
 -- }}}
 
--- {{{ lua MODULES vs lua SCRIPTS
-
--- There are two types of Lua files: scripts and modules.
---
--- Scripts work like Vim script files, you put them into your plugin, ftplugin, autoload, syntax or whatever directory (see: `:h 'runtimepath')
--- and they will be sourced automatically (when appropriate), like Vim script files.
---
--- Modules are Lua files which are not sourced automatically.
--- You have to load them explicitly using the require function. These must be inside the lua directory of the runtime path directory.
--- see: https://www.reddit.com/r/neovim/comments/rjbkn8/is_it_necessary_to_put_all_my_lua_files_in_a/
-
--- }}}
-
--- {{{ Script loading order
-
--- see: https://www.reddit.com/r/neovim/comments/ny3oem/confused_by_order_of_loading_scripts/
-
--- `plugin/` directory and its files gets sourced AFTER this file
--- }}}
-
 -- impatient.nvim: speed up lua imports. MUST be loaded before any other lua plugin.
 pcall(require, "impatient")
 
@@ -122,3 +146,7 @@ require "keymaps"
 
 -- Default colorscheme
 vim.cmd "colorscheme zenbones-extra"
+-- vim.cmd "colorscheme catppuccin"
+
+-- Remove useless default colors, HOW??? The command below doesn't work
+-- vim.cmd "set runtimepath-=/usr/share/nvim/runtime/colors"
