@@ -518,6 +518,24 @@ local M = packer.startup {
       end,
     }
 
+    --=======================================--
+    --               Documentation           --
+    --=======================================--
+
+    -- Doc generator
+    use {
+      "danymat/neogen",
+      config = function()
+        require("neogen").setup {
+          enabled = true,
+        }
+      end,
+      requires = "nvim-treesitter/nvim-treesitter",
+    }
+
+    -- Query RFC database and download RFCs from within Vim
+    -- needs python3 support
+    use "mhinz/vim-rfc"
 
     --=======================================--
     --       File and project management     --
