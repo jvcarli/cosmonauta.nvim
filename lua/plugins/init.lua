@@ -466,10 +466,20 @@ local M = packer.startup {
 
     -- Zenbones color theme
     use {
+      -- has a great light theme: zenbones
       "mcchrish/zenbones.nvim",
       -- Optionally install Lush. Allows for more configuration or extending the colorscheme
-      requires = "rktjmp/lush.nvim",
       -- If you don't want to install lush, make sure to set g:zenbones_compat = 1
+      requires = "rktjmp/lush.nvim",
+    }
+
+    use {
+      -- great dark theme
+      "catppuccin/nvim",
+      as = "catppuccin",
+      config = function()
+        require "plugins.settings.catppuccin"
+      end,
     }
 
     use "kyazdani42/nvim-web-devicons"
