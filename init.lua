@@ -147,6 +147,12 @@ require "keymaps"
 -- Default colorscheme
 vim.cmd "colorscheme zenbones-extra"
 -- vim.cmd "colorscheme catppuccin"
+-- No magic: some distro packages come bundled with vim plugins
+-- e.g.: fzf and black ($ sudo pacman -S fzf python-black)
+-- those plugin get stored under the path below
+-- don't allow these because the setup starts to be less portable
+-- prefer to explicitly install things
+vim.cmd "set rtp-=/usr/share/vim/vimfiles"
 
 -- Remove useless default colors, HOW??? The command below doesn't work
 -- vim.cmd "set runtimepath-=/usr/share/nvim/runtime/colors"
