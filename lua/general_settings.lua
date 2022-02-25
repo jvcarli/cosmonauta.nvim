@@ -463,24 +463,32 @@ local opt = setmetatable({}, {
 -- opt.undolevels = 10000
 
 --=======================================--
---               Wild's                  --
+--                Formatting             --
 --=======================================--
+-- taken from tjdevries config:
+-- see: https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/plugin/options.lua#L65-L74
 
--- Ignore files
--- set wildignore+=*.pyc
--- set wildignore+=*_build/*
--- set wildignore+=**/coverage/*
--- set wildignore+=**/node_modules/*
--- set wildignore+=**/android/*
--- set wildignore+=**/ios/*
--- set wildignore+=**/.git/*
--- ".hg,.git,.svn"
+-- default: formatoptions=jcroql
+--
+-- mine: formatoptions=jncroql
 
--- TODO: learn how to set wildignore properly,
--- does path matters?
--- see: https://www.reddit.com/r/vim/comments/cc8m1n/ignore_for_real_folders_when_using_find/
--- see: https://vimways.org/2018/death-by-a-thousand-files/
-vim.opt.wildignore:append ".git"
+-- Helpful related items:
+--   1. :center, :left, :right
+--   2. gw{motion} - Put cursor back after formatting motion.
+--
+-- TODO: w, {v, b, l}
+vim.opt.formatoptions = vim.opt.formatoptions
+  -- see: `:h fo-table`
+  - "a" -- Auto formatting is BAD.
+  -- + b -- TODO: test fo-b
+  - "t" -- Don't auto-wrap text using textwidth. I got linters for that.
+  + "c" -- In general, I like it when comments respect textwidth
+  + "q" -- Allow formatting comments w/ gq
+  - "o" -- O and o, don't continue comments
+  + "r" -- But do continue when pressing enter.
+  + "n" -- Indent past the formatlistpat, not underneath it.
+  -- - "2" -- TODO: test fo-2
+  + "j" -- Auto-remove comments if possible.
 
 -- TODO: leave diffopt at default?
 vim.o.diffopt = "internal,filler,closeoff,foldcolumn:0,hiddenoff"
