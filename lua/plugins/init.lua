@@ -689,6 +689,9 @@ local M = packer.startup {
     --               Testing                 --
     --=======================================--
 
+    -- see:https://github.com/windwp/nvim-autopairs/wiki/Endwise
+    use "RRethy/nvim-treesitter-endwise"
+
     use {
       "ahmedkhalf/project.nvim",
       config = function()

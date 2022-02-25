@@ -7,8 +7,3 @@ npairs.setup {
   -- TODO: open issue about being a literal char
   enable_check_bracket_line = true,
 }
-
--- MUST come AFTER setup
--- endwise rules (Note: experimental)
--- see https://github.com/windwp/nvim-autopairs/wiki/Endwise
-npairs.add_rules(require "nvim-autopairs.rules.endwise-lua")
