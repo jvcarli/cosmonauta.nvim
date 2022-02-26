@@ -551,6 +551,7 @@ local M = packer.startup {
       "danymat/neogen",
       config = function()
         require("neogen").setup {
+          snippet_engine = "luasnip",
           enabled = true,
         }
       end,
