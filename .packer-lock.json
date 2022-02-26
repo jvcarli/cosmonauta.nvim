@@ -90,7 +90,7 @@
     "commit": "e09bea6"
   },
   "lightspeed.nvim": {
-    "commit": "4d8359a"
+    "commit": "794b081"
   },
   "linediff.vim": {
     "commit": "c7710db"
@@ -141,7 +141,7 @@
     "commit": "c276536"
   },
   "nvim-treesitter": {
-    "commit": "18c558f"
+    "commit": "d05bd10"
   },
   "nvim-treesitter-context": {
     "commit": "b7d7aba"
