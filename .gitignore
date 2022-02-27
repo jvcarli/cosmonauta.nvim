@@ -7,3 +7,6 @@ profile.log
 # ignore vim binary spellfiles
 *.spl
 *.sug
+
+# any log files
+*.log
