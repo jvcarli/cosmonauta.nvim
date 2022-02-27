@@ -9,7 +9,7 @@
     "commit": "1bfb32e"
   },
   "LuaSnip": {
-    "commit": "dd033af"
+    "commit": "7c634dd"
   },
   "NrrwRgn": {
     "commit": "e027db9"
@@ -72,7 +72,7 @@
     "commit": "2e67899"
   },
   "github-nvim-theme": {
-    "commit": "c87d636"
+    "commit": "4ad832e"
   },
   "gitsigns.nvim": {
     "commit": "1d1f043"
@@ -90,7 +90,7 @@
     "commit": "e09bea6"
   },
   "lightspeed.nvim": {
-    "commit": "794b081"
+    "commit": "8e8b700"
   },
   "linediff.vim": {
     "commit": "c7710db"
@@ -117,7 +117,7 @@
     "commit": "6f803e8"
   },
   "null-ls.nvim": {
-    "commit": "4dd4df1"
+    "commit": "c7aca6a"
   },
   "nvim-autopairs": {
     "commit": "784398a"
@@ -141,7 +141,7 @@
     "commit": "c276536"
   },
   "nvim-treesitter": {
-    "commit": "d05bd10"
+    "commit": "b6ebdae"
   },
   "nvim-treesitter-context": {
     "commit": "b7d7aba"
@@ -150,7 +150,7 @@
     "commit": "00e5ac1"
   },
   "nvim-treesitter-textobjects": {
-    "commit": "e23fc8a"
+    "commit": "4a3363d"
   },
   "nvim-treesitter-textsubjects": {
     "commit": "c960b0d"
@@ -192,7 +192,7 @@
     "commit": "cef52b8"
   },
   "refactoring.nvim": {
-    "commit": "85e3474"
+    "commit": "4884368"
   },
   "sniprun": {
     "commit": "6825eac"
