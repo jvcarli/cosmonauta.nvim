@@ -296,6 +296,7 @@ local M = packer.startup {
       "mbbill/undotree", -- vim script plugin
       config = function()
         vim.g.undotree_WindowLayout = 2
+        vim.g.undotree_ShortIndicators = 1
       end,
     }
 
