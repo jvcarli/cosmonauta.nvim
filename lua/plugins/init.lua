@@ -44,6 +44,13 @@ vim.cmd [[
 local executable = require("utils").executable
 local file_exists = require("utils").file_exists
 
+-- returns the require for use in `config` parameter of packer's use
+-- expects the name of a plugin config file placed inside plugins/settings
+-- taken from: https://github.com/Allaman/nvim/blob/main/lua/plugins.lua#L6-L10
+local get_config = function(plugin_config_file)
+  return string.format("require('plugins.settings.%s')", plugin_config_file)
+end
+
 --=======================================--
 --              Plugins                  --
 --=======================================--
@@ -203,9 +210,7 @@ local M = packer.startup {
 
     use {
       "nvim-treesitter/playground",
-      config = function()
-        require "plugins.settings.treesitter.treesitter_playground"
-      end,
+      config = get_config "treesitter.treesitter_playground",
     }
 
     -- Neovim tree-sitter interface,
@@ -213,9 +218,7 @@ local M = packer.startup {
     use {
       "nvim-treesitter/nvim-treesitter", -- lua plugin
       run = ":TSUpdate",
-      config = function()
-        require "plugins.settings.treesitter"
-      end,
+      config = get_config "treesitter",
     }
 
     -- Autoclose and autorename html tags using nvim-treesitter
@@ -231,9 +234,9 @@ local M = packer.startup {
     -- Lightweight alternative to context.vim implemented with nvim-treesitter.
     use {
       "romgrk/nvim-treesitter-context",
-      config = function()
-        require "plugins.settings.treesitter.nvim-treesitter-context"
-      end,
+      config = get_config "treesitter.nvim-treesitter-context",
+      -- issue: no highlight for tsx file
+      -- see: https://github.com/romgrk/nvim-treesitter-context/issues/56
     }
 
     -- Neovim treesitter plugin for setting the commentstring based on the cursor location in a file.
@@ -269,9 +272,7 @@ local M = packer.startup {
     -- although some features overlap, see if any of the above has something to add
     use {
       "folke/which-key.nvim",
-      config = function()
-        require "plugins.settings.which-key"
-      end,
+      config = get_config "which_key",
     }
 
     -- open-browser.vim
@@ -281,9 +282,7 @@ local M = packer.startup {
     use {
       "folke/todo-comments.nvim",
       requires = "nvim-lua/plenary.nvim",
-      config = function()
-        require "plugins.settings.todo-comments"
-      end,
+      config = get_config "todo-comments",
     }
 
     --=======================================--
@@ -328,17 +327,13 @@ local M = packer.startup {
     use {
       "lewis6991/gitsigns.nvim", -- lua plugin
       requires = "nvim-lua/plenary.nvim",
-      config = function()
-        require "plugins.settings.gitsigns"
-      end,
+      config = get_config "gitsigns",
     }
 
     use {
       "sindrets/diffview.nvim",
       requires = "nvim-lua/plenary.nvim",
-      config = function()
-        require "plugins.settings.diffview_nvim"
-      end,
+      config = get_config "diffview_nvim",
     }
 
     --=======================================--
@@ -355,16 +350,12 @@ local M = packer.startup {
     -- Quickstart configurations for the Nvim LSP client
     use {
       "neovim/nvim-lspconfig",
-      config = function()
-        require "plugins.settings.lsp"
-      end,
+      config = get_config "lsp",
     }
 
     use {
       "jose-elias-alvarez/null-ls.nvim",
-      config = function()
-        require "plugins.settings.null-ls"
-      end,
+      config = get_config "null-ls",
     }
 
     -- Utilities to improve the TypeScript development experience
@@ -385,9 +376,7 @@ local M = packer.startup {
     -- TODO: config ctags setup
     use {
       "liuchengxu/vista.vim", -- vim script plugin
-      config = function()
-        require "plugins.settings.vista"
-      end,
+      config = get_config "vista",
     }
 
     --=======================================--
@@ -396,23 +385,17 @@ local M = packer.startup {
 
     use {
       "windwp/nvim-autopairs",
-      config = function()
-        require "plugins.settings.nvim_autopairs"
-      end,
+      config = get_config "nvim_autopairs",
     }
 
     use {
       "L3MON4D3/LuaSnip",
-      config = function()
-        require "plugins.settings.luasnip"
-      end,
+      config = get_config "luasnip",
     }
 
     use {
       "hrsh7th/nvim-cmp",
-      config = function()
-        require "plugins.settings.nvim_cmp"
-      end,
+      config = get_config "nvim_cmp",
     }
 
     -- Cmp sources
@@ -477,9 +460,7 @@ local M = packer.startup {
       -- great dark theme
       "catppuccin/nvim",
       as = "catppuccin",
-      config = function()
-        require "plugins.settings.catppuccin"
-      end,
+      config = get_config "catppuccin",
     }
 
     use "kyazdani42/nvim-web-devicons"
@@ -490,17 +471,13 @@ local M = packer.startup {
 
     use {
       "nvim-lualine/lualine.nvim",
-      config = function()
-        require "plugins.settings.lualine"
-      end,
+      config = get_config "lualine",
     }
 
     -- Add indentation guides even on blank lines
     use {
       "lukas-reineke/indent-blankline.nvim",
-      config = function()
-        require "plugins.settings.indent_blankline"
-      end,
+      config = get_config "indent_blankline",
     }
 
     -- vim-hexokinase:
@@ -527,9 +504,7 @@ local M = packer.startup {
 
     use {
       "kosayoda/nvim-lightbulb",
-      config = function()
-        require "plugins.settings.nvim-lightbulb"
-      end,
+      config = get_config "nvim-lightbulb",
     }
 
     -- Vim plugin for automatically highlighting
@@ -537,9 +512,7 @@ local M = packer.startup {
     -- faster when compared to vim-matchup
     use {
       "RRethy/vim-illuminate",
-      config = function()
-        require "plugins.settings.vim-illuminate"
-      end,
+      config = get_config "vim-illuminate",
     }
 
     --=======================================--
@@ -594,9 +567,7 @@ local M = packer.startup {
     use {
       "nvim-telescope/telescope.nvim",
       requires = "nvim-lua/plenary.nvim",
-      config = function()
-        require "plugins.settings.telescope"
-      end,
+      config = get_config "telescope",
     }
 
     -- Telescope sorter
@@ -607,9 +578,7 @@ local M = packer.startup {
     -- Project management
     use {
       "ahmedkhalf/project.nvim",
-      config = function()
-        require "plugins.settings.project-nvim"
-      end,
+      config = get_config "project-nvim",
     }
 
     --=======================================--
@@ -647,9 +616,7 @@ local M = packer.startup {
     -- VimTeX: A modern Vim and neovim filetype plugin for LaTeX files.
     use {
       "lervag/vimtex",
-      config = function()
-        require "plugins.settings.vimtex"
-      end,
+      config = get_config "vimtex",
     }
 
     -- Show js package information using virtual text in package.json files
