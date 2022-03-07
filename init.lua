@@ -78,7 +78,7 @@
 
 -- }}}
 
--- {{{ How to time profile
+-- {{{ How to time profile Neovim startup time
 
 -- {{{ Vanilla Neovim
 
@@ -113,46 +113,25 @@
 
 -- }}}
 
--- {{{ VSCode Neovim Integration
+if vim.g.vscode then
+  -- vscode-neovim extension
+  -- see: https://github.com/vscode-neovim/vscode-neovim
+  print "Hello from nvim config!"
+else
+  -- The real deal
+  -- impatient.nvim: speed up lua imports. MUST be loaded before any other lua plugin.
+  pcall(require, "impatient")
 
--- TODO: Include specific VSCode Neovim configuration,
--- see: https://github.com/vscode-neovim/vscode-neovim
+  -- Vanilla settings (doesn't depend on external plugins).
+  require "general_settings"
 
--- if vim.g.vscode then
---   -- VSCODE conf
---   print('vscode conf enabled')
--- else
---   -- raw neovim conf
---   print('neovim conf enabled')
--- end
+  -- Packer managed plugins and its settings.
+  require "plugins"
 
--- }}}
+  -- Setup globals that I expect to be always available.
+  require "globals"
 
--- impatient.nvim: speed up lua imports. MUST be loaded before any other lua plugin.
-pcall(require, "impatient")
-
--- Vanilla settings (doesn't depend on external plugins).
-require "general_settings"
-
--- Packer managed plugins and its settings.
-require "plugins"
-
--- Setup globals that I expect to be always available.
-require "globals"
-
--- Keymaps definition
--- check keymaps descriptions in which-key.lua file.
-require "keymaps"
-
--- Default colorscheme
-vim.cmd "colorscheme zenbones-extra"
--- vim.cmd "colorscheme catppuccin"
--- No magic: some distro packages come bundled with vim plugins
--- e.g.: fzf and black ($ sudo pacman -S fzf python-black)
--- those plugin get stored under the path below
--- don't allow these because the setup starts to be less portable
--- prefer to explicitly install things
-vim.cmd "set rtp-=/usr/share/vim/vimfiles"
-
--- Remove useless default colors, HOW??? The command below doesn't work
--- vim.cmd "set runtimepath-=/usr/share/nvim/runtime/colors"
+  -- Keymaps definition
+  -- check keymaps descriptions in which-key.lua file.
+  require "keymaps"
+end
