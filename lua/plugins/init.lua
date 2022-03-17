@@ -868,6 +868,7 @@ local M = packer.startup {
     -- see: https://github.com/wbthomason/packer.nvim#checking-plugin-statuses
     -- see: https://github.com/wbthomason/packer.nvim/discussions/196
     compile_path = vim.fn.stdpath "config" .. "/lua/packer/packer_compiled.lua",
+    snapshot_path = vim.fn.stdpath "config",
   },
 }
 
