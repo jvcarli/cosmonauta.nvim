@@ -1,6 +1,6 @@
 {
   "Comment.nvim": {
-    "commit": "9732d2f"
+    "commit": "a841f73"
   },
   "FastFold": {
     "commit": "e4a51e0"
@@ -9,13 +9,13 @@
     "commit": "1bfb32e"
   },
   "LuaSnip": {
-    "commit": "84c66f0"
+    "commit": "0d33649"
   },
   "NrrwRgn": {
     "commit": "e027db9"
   },
-  "ReplaceWithRegister": {
-    "commit": "832efc2"
+  "SchemaStore.nvim": {
+    "commit": "007c1ed"
   },
   "SimpylFold": {
     "commit": "b4a87e5"
@@ -23,11 +23,8 @@
   "any-jump.vim": {
     "commit": "67b1737"
   },
-  "aw-watcher-vim": {
-    "commit": "3809a52"
-  },
   "catppuccin": {
-    "commit": "5169cd9"
+    "commit": "24aba39"
   },
   "clever-f.vim": {
     "commit": "fd370f2"
@@ -65,14 +62,14 @@
   "diffview.nvim": {
     "commit": "cf32c3f"
   },
-  "dirbuf.nvim": {
-    "commit": "9e89ce6"
-  },
   "git-messenger.vim": {
     "commit": "2e67899"
   },
+  "git-worktree.nvim": {
+    "commit": "d7f4e25"
+  },
   "gitsigns.nvim": {
-    "commit": "779f4eb"
+    "commit": "7de9533"
   },
   "gv.vim": {
     "commit": "386d770"
@@ -81,13 +78,13 @@
     "commit": "7abfc92"
   },
   "indent-blankline.nvim": {
-    "commit": "2e35f7d"
+    "commit": "9915d46"
   },
   "kmonad-vim": {
     "commit": "e09bea6"
   },
   "lightspeed.nvim": {
-    "commit": "23565bc"
+    "commit": "58c9e32"
   },
   "linediff.vim": {
     "commit": "c7710db"
@@ -96,7 +93,7 @@
     "commit": "93e98a0"
   },
   "lualine.nvim": {
-    "commit": "09f749c"
+    "commit": "d2e0ac5"
   },
   "lush.nvim": {
     "commit": "2189230"
@@ -105,49 +102,52 @@
     "commit": "e5bfe9b"
   },
   "neogen": {
-    "commit": "a0d37d5"
+    "commit": "778a853"
   },
   "nui.nvim": {
-    "commit": "6f803e8"
+    "commit": "513ff9b"
   },
   "null-ls.nvim": {
-    "commit": "a1804de"
+    "commit": "08441c9"
   },
   "nvim-autopairs": {
-    "commit": "7bc6188"
+    "commit": "6617498"
   },
   "nvim-cmp": {
-    "commit": "1001683"
+    "commit": "71d7f46"
   },
   "nvim-dap": {
-    "commit": "9fcff6e"
+    "commit": "3d0575a"
   },
   "nvim-dap-ui": {
-    "commit": "22e94f2"
+    "commit": "00485eb"
   },
   "nvim-lightbulb": {
     "commit": "29ca814"
   },
   "nvim-lsp-ts-utils": {
-    "commit": "f769dc9"
+    "commit": "1d2c585"
   },
   "nvim-lspconfig": {
-    "commit": "cdc2ec5"
+    "commit": "710deb0"
   },
   "nvim-treesitter": {
-    "commit": "8769230"
+    "commit": "68f016d"
   },
   "nvim-treesitter-context": {
     "commit": "b7d7aba"
   },
   "nvim-treesitter-endwise": {
-    "commit": "00e5ac1"
+    "commit": "f653101"
+  },
+  "nvim-treesitter-refactor": {
+    "commit": "0dc8069"
   },
   "nvim-treesitter-textobjects": {
     "commit": "7c6b5fe"
   },
   "nvim-treesitter-textsubjects": {
-    "commit": "c960b0d"
+    "commit": "b18ab0e"
   },
   "nvim-ts-autotag": {
     "commit": "57035b5"
@@ -156,7 +156,7 @@
     "commit": "097df33"
   },
   "nvim-ts-rainbow": {
-    "commit": "0594067"
+    "commit": "ee98f4e"
   },
   "nvim-web-devicons": {
     "commit": "4415d1a"
@@ -174,7 +174,10 @@
     "commit": "9df82a2"
   },
   "plenary.nvim": {
-    "commit": "d742fd9"
+    "commit": "14dfb40"
+  },
+  "pretty-fold.nvim": {
+    "commit": "738d9cd"
   },
   "project.nvim": {
     "commit": "cef52b8"
@@ -182,20 +185,17 @@
   "quickfix-reflector.vim": {
     "commit": "6a6a9e2"
   },
-  "refactoring.nvim": {
-    "commit": "6d07f71"
-  },
   "sniprun": {
-    "commit": "6825eac"
+    "commit": "3c02069"
   },
   "spellsitter.nvim": {
     "commit": "0a19491"
   },
-  "splitjoin": {
-    "commit": "452d135"
+  "splitjoin.vim": {
+    "commit": "6f07135"
   },
   "stabilize.nvim": {
-    "commit": "16d1d23"
+    "commit": "786c818"
   },
   "switch.vim": {
     "commit": "900c5d3"
@@ -210,7 +210,7 @@
     "commit": "8ec164b"
   },
   "telescope.nvim": {
-    "commit": "1ebf53d"
+    "commit": "a36a813"
   },
   "todo-comments.nvim": {
     "commit": "98b1ebf"
@@ -224,8 +224,11 @@
   "undotree": {
     "commit": "08e259b"
   },
-  "vim-EnhancedJumps": {
-    "commit": "84df0d7"
+  "vim-ReplaceWithRegister": {
+    "commit": "aad1e8f"
+  },
+  "vim-UnconditionalPaste": {
+    "commit": "e5c5a56"
   },
   "vim-apathy": {
     "commit": "27128a0"
@@ -245,6 +248,9 @@
   "vim-dialect": {
     "commit": "4962479"
   },
+  "vim-dirvish": {
+    "commit": "f297b2e"
+  },
   "vim-dispatch": {
     "commit": "00e77d9"
   },
@@ -261,10 +267,10 @@
     "commit": "784d630"
   },
   "vim-fugitive": {
-    "commit": "afd6c13"
+    "commit": "46652a3"
   },
   "vim-go": {
-    "commit": "05f97b7"
+    "commit": "9c31c55"
   },
   "vim-gtfo": {
     "commit": "7c7a495"
@@ -275,20 +281,23 @@
   "vim-hexokinase": {
     "commit": "62324b4"
   },
-  "vim-illuminate": {
-    "commit": "db98338"
-  },
   "vim-indent-object": {
     "commit": "5c5b24c"
   },
   "vim-ingo-library": {
-    "commit": "bae8285"
+    "commit": "a4483ec"
   },
   "vim-kitty": {
     "commit": "f668510"
   },
   "vim-lastplace": {
     "commit": "cef9d62"
+  },
+  "vim-log-highlighting": {
+    "commit": "1037e26"
+  },
+  "vim-mark": {
+    "commit": "8927403"
   },
   "vim-matchup": {
     "commit": "7fd8806"
@@ -303,10 +312,7 @@
     "commit": "c3dfd41"
   },
   "vim-projectionist": {
-    "commit": "a1ff5b9"
-  },
-  "vim-quickhl": {
-    "commit": "be1f441"
+    "commit": "93b2af1"
   },
   "vim-repeat": {
     "commit": "24afe92"
@@ -321,16 +327,22 @@
     "commit": "e181883"
   },
   "vim-sandwich": {
-    "commit": "48acdad"
+    "commit": "7bdd7fc"
   },
   "vim-searchindex": {
     "commit": "b0788c8"
+  },
+  "vim-sleuth": {
+    "commit": "034c5aa"
+  },
+  "vim-slime": {
+    "commit": "0ea9b35"
   },
   "vim-speeddating": {
     "commit": "95da3d7"
   },
   "vim-startuptime": {
-    "commit": "63967c6"
+    "commit": "61f122e"
   },
   "vim-tbone": {
     "commit": "82b0118"
@@ -351,7 +363,7 @@
     "commit": "0d810cc"
   },
   "vimtex": {
-    "commit": "a338ca9"
+    "commit": "8020e33"
   },
   "vista.vim": {
     "commit": "a0469c6"
@@ -364,5 +376,8 @@
   },
   "zenbones.nvim": {
     "commit": "1e0b792"
+  },
+  "zinit-vim-syntax": {
+    "commit": "4d873e0"
   }
 }
