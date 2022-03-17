@@ -466,6 +466,12 @@ local M = packer.startup {
 
     use "kyazdani42/nvim-web-devicons"
 
+    -- dims inactive portions of the code you're editing using TreeSitter.
+    use {
+      "folke/twilight.nvim",
+      config = get_config "twilight",
+    }
+
     --=======================================--
     --           UI - extra elements         --
     --=======================================--
