@@ -248,6 +248,8 @@ local M = packer.startup {
 
     use "RRethy/nvim-treesitter-textsubjects"
 
+    use "nvim-treesitter/nvim-treesitter-refactor"
+
     --=======================================--
     --             Syntax - Other            --
     --=======================================--
