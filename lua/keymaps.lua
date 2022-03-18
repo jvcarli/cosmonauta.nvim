@@ -1,18 +1,8 @@
 -- vim:fileencoding=utf-8:ft=lua:foldmethod=marker
 
--- TODO: move mappings to which-key.nvim configuration
 -- TODO: include text explaining the difference between
--- nmap and nnoremap and so on
+-- different types of mappings
 -- see: https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
-
--- =======================================--
---           Augroups and autocmd         --
--- =======================================--
-
--- Commands inside vim.cmd are coded with VIM SCRIPT
--- `augroups` and `autocommands` DO NOT have a lua interface yet,
--- so `vim.cmd` is still needed.
--- This is being worked on, see: https://github.com/neovim/neovim/pull/12378
 
 -- =======================================--
 --            Keymaps definition          --
