@@ -86,7 +86,13 @@ require("nvim-treesitter.configs").setup {
   -- useful for languages that mixes
   -- different syntaxes like:
   -- jsx, tsx and svelte,
-  context_commentstring = { enable = true },
+  context_commentstring = {
+    enable = true,
+
+    -- Disable CursorHold autocommand of this plugin
+    -- required for integration with Comment.nvim
+    enable_autocmd = false,
+  },
 
   -- nvim-ts-rainbow
   -- NOTE: can be a source of slowness

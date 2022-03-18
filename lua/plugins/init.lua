@@ -760,9 +760,7 @@ local M = packer.startup {
 
     use {
       "numToStr/Comment.nvim",
-      config = function()
-        require "plugins.settings.comment_nvim"
-      end,
+      config = get_config "plugins.settings.comment_nvim",
     }
 
     -- TODO: use nvim-lsp or lsp config from vim-go
