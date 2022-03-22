@@ -3,3 +3,6 @@
 vim.g.tex_conceal = "abdmg" -- Neovim builtin option
 
 vim.g.tex_flavor = "latex" -- Neovim builtin option
+
+-- TODO: test tex conceallevel
+vim.wo.conceallevel = 1
