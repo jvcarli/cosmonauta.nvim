@@ -10,3 +10,8 @@ profile.log
 
 # any log files
 *.log
+
+# test files
+test/*
+!test/minimal-init.vim
+!test/minimal-init.lua
