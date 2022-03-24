@@ -116,7 +116,17 @@
 if vim.g.vscode then
   -- vscode-neovim extension
   -- see: https://github.com/vscode-neovim/vscode-neovim
-  print "Hello from nvim config!"
+
+  -- exclude unnecessary directories from vscode config
+  -- ~/.config/nvim/vscode/lua will be lua runtime path for vscode
+  -- instead of the default ~/.config/nvim/lua
+  vim.cmd "set runtimepath=~/.config/nvim/vscode,/etc/xdg/nvim,/usr/local/share/nvim/site,/usr/share/nvim/site,/usr/share/nvim/runtime,/usr/share/nvim/runtime/pack/dist/opt/matchit,/usr/lib/nvim,/usr/share/nvim/site/after,/usr/local/share/nvim/site/after,/etc/xdg/nvim/after,/usr/share/vim/vimfiles"
+
+  -- DO NOT use ~/.local/share/nvim/site/* as packer uses it
+  vim.cmd "set packpath=''"
+
+  -- MUST use absolute path, `$ code` can be called form anywhere
+  vim.cmd("source " .. vim.fn.stdpath "config" .. "/vscode/init.vim")
 else
   -- The real deal
   -- impatient.nvim: speed up lua imports. MUST be loaded before any other lua plugin.
