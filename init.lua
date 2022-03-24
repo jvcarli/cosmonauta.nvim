@@ -8,11 +8,25 @@
 -- Make sure you understand VIM a little:
 -- see: https://www.reddit.com/r/vim/wiki/index/
 -- see: https://github.com/mhinz/vim-galore
+-- see: https://developer.ibm.com/articles/l-vim-script-1/
+-- see: https://devhints.io/vimscript-functions
+-- see: https://blog.joren.ga/vim-learning-steps
 
 -- Make sure you understand Neovim and its lua ecosystem a little:
 -- see: https://github.com/nanotee/nvim-lua-guide
 -- see: https://github.com/rockerBOO/awesome-neovim
 -- see: https://github.com/LunarVim/Neovim-from-scratch
+
+-- Counterarguments against using vim
+-- Don't use vim
+-- see: https://gist.github.com/romainl/6b952db7a6138b48657ba0fbb9d65370
+--
+-- Modern IDEs are magic. Why are so many coders still using Vim and Emacs?
+-- see: https://stackoverflow.blog/2020/11/09/modern-ide-vs-vim-emacs/
+
+-- Extras:
+-- Vim Script for Python Developers:
+-- see: https://gist.github.com/yegappan/16d964a37ead0979b05e655aa036cad0
 
 -- }}}
 
@@ -75,6 +89,12 @@
 
 -- Add textDocument/foldingRange capability to LSP client #14306
 -- see: https://github.com/neovim/neovim/pull/14306
+
+-- feat(lsp): add support for semantic tokens
+-- see: https://github.com/neovim/neovim/pull/15723
+
+-- [WIP] winbar
+-- see: https://github.com/neovim/neovim/pull/17336
 
 -- }}}
 
