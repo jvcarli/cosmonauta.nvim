@@ -22,16 +22,16 @@
 " }}}
 
 " vim-plug managed plugins directory
-let vim_plug_plugins_dir = stdpath('data') . '/test/plugin' 
+let s:vim_plug_plugins_dir = stdpath('data') . '/test/plugin' 
 
 " vim-plug itself
-let vim_plug_file  = stdpath('data') . '/test/autoload/plug.vim' 
+let s:vim_plug_file  = stdpath('data') . '/test/autoload/plug.vim' 
 
 " {{{ Install vim-plug plugin if it isn't already installed
 
-if empty(glob(vim_plug_file))
+if empty(glob(s:vim_plug_file))
   echo 'Installing vim-plug plugin manager...'
-  silent execute '!curl -fLo '.vim_plug_file.' --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  silent execute '!curl -fLo ' . s:vim_plug_file . ' --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   echo 'Finished!'
 endif
 " }}}
@@ -70,14 +70,7 @@ augroup END
 "   - as the the files there could clash between each other.
 " }}}
 
-if isdirectory(vim_plug_plugins_dir)
-  echo 'Making a clean test environment...'
-  call delete(vim_plug_plugins_dir, 'rf')
-else
-  echo 'Starting a clean test environment...'
-endif
-
-call plug#begin(vim_plug_plugins_dir)
+call plug#begin(s:vim_plug_plugins_dir)
 " Place your desired plugins here
 
 " Shorthand notation:
@@ -90,5 +83,16 @@ call plug#begin(vim_plug_plugins_dir)
 " Plug '~/my-prototype-plugin'
 
 call plug#end()
+
+function CleanEnvironment() abort
+  if isdirectory(s:vim_plug_plugins_dir)
+    echo 'Making a clean test environment...'
+    call delete(s:vim_plug_plugins_dir, 'rf')
+  else
+    echo 'Already in a clean test environment...'
+  endif
+endfunction
+
+command CleanEnv call CleanEnvironment()
 
 " vim:fileencoding=utf-8:foldmethod=marker
