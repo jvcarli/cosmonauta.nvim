@@ -560,8 +560,13 @@ local M = packer.startup {
     --   * a way to unobtrusively fuzzy find and access the searched items
     --     I achieve this with 'telescope.nvim' and its extensions
 
-    -- see: https://github.com/elihunter173/dirbuf.nvim/issues/3
-    use "elihunter173/dirbuf.nvim"
+    use {
+      "justinmk/vim-dirvish",
+      config = function()
+        -- taken from: https://github.com/justinmk/vim-dirvish/issues/204
+        vim.cmd [[call dirvish#add_icon_fn({p -> luaeval("require('nvim-web-devicons').get_icon(vim.fn.fnamemodify('" .. p .. "', ':e')) or ''")})]]
+      end,
+    }
 
     use {
       "justinmk/vim-gtfo",
