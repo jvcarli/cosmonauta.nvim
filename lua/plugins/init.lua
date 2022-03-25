@@ -562,6 +562,7 @@ local M = packer.startup {
 
     use {
       "justinmk/vim-dirvish",
+      requires = "kyazdani42/nvim-web-devicons",
       config = function()
         -- taken from: https://github.com/justinmk/vim-dirvish/issues/204
         vim.cmd [[call dirvish#add_icon_fn({p -> luaeval("require('nvim-web-devicons').get_icon(vim.fn.fnamemodify('" .. p .. "', ':e')) or ''")})]]
