@@ -20,13 +20,19 @@ cmp.setup {
   mapping = {
     ["<C-p>"] = cmp.mapping.select_prev_item(),
     ["<C-n>"] = cmp.mapping.select_next_item(),
-    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-Space>"] = cmp.mapping.complete(),
-    ["<C-e>"] = cmp.mapping.close(),
+    ["<C-k>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-j>"] = cmp.mapping.scroll_docs(4),
+    -- ["<C-Space>"] = cmp.mapping.complete(),
+    ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+    ["<C-q>"] = cmp.mapping.close(),
     ["<CR>"] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
+
+      -- Accept current selected completion item.
+      -- If you didn't select any items and specified the `{ select = true }`
+      -- for this, nvim-cmp will automatically select the first item, which I find annoying,
+      -- so I use `{ select = false }` instead.
+      select = false,
     },
 
     ["<Tab>"] = cmp.mapping(function(fallback)
