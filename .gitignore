@@ -11,6 +11,9 @@ profile.log
 # any log files
 *.log
 
+# any backup files
+.bak
+
 # test files
 test/*
 !test/minimal-init.vim
