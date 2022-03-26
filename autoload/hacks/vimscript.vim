@@ -2,7 +2,7 @@
 " see: https://vi.stackexchange.com/a/17871/13792
 
 " getScriptID returns the SID of the given scriptName in the current runtime
-" of vim.  Lists all sourced scripts, finds the line that mathes the
+" of vim.  Lists all sourced scripts, finds the line that matches the
 " given scriptName. Expects only one match. Then parses the line describing
 " the given scriptName.
 function hacks#vimscript#GetScriptID(scriptName)
