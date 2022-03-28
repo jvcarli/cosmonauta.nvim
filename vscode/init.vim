@@ -2,4 +2,4 @@
 " vscode-neovim init.vim
 " I could use a init.lua file too
 
-lua require "sample_module"
+lua require "keymaps"

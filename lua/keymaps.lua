@@ -228,7 +228,6 @@ if vim.fn.executable "webstorm" == 1 then
 
   -- Open the whole project in Webstorm
   -- and the current file in current cursor position (Webstorm intelligently guesses the project root)
-  -- Vscode spawns correctly as an external process.
   map(
     "n",
     "<leader>iwp",
@@ -271,6 +270,11 @@ if vim.fn.executable "code" == 1 then
 
   -- Open only current file in Vscode (without its project) in current cursor position.
   map("n", "<leader>icf", [[<cmd>execute 'silent !code -g ' . expand('%:p') . ':' . line('.') . ':' . col('.') <CR>]])
+
+  -- NOTE: From Vscode it is possible to go back to terminal Neovim in the same instance and buffer
+  -- a mapping defined in ~/.config/nvim/vscode/lua/keymaps.lua
+  -- This mapping triggers nvr cli (see: https://github.com/mhinz/neovim-remote):
+  -- See: https://www.reddit.com/r/neovim/comments/nehuye/how_to_alternate_between_neovim_and_other_text/
 end
 
 -- }}}
