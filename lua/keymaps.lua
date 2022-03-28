@@ -230,6 +230,26 @@ end
 
 -- }}}
 
+-- {{{ Vscode integration
+
+-- if Vscode cli (code) is present in $PATH, do:
+if vim.fn.executable "code" == 1 then
+  -- TODO: realtime sync terminal Neovim with Vscode. Is it possible?
+
+  -- Open the whole project in Vscode
+  -- and the current file in current cursor position (it assumes cwd will be project root).
+  -- I'm using project.nvim for automatically setting the project root. (vim-rooter can be used too)
+  -- Vscode spawns correctly as an external process.
+  map(
+    "n",
+    "<leader>icp",
+    [[<cmd>execute 'silent !code ' . getcwd() . ' -g ' . expand('%:p') . ':' . line('.') . ':' . col('.') <CR>]]
+  )
+
+  -- Open only current file in Vscode (without its project) in current cursor position.
+  map("n", "<leader>icf", [[<cmd>execute 'silent !code -g ' . expand('%:p') . ':' . line('.') . ':' . col('.') <CR>]])
+end
+
 -- }}}
 
 -- }}}
