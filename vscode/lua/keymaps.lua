@@ -1,5 +1,14 @@
 local map = vim.keymap.set
 
+-- Leader key
+-- Remap space as leader key
+-- taken from defaults.nvim: https://github.com/mjlbach/defaults.nvim/blob/master/init.lua
+
+-- <space> is leader and "\" char (default leader) works independetly
+vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true })
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 map("n", "<leader>in", function()
   -- BUG: Current file name in % register is invalid #798
   --   e.g.: It outputs
