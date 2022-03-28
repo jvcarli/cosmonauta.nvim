@@ -12,7 +12,7 @@ profile.log
 *.log
 
 # any backup files
-.bak
+*.bak
 
 # test files
 test/*
