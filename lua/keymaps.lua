@@ -213,19 +213,42 @@ end
 
 -- if webstorm cli is present in $PATH, do:
 if vim.fn.executable "webstorm" == 1 then
+  -- TODO: realtime sync terminal Neovim with Webstorm. Is it possible?
   -- TODO: add and "if project is web related then", how to detect this?
 
   -- See: https://www.reddit.com/r/vim/comments/b2m2dp/move_from_ide_to_vim/
   -- See: https://stackoverflow.com/questions/4037984/is-it-possible-to-extend-intellij-such-that-i-can-open-the-current-file-in-vim
   -- See: https://vi.stackexchange.com/questions/18073/neovim-qt-is-it-possible-open-files-in-the-existing-window
-  -- See: https://www.reddit.com/r/neovim/comments/nehuye/how_to_alternate_between_neovim_and_other_text/
-  -- Opens Webstorm in the same line as nvim buffer. Column is not supported by webstorm cli.
-  -- TODO: why this mapping / command blocks neovim after being executed?
-  --
-  -- viml original, that gets blocked in neovim too
-  -- nnoremap <leader>iw :execute 'silent !webstorm --line '.line('.').' '.expand('%:p')\|redraw!<cr>
 
-  map("n", "<leader>iw", "<cmd>execute 'silent !webstorm --line '.line('.').' '.expand('%:p')|redraw!<cr>")
+  -- BUG: if Webstorm isn't already opened, Neovim spawns a new process that blocks
+  --      the current buffer from being editing (cursor won't move), no matter if
+  --      using light edit or not. Is this webstorm cli intended behavior?
+  --      Maybe use plenary for launching it asynchronously?
+  --      If webstorm was already launched the buffer won't be blocked.
+
+  -- Open the whole project in Webstorm
+  -- and the current file in current cursor position (Webstorm intelligently guesses the project root)
+  -- Vscode spawns correctly as an external process.
+  map(
+    "n",
+    "<leader>iwp",
+    [[<cmd>execute 'silent !webstorm --line ' . line('.') . ' --column ' . col('.') . ' ' . expand('%:p')<CR>]]
+  )
+
+  -- Open only current file in Webstorm (without its project) in current cursor position.
+  -- Possible only when using early 2020 releases or later.
+  -- This uses the IDE lightedit mode. see: https://blog.jetbrains.com/idea/2020/04/lightedit-mode/
+  -- `$ westorm -e <file-to-be-light-edited>`
+  -- NOTE: for now lightedit mode doesn't support opening files using `--line` and `--column` parameters
+  map("n", "<leader>iwf", [[<cmd>execute 'silent !webstorm -e ' . expand('%:p')<CR>]])
+
+  -- NOTE: From Webstorm it is possible to go back to terminal Neovim in the same instance and buffer
+  -- using IdeaVim plugin and a mapping defined in the ~/.ideavimrc (.vimrc analog)
+  -- This mapping triggers a custom external tool defined in:
+  -- Preferences > Tools > External tools
+  -- The tool uses nvr cli (see: https://github.com/mhinz/neovim-remote)
+  -- See: https://www.reddit.com/r/neovim/comments/nehuye/how_to_alternate_between_neovim_and_other_text/
+  -- See: https://www.reddit.com/r/IntelliJIDEA/comments/dphwrd/how_to_configure_ideavim_shortcut_to_open_file_in/
 end
 
 -- }}}
