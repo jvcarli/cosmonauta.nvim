@@ -12,7 +12,7 @@
   "ftdetect/*.vim": { "type": "ftdetect" },
 
   "lua/plugins/settings/*.lua": { "type": "settings" },
-  "lua/modules/*.lua": { "type": "modules" },
+  "lua/user/modules/*.lua": { "type": "modules" },
 
   "plugin/*.lua": { "type": "plugin" },
   "plugin/*.vim": { "type": "plugin" },
