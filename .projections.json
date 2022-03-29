@@ -1,0 +1,32 @@
+{
+  "after/*.lua": { "type": "after" },
+  "after/*.vim": { "type": "after" },
+
+  "colors/*.lua": { "type": "colors" },
+  "colors/*.vim": { "type": "colors" },
+
+  "compiler/*.vim": { "type": "compiler" },
+  "compiler/*.lua": { "type": "compiler" },
+
+  "ftdetect/*.lua": { "type": "ftdetect" },
+  "ftdetect/*.vim": { "type": "ftdetect" },
+
+  "lua/plugins/settings/*.lua": { "type": "settings" },
+  "lua/modules/*.lua": { "type": "modules" },
+
+  "plugin/*.lua": { "type": "plugin" },
+  "plugin/*.vim": { "type": "plugin" },
+
+  "queries/*.scm": { "type": "queries" },
+
+  "spell/en.utf-8.add": { "type": "spell" },
+
+  "test/*": { "type": "test" },
+
+  "vscode/*.lua": { "type": "vscode" },
+  "vscode/*.vim": { "type": "vscode" },
+
+  "init.lua": { "type": "init" },
+
+  "README.md": { "type": "doc" }
+}
