@@ -235,7 +235,11 @@ if vim.fn.executable "webstorm" == 1 then
     "n",
     "gowp",
     -- setsid tip taken from: https://github.com/justinmk/vim-gtfo/issues/50
-    [[<cmd>execute 'silent !setsid webstorm --line ' . line('.') . ' --column ' . col('.') . ' ' . expand('%:p')<CR>]]
+    -- BUG: for some reason webstorm in IdeaVim mode enters in `col('.') + 1`
+    -- TODO: report bug upstream
+    --      FIX: we manually add the column back inside col('.')
+    --           we now have col('.') - 1
+    [[<cmd>execute 'silent !setsid webstorm --line ' . line('.') . ' --column ' . (col('.') - 1) . ' ' . expand('%:p')<CR>]]
   )
 
   -- Open only current file in Webstorm (without its project) in current cursor position.
