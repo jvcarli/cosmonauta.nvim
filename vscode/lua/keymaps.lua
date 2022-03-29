@@ -9,7 +9,7 @@ vim.api.nvim_set_keymap("", "<Space>", "<Nop>", { noremap = true, silent = true 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-map("n", "<leader>in", function()
+map("n", "gon", function()
   -- BUG: Current file name in % register is invalid #798
   --   e.g.: It outputs
   --     /home/user/.dotfiles/nvim/.config/nvim/__vscode_neovim__-file:///home/user/project/filename.ext

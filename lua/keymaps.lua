@@ -233,7 +233,7 @@ if vim.fn.executable "webstorm" == 1 then
   -- and the current file in current cursor position (Webstorm intelligently guesses the project root)
   map(
     "n",
-    "<leader>iwp",
+    "gowp",
     -- setsid tip taken from: https://github.com/justinmk/vim-gtfo/issues/50
     [[<cmd>execute 'silent !setsid webstorm --line ' . line('.') . ' --column ' . col('.') . ' ' . expand('%:p')<CR>]]
   )
@@ -243,10 +243,10 @@ if vim.fn.executable "webstorm" == 1 then
   -- This uses the IDE lightedit mode. see: https://blog.jetbrains.com/idea/2020/04/lightedit-mode/
   -- `$ westorm -e <file-to-be-light-edited>`
   -- NOTE: for now lightedit mode doesn't support opening files using `--line` and `--column` parameters
-  map("n", "<leader>iwf", [[<cmd>execute 'silent !setsid webstorm -e ' . expand('%:p')<CR>]])
+  map("n", "gowf", [[<cmd>execute 'silent !setsid webstorm -e ' . expand('%:p')<CR>]])
 
   -- NOTE: From Webstorm it is possible to go back to terminal Neovim in the same instance and buffer
-  -- using IdeaVim plugin and a mapping defined in the ~/.ideavimrc (.vimrc analog)
+  -- using IdeaVim plugin and a mapping defined in the $XDG_CONFIG_HOME/ideavim/ideavimrc file (.vimrc analog)
   -- This mapping triggers a custom external tool defined in:
   -- Preferences > Tools > External tools
   -- The tool uses nvr cli (see: https://github.com/mhinz/neovim-remote)
@@ -268,12 +268,12 @@ if vim.fn.executable "code" == 1 then
   -- Vscode spawns correctly as an external process.
   map(
     "n",
-    "<leader>icp",
+    "gocp",
     [[<cmd>execute 'silent !code ' . getcwd() . ' -g ' . expand('%:p') . ':' . line('.') . ':' . col('.') <CR>]]
   )
 
   -- Open only current file in Vscode (without its project) in current cursor position.
-  map("n", "<leader>icf", [[<cmd>execute 'silent !code -g ' . expand('%:p') . ':' . line('.') . ':' . col('.') <CR>]])
+  map("n", "gocf", [[<cmd>execute 'silent !code -g ' . expand('%:p') . ':' . line('.') . ':' . col('.') <CR>]])
 
   -- NOTE: From Vscode it is possible to go back to terminal Neovim in the same instance and buffer
   -- a mapping defined in ~/.config/nvim/vscode/lua/keymaps.lua
