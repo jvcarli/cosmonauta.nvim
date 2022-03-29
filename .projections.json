@@ -5,6 +5,9 @@
   "colors/*.lua": { "type": "colors" },
   "colors/*.vim": { "type": "colors" },
 
+  "README.md": { "type": "docs" },
+  "docs/*": { "type": "docs" },
+
   "compiler/*.vim": { "type": "compiler" },
   "compiler/*.lua": { "type": "compiler" },
 
@@ -26,7 +29,5 @@
   "vscode/*.lua": { "type": "vscode" },
   "vscode/*.vim": { "type": "vscode" },
 
-  "init.lua": { "type": "init" },
-
-  "README.md": { "type": "doc" }
+  "init.lua": { "type": "init" }
 }
