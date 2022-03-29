@@ -151,7 +151,7 @@ else
   require "plugins"
 
   -- Setup globals that I expect to be always available.
-  require "globals"
+  require "user.modules.globals"
 
   -- Keymaps definition
   -- check keymaps descriptions in which-key.lua file.
