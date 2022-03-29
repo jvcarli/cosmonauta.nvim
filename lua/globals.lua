@@ -2,6 +2,5 @@
 
 -- Good for plugin development
 P = function(v)
-  print(vim.inspect(v))
-  return v
+  print(vim.pretty_print(v))
 end
