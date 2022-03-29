@@ -38,11 +38,11 @@ endif
 
 " Minimal runtimepath and packpath {{{
 
-set runtimepath='/etc/xdg/nvim,/usr/local/share/nvim/site,/usr/share/nvim/site,/usr/share/nvim/runtime,/usr/share/nvim/runtime/pack/dist/opt/matchit,/usr/lib/nvim,/usr/share/nvim/site/after,/usr/local/share/nvim/site/after,/etc/xdg/nvim/after,'
+set runtimepath=/etc/xdg/nvim,/usr/local/share/nvim/site,/usr/share/nvim/site,/usr/share/nvim/runtime,/usr/share/nvim/runtime/pack/dist/opt/matchit,/usr/lib/nvim,/usr/share/nvim/site/after,/usr/local/share/nvim/site/after,/etc/xdg/nvim/after
 set runtimepath+=~/.local/share/nvim/test " vim-plug managed plugins
 
-set packpath='' " Remove packpath (~/.local/share/nvim/site/*)
-" let &packpath='' " works too
+set packpath= " Remove packpath (~/.local/share/nvim/site/*)
+" let &packpath= " works too
 
 " }}}
 
