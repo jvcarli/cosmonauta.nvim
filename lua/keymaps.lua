@@ -225,13 +225,17 @@ if vim.fn.executable "webstorm" == 1 then
   --      using light edit or not. Is this webstorm cli intended behavior?
   --      Maybe use plenary for launching it asynchronously?
   --      If webstorm was already launched the buffer won't be blocked.
+  --        WORKAROUND: This is overcome by using `setsid`, but is a LINUX ONLY solution
+  --        see: https://github.com/justinmk/vim-gtfo/issues/50
+  --        TODO: see if the same problem happens in macOS
 
   -- Open the whole project in Webstorm
   -- and the current file in current cursor position (Webstorm intelligently guesses the project root)
   map(
     "n",
     "<leader>iwp",
-    [[<cmd>execute 'silent !webstorm --line ' . line('.') . ' --column ' . col('.') . ' ' . expand('%:p')<CR>]]
+    -- setsid tip taken from: https://github.com/justinmk/vim-gtfo/issues/50
+    [[<cmd>execute 'silent !setsid webstorm --line ' . line('.') . ' --column ' . col('.') . ' ' . expand('%:p')<CR>]]
   )
 
   -- Open only current file in Webstorm (without its project) in current cursor position.
@@ -239,7 +243,7 @@ if vim.fn.executable "webstorm" == 1 then
   -- This uses the IDE lightedit mode. see: https://blog.jetbrains.com/idea/2020/04/lightedit-mode/
   -- `$ westorm -e <file-to-be-light-edited>`
   -- NOTE: for now lightedit mode doesn't support opening files using `--line` and `--column` parameters
-  map("n", "<leader>iwf", [[<cmd>execute 'silent !webstorm -e ' . expand('%:p')<CR>]])
+  map("n", "<leader>iwf", [[<cmd>execute 'silent !setsid webstorm -e ' . expand('%:p')<CR>]])
 
   -- NOTE: From Webstorm it is possible to go back to terminal Neovim in the same instance and buffer
   -- using IdeaVim plugin and a mapping defined in the ~/.ideavimrc (.vimrc analog)
