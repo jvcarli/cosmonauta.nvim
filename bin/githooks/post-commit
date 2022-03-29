@@ -1,0 +1,51 @@
+#!/bin/env bash
+# TODO: use return codes instead of the returned string
+#       see: https://stackoverflow.com/questions/17797740/check-if-specific-file-in-git-repository-has-changed
+
+# NOTE:
+# use `git config --local advice.ignoredHook false`
+# so git won't bother when a hook is ignored
+
+SPELLFILE="spell/en.utf-8.add"
+CHECK_FOR_SPELLFILE="$(git diff --name-only --exit-code "$SPELLFILE")"
+
+skip_git_post_hook() {
+    # see: https://coderwall.com/p/dv-dgg/bypass-post-commit-hook-temporarily
+    # There is an option for bypassing pre-commit hook: git commit --no-verify ...,
+    # but for post-commit there isn't. Here is a piece of my script, with simple solution for the problem:
+
+    gitdir="$(git rev-parse --git-dir)"
+    hook="$gitdir/hooks/post-commit"
+
+    # disable post-commit hook temporarily
+    [ -x "$hook" ] && chmod -x "$hook"
+
+    # ARGS
+    "$1"
+
+    # enable it again
+    chmod +x "$hook"
+}
+
+commit_spellfile() {
+    echo "Spellfile will be committed..."
+
+    git add "$SPELLFILE"
+    git commit -m "chore: update spellfile"
+}
+
+wont_commit_msg() {
+    echo "$SPELLFILE was NOT changed!"
+}
+
+if [[ $CHECK_FOR_SPELLFILE == ""$SPELLFILE ]]; then
+
+    # skip git post hook and commit nvim spellfile
+    skip_git_post_hook commit_spellfile
+
+    exit 1
+else
+    skip_git_post_hook wont_commit_msg
+
+    exit 1
+fi
