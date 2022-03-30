@@ -377,7 +377,7 @@ vim.opt.undofile = true
 vim.o.clipboard = "unnamedplus"
 
 -- =======================================--
---                 Yank                   --
+--                Highlights              --
 -- =======================================--
 
 -- Highlight text on yank
