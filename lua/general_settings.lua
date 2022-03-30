@@ -115,10 +115,9 @@ vim.g.node_host_prog = vim.env.HOME .. "/.yarn/bin/neovim-node-host"
 -- TODO: integrate yanking with kitty private copy_paste buffer --> see: help clipboard
 --
 -- see: https://stackoverflow.com/questions/30691466/what-is-difference-between-vims-clipboard-unnamed-and-unnamedplus-settings
--- BUG: block paste doesn't work with Neovim natively (vim 8 works) when clipboard is unnamed or unnamedplus
--- see: https://github.com/neovim/neovim/issues/1822
--- A workaround is to use either nvim-miniyank or pastefix.vim
-vim.o.clipboard = "unnamedplus"
+-- NOTE: Block paste from system clipboard was only fixed in #14842 (2021/07/01)
+--       see: https://github.com/neovim/neovim/pull/14848
+vim.o.clipboard = "unnamed,unnamedplus"
 
 --=======================================--
 --                Confirm                --
