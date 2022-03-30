@@ -235,6 +235,7 @@ vim.wo.cursorlineopt = "number" -- enable only the number of cursorline, > 0.6 o
 --               Shortmess               --
 --=======================================--
 
+-- TODO: explore all options
 vim.opt.shortmess:append "ISc"
 
 -- I: don't give the intro message when starting Vim.
@@ -246,6 +247,9 @@ vim.opt.shortmess:append "ISc"
 --    when using nvim-cmp (ONLY in native view mode),  see: https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
 --    which makes Neovim cmdline blink REALLY fast,
 --    and when using default Neovim completions such as i_CTRL-X_CTRL-I
+
+-- A: don't give the "ATTENTION" message when an existing swap file
+-- is found.
 
 --=======================================--
 --                 List                  --
