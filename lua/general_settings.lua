@@ -272,6 +272,23 @@ vim.opt.listchars = {
 vim.o.showbreak = "↳⋅" -- show this character before warped text, useful in splits
 
 --=======================================--
+--                Fillchars              --
+--=======================================--
+
+vim.opt.fillchars = {
+  -- Thicker fillchars then default (Characters to fill the statuslines and vertical separators.)
+  horiz = "━",
+  horizup = "┻",
+  horizdown = "┳",
+  vert = "┃",
+  vertleft = "┫",
+  vertright = "┣",
+  verthoriz = "╋",
+
+  diff = " ", -- diff by default uses '-' char, which is too noisy
+}
+
+--=======================================--
 --     Splits, indent, tabs and spaces   --
 --=======================================--
 
