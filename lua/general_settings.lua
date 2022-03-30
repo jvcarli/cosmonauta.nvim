@@ -223,9 +223,9 @@ vim.opt.number = true -- show current line number
 vim.opt.relativenumber = true -- show relative numbers
 
 -- Avoid annoying "ping-pong" of gitsigns, markers and so on on sign column:
--- for more options see: help s'signcolumn'
+-- for more options, see: `:help signcolumn`
 -- also see: https://www.reddit.com/r/neovim/comments/f04fao/my_biggest_vimneovim_wish_single_width_sign_column/
-vim.wo.signcolumn = "yes:2"
+vim.wo.signcolumn = "yes:1"
 
 -- https://vi.stackexchange.com/questions/27989/how-to-highlight-cursor-line-number-without-cursor-line
 vim.wo.cursorline = true -- sets cursorline
