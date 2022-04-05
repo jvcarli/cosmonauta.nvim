@@ -15,9 +15,6 @@ else
   vim.cmd "highlight MarkSignHL gui=bold"
   vim.cmd "highlight MarkSignNumHL guibg=none guifg=none"
 
-  -- ntpeters/vim-better-whitespace
-  vim.cmd "highlight ExtraWhitespace guibg=#A8334C"
-
   -- rhysd/clever-f.vim
   vim.cmd "highlight CleverFDefaultLabel cterm=bold ctermfg=9 gui=bold guifg=#A8334C"
 
@@ -96,4 +93,11 @@ else
   -- taken from: https://stackoverflow.com/questions/3813059/is-it-possible-to-not-display-a-for-blank-lines-in-vim-neovim
   -- is problematic when "eol" and "space" list_chars are used because it omits them.
   -- vim.cmd "hi NonText guifg=bg"
+
+  -- indent-blankline.nvim
+  vim.cmd [[highlight IndentBlanklineContextChar gui=nocombine guifg=#88507d]]
+
+  -- mini.nvim trailspace module
+  -- replaces vim-better-whitespace
+  vim.cmd [[highlight MiniTrailspace guibg=#A8334C]]
 end
