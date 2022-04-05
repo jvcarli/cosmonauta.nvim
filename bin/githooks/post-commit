@@ -38,7 +38,7 @@ wont_commit_msg() {
     echo "$SPELLFILE was NOT changed!"
 }
 
-if [[ $CHECK_FOR_SPELLFILE == ""$SPELLFILE ]]; then
+if [[ $CHECK_FOR_SPELLFILE == "$SPELLFILE" ]]; then
 
     # skip git post hook and commit nvim spellfile
     skip_git_post_hook commit_spellfile
