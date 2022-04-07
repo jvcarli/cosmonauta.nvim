@@ -7,6 +7,8 @@ local patterns_to_ignore = {
   ".git$", -- ignore .git FILE (submodules / worktrees)
   "%.git/", -- ignore .git DIRECTORY (and all its files),
   "%.bare/", -- bare repos stored under .bare directory
+
+  "%.yarn/", -- .yarn directory (yarn berry)
 }
 
 require("telescope").setup {
