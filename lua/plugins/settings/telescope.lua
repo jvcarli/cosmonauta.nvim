@@ -1,8 +1,12 @@
 -- TODO: test telescope worktree integration
 
 local patterns_to_ignore = {
-  "node_modules", -- js and ts dev in general
-  "resources/_gen", -- gohugo dev
+  "resources/_gen", -- hugo frontend framework
+
+  -- see: https://github.com/nvim-telescope/telescope.nvim/issues/1402
+  ".git$", -- ignore .git FILE (submodules / worktrees)
+  "%.git/", -- ignore .git DIRECTORY (and all its files),
+  "%.bare/", -- bare repos stored under .bare directory
 }
 
 require("telescope").setup {
