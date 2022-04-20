@@ -48,7 +48,7 @@ require("indent_blankline").setup {
 
   -- BUG: This option is UNUSABLE with python, but is due its
   -- treesitter implementation, not indent_blankline itself.
-  -- see: https://github.com/lukas-reineke/indent-blankline.nvim/issues/226
+  -- SEE: https://github.com/lukas-reineke/indent-blankline.nvim/issues/226
   --
   -- TODO: turn off for python only!
   -- TODO: convert to lua, how does v:true translate to lua?
@@ -56,7 +56,7 @@ require("indent_blankline").setup {
 
   -- Import option for highlighting indents which its start is not displayed
   -- in the buffer anymore, e.g.: long <div> in an html file.
-  -- see: https://github.com/lukas-reineke/indent-blankline.nvim/issues/374
+  -- SEE: https://github.com/lukas-reineke/indent-blankline.nvim/issues/374
   --   NOTE: high numbers cause some lag in the editor
   -- TODO: find a suitable number
   viewport_buffer = 40, -- defaults to 10

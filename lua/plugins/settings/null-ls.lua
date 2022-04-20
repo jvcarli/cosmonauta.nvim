@@ -6,7 +6,7 @@ local null_ls_sources = {
 
   -- TODO: restrict null-ls to specific cases, so git history won't be all messed up
   -- in repos you want to contribute but don't own or when they don't follow the same style guide as you.
-  -- see: https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#conditional-sources
+  -- SEE: https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#conditional-sources
 
   null_ls.builtins.diagnostics.vint, -- viml
   null_ls.builtins.diagnostics.codespell,
@@ -19,8 +19,8 @@ local null_ls_sources = {
   null_ls.builtins.formatting.shellharden,
   null_ls.builtins.formatting.black.with {
     condition = function(utils)
-      -- see: https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Source-specific-Configuration#specifying-edition for a example
-      -- see: https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#conditional-sources
+      -- SEE: https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Source-specific-Configuration#specifying-edition for a example
+      -- SEE: https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#conditional-sources
       --  TODO: only format when black package is present in the project
       -- by parsing a pyproject.toml, setup.py, or requirements.txt file
       return utils.root_has_file { "pyproject.toml" }
@@ -63,7 +63,7 @@ local null_ls_on_attach = function(client, bufnr)
 
   -- if the language server has formatting capabilities format the buffer on save
   if client.resolved_capabilities.document_formatting then
-    -- Asynchronous formatting, please DON'T,  See: https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Async-formatting
+    -- Asynchronous formatting, please DON'T,  SEE: https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Async-formatting
     -- vim.lsp.buf.formatting_sync() -- synchronous formatting, better to avoid desync problems
     vim.cmd [[
         augroup LspFormatting

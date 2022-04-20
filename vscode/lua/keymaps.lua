@@ -16,8 +16,8 @@ map("n", "gon", function()
   --   instead of:
   --     /home/user/project/filename.ext
   --
-  --   see: https://github.com/vscode-neovim/vscode-neovim/issues/798
-  --   see: https://github.com/vscode-neovim/vscode-neovim#-how-it-works
+  --   SEE: https://github.com/vscode-neovim/vscode-neovim/issues/798
+  --   SEE: https://github.com/vscode-neovim/vscode-neovim#-how-it-works
   local wrong_vim_path_expand = vim.fn.expand "%:p"
 
   -- We MUST clean the path to behave like the correct `"%:p"` expand

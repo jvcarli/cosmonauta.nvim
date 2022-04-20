@@ -3,7 +3,7 @@
 -- LSP config is really a breaze, look how simple!!!
 
 -- TODO: explore codelens support
--- See: https://github.com/neovim/neovim/pull/13165
+-- SEE: https://github.com/neovim/neovim/pull/13165
 
 local lspconfig = require "lspconfig"
 local lsp_keymaps = require "keymaps"
@@ -180,8 +180,8 @@ for _, server in ipairs(servers) do
     -- TODO: add color support to tailwindcss server
 
     -- {{{ Add Hugo (https://gohugo.io) projects support:
-    -- see:https://www.reddit.com/r/neovim/comments/skac4h/lsp_working_after_e/
-    -- see:https://stackoverflow.com/questions/68347170/tailwindcss-lsp-for-neovim-root-dir-issue
+    -- SEE:https://www.reddit.com/r/neovim/comments/skac4h/lsp_working_after_e/
+    -- SEE:https://stackoverflow.com/questions/68347170/tailwindcss-lsp-for-neovim-root-dir-issue
     local tailwindcssls_default_config = require("lspconfig.server_configurations.tailwindcss").default_config
 
     local tailwindcssls_default_filetypes = tailwindcssls_default_config.filetypes
@@ -240,7 +240,7 @@ end
 -- }}}
 
 -- {{{ Customizing how diagnostics are displayed
--- See: help on_publish_diagnostics for more advanced customization options.
+-- SEE: help on_publish_diagnostics for more advanced customization options.
 
 -- TODO: configure show diagnostics on cursor
 -- stylua: ignore

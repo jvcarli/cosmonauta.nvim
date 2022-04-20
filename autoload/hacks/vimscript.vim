@@ -1,5 +1,5 @@
 " taken from: https://github.com/ruanyl/vim-gh-line/pull/20/files#diff-96a3cf1912494e1f40b17b83bb33d74bR87
-" see: https://vi.stackexchange.com/a/17871/13792
+" SEE: https://vi.stackexchange.com/a/17871/13792
 
 " getScriptID returns the SID of the given scriptName in the current runtime
 " of vim.  Lists all sourced scripts, finds the line that matches the

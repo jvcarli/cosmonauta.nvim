@@ -3,9 +3,9 @@ vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.textwidth = 120
 
--- see: https://www.reddit.com/r/neovim/comments/pl0p5v/shortcut_to_open_lua_require_file/
--- see: https://gist.github.com/iagoleal/92bd781dae1926525cd5e049eb32d64b
--- see: https://github.com/anihm136/dots/blob/f6c17e557054645f2dd1922f23d3bbb175235a02/dotdot/config/nvim/after/ftplugin/lua.vim
+-- SEE: https://www.reddit.com/r/neovim/comments/pl0p5v/shortcut_to_open_lua_require_file/
+-- SEE: https://gist.github.com/iagoleal/92bd781dae1926525cd5e049eb32d64b
+-- SEE: https://github.com/anihm136/dots/blob/f6c17e557054645f2dd1922f23d3bbb175235a02/dotdot/config/nvim/after/ftplugin/lua.vim
 
 -- TODO: revise it and understand how it works
 local fmt = string.format

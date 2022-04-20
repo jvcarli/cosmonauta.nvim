@@ -1,7 +1,7 @@
--- see: https://youtu.be/n4Lp4cV8YR0?t=2085
+-- SEE: https://youtu.be/n4Lp4cV8YR0?t=2085
 
 -- There's short hand built into :lua command .
--- see: https://www.reddit.com/r/neovim/comments/tftryc/plugin_authors_i_created_a_lua_script_that_turns/
+-- SEE: https://www.reddit.com/r/neovim/comments/tftryc/plugin_authors_i_created_a_lua_script_that_turns/
 -- TODO: use them
 -- :lua =vim.api
 

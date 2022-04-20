@@ -2,14 +2,14 @@
 
 -- TODO: include text explaining the difference between
 -- different types of mappings
--- see: https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
+-- SEE: https://stackoverflow.com/questions/3776117/what-is-the-difference-between-the-remap-noremap-nnoremap-and-vnoremap-mapping
 
 -- =======================================--
 --            Keymaps definition          --
 -- =======================================--
 
 -- `vim.keymap.set` is non-recursive by default, that means: `{ remap = false }` by default
--- see: `:h vim.keymap.set`
+-- SEE: `:h vim.keymap.set`
 
 local map = vim.keymap.set
 local installed_and_loaded = require("utils").installed_and_loaded
@@ -33,7 +33,7 @@ vim.g.maplocalleader = " "
 -- https://unix.stackexchange.com/questions/72086/ctrl-s-hangs-the-terminal-emulator/72092#72092
 -- https://stackoverflow.com/questions/3446320/in-vim-how-to-map-save-to-ctrl-s
 
--- see: https://superuser.com/questions/88432/save-in-insert-mode-vim/88435
+-- SEE: https://superuser.com/questions/88432/save-in-insert-mode-vim/88435
 -- Adding <C-\> will prevent moving cursor one character left.
 -- lua needs escaping for \ char, so in lua is <C-\\>
 
@@ -49,7 +49,7 @@ vim.cmd "nnoremap <silent> <C-s> :w<CR>"
 
 -- {{{ Move around buffers easily
 
--- see: http://andrewradev.com/2011/04/26/my-vim-workflow-basic-moves/
+-- SEE: http://andrewradev.com/2011/04/26/my-vim-workflow-basic-moves/
 map("n", "gh", "<C-w>h", { remap = true })
 map("n", "gj", "<C-w>j", { remap = true })
 map("n", "gk", "<C-w>k", { remap = true })
@@ -216,9 +216,9 @@ if vim.fn.executable "webstorm" == 1 then
   -- TODO: realtime sync terminal Neovim with Webstorm. Is it possible?
   -- TODO: add and "if project is web related then", how to detect this?
 
-  -- See: https://www.reddit.com/r/vim/comments/b2m2dp/move_from_ide_to_vim/
-  -- See: https://stackoverflow.com/questions/4037984/is-it-possible-to-extend-intellij-such-that-i-can-open-the-current-file-in-vim
-  -- See: https://vi.stackexchange.com/questions/18073/neovim-qt-is-it-possible-open-files-in-the-existing-window
+  -- SEE: https://www.reddit.com/r/vim/comments/b2m2dp/move_from_ide_to_vim/
+  -- SEE: https://stackoverflow.com/questions/4037984/is-it-possible-to-extend-intellij-such-that-i-can-open-the-current-file-in-vim
+  -- SEE: https://vi.stackexchange.com/questions/18073/neovim-qt-is-it-possible-open-files-in-the-existing-window
 
   -- BUG: if Webstorm isn't already opened, Neovim spawns a new process that blocks
   --      the current buffer from being editing (cursor won't move), no matter if
@@ -226,7 +226,7 @@ if vim.fn.executable "webstorm" == 1 then
   --      Maybe use plenary for launching it asynchronously?
   --      If webstorm was already launched the buffer won't be blocked.
   --        WORKAROUND: This is overcome by using `setsid`, but is a LINUX ONLY solution
-  --        see: https://github.com/justinmk/vim-gtfo/issues/50
+  --        SEE: https://github.com/justinmk/vim-gtfo/issues/50
   --        TODO: see if the same problem happens in macOS
 
   -- Open the whole project in Webstorm
@@ -244,7 +244,7 @@ if vim.fn.executable "webstorm" == 1 then
 
   -- Open only current file in Webstorm (without its project) in current cursor position.
   -- Possible only when using early 2020 releases or later.
-  -- This uses the IDE lightedit mode. see: https://blog.jetbrains.com/idea/2020/04/lightedit-mode/
+  -- This uses the IDE lightedit mode. SEE: https://blog.jetbrains.com/idea/2020/04/lightedit-mode/
   -- `$ westorm -e <file-to-be-light-edited>`
   -- NOTE: for now lightedit mode doesn't support opening files using `--line` and `--column` parameters
   map("n", "gowf", [[<cmd>execute 'silent !setsid webstorm -e ' . expand('%:p')<CR>]])
@@ -253,9 +253,9 @@ if vim.fn.executable "webstorm" == 1 then
   -- using IdeaVim plugin and a mapping defined in the $XDG_CONFIG_HOME/ideavim/ideavimrc file (.vimrc analog)
   -- This mapping triggers a custom external tool defined in:
   -- Preferences > Tools > External tools
-  -- The tool uses nvr cli (see: https://github.com/mhinz/neovim-remote)
-  -- See: https://www.reddit.com/r/neovim/comments/nehuye/how_to_alternate_between_neovim_and_other_text/
-  -- See: https://www.reddit.com/r/IntelliJIDEA/comments/dphwrd/how_to_configure_ideavim_shortcut_to_open_file_in/
+  -- The tool uses nvr cli (SEE: https://github.com/mhinz/neovim-remote)
+  -- SEE: https://www.reddit.com/r/neovim/comments/nehuye/how_to_alternate_between_neovim_and_other_text/
+  -- SEE: https://www.reddit.com/r/IntelliJIDEA/comments/dphwrd/how_to_configure_ideavim_shortcut_to_open_file_in/
 end
 
 -- }}}
@@ -281,8 +281,8 @@ if vim.fn.executable "code" == 1 then
 
   -- NOTE: From Vscode it is possible to go back to terminal Neovim in the same instance and buffer
   -- a mapping defined in ~/.config/nvim/vscode/lua/keymaps.lua
-  -- This mapping triggers nvr cli (see: https://github.com/mhinz/neovim-remote):
-  -- See: https://www.reddit.com/r/neovim/comments/nehuye/how_to_alternate_between_neovim_and_other_text/
+  -- This mapping triggers nvr cli (SEE: https://github.com/mhinz/neovim-remote):
+  -- SEE: https://www.reddit.com/r/neovim/comments/nehuye/how_to_alternate_between_neovim_and_other_text/
 end
 
 -- }}}

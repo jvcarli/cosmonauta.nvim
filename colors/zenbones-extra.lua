@@ -42,7 +42,7 @@ else
   -- vim.cmd [[ hi LspReferenceRead  cterm=underline guibg=#f3dcb0 ]]
 
   -- vim-dirvish
-  -- see: https://github.com/justinmk/vim-dirvish/issues/208
+  -- SEE: https://github.com/justinmk/vim-dirvish/issues/208
   vim.cmd "highlight DirvishPathTail gui=bold guifg=#286486"
   vim.cmd "highlight DirvishArg gui=boldunderline guibg=#d79921"
 

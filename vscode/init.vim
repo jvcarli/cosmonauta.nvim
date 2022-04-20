@@ -1,5 +1,5 @@
 " Vscode-neovim init file
-" see: https://github.com/vscode-neovim/vscode-neovim
+" SEE: https://github.com/vscode-neovim/vscode-neovim
 " Using a init.lua file is possible too.
 
 " exclude unnecessary directories from vscode config

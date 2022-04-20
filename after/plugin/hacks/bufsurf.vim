@@ -2,7 +2,7 @@
 "       But sometimes the plugins don't have an API
 "       Or don't expose its functions inside autoload
 "       due to design decisions (or not).
-" see: https://vi.stackexchange.com/questions/17866/are-script-local-functions-sfuncname-unit-testable
+" SEE: https://vi.stackexchange.com/questions/17866/are-script-local-functions-sfuncname-unit-testable
 
 " Getting vim-bufsurf bufsurf.vim script id
 " vim-bufsurf doesn't expose autoload function

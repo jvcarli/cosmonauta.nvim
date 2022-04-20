@@ -1,4 +1,4 @@
--- see: https://castel.dev/post/lecture-notes-1/#vim-and-latex
+-- SEE: https://castel.dev/post/lecture-notes-1/#vim-and-latex
 
 -- on macOS  install required latex packages with:
 -- brew install --cask mactex-no-gui
@@ -21,7 +21,7 @@ vim.g.vimtex_view_method = "zathura"
 
 vim.g.vimtex_quickfix_mode = 2 -- default value
 
--- see: https://github.com/lervag/vimtex/issues/1576
+-- SEE: https://github.com/lervag/vimtex/issues/1576
 -- FOR BACKWARD SEARCH WORK FROM SKIM (OR ANOTHER PDF VIEWER)
 -- NEOVIM MUST BE INVOKED WITH:
 -- NVIM_LISTEN_ADDRESS=/tmp/nvimsocket nvim file.tex
@@ -29,7 +29,7 @@ vim.g.vimtex_quickfix_mode = 2 -- default value
 
 -- TODO: autocmd for enable a specific neovim socket for when editing LaTeX
 -- and seeing them with Skim pdf viewer
--- also  see: https://jdhao.github.io/2021/02/20/inverse_search_setup_neovim_vimtex/
+-- also  SEE: https://jdhao.github.io/2021/02/20/inverse_search_setup_neovim_vimtex/
 -- relevant too: https://github.com/neovim/neovim/issues/1750
 
 -- vim.g.vimtex_view_automatic = 0

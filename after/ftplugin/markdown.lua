@@ -4,7 +4,7 @@
 
 -- Follows Prettier Markdown default line wrapping:
 -- Lines can be select in visual mode and formatted using `gq` "
--- See: h: gq
+-- SEE: h: gq
 
 vim.opt.textwidth = 80
 

@@ -76,7 +76,7 @@ local M = packer.startup {
 
     -- fix Neovim CursorHold and CursorHoldI autocmd events performance bug
     -- and decouple updatetime from CusorHold and CursorHoldI
-    --  see: https://github.com/neovim/neovim/issues/12587
+    --  SEE: https://github.com/neovim/neovim/issues/12587
     use {
       "antoinemadec/FixCursorHold.nvim", -- *
       config = function()
@@ -84,14 +84,14 @@ local M = packer.startup {
         -- vim.g.cursorhold_updatetime variable, in ms,
         -- is used for both CursorHold and CursorHoldI.
         -- If this variable isn't defined FixCursorHold will use Neovim `updatetime` instead
-        -- see: `:help updatetime`
+        -- SEE: `:help updatetime`
       end,
     }
 
     -- Speed up loading lua modules in Neovim
     -- The expectation is that a form of this plugin
     -- will eventually be merged into Neovim core via
-    -- this PR, see: https://github.com/neovim/neovim/pull/15436
+    -- this PR, SEE: https://github.com/neovim/neovim/pull/15436
     -- Until then, this plugin can be used
     use "lewis6991/impatient.nvim" -- *
 
@@ -149,7 +149,7 @@ local M = packer.startup {
 
     -- use xsel instead of xclip, -- TODO: search more about xsel, xclip and its differences
     -- so "clipboard: error: Error: target STRING not available" doesn't happen
-    -- see: https://github.com/neovim/neovim/issues/2642#issuecomment-170271675
+    -- SEE: https://github.com/neovim/neovim/issues/2642#issuecomment-170271675
     -- NOTE: vim-exchange must be using named clipboards under the hood, which is neat <3
     use "tommcdo/vim-exchange"
 
@@ -190,7 +190,7 @@ local M = packer.startup {
     }
 
     -- Intelligently reopen files at your last edit position
-    -- also see: https://www.reddit.com/r/neovim/comments/p5is1h/how_to_open_a_file_in_the_last_place_you_editied/
+    -- also SEE: https://www.reddit.com/r/neovim/comments/p5is1h/how_to_open_a_file_in_the_last_place_you_editied/
     use "farmergreg/vim-lastplace" -- *
 
     -- provides additional text objects
@@ -420,7 +420,7 @@ local M = packer.startup {
     end
 
     -- cmp-spell
-    -- see: https://github.com/hrsh7th/nvim-cmp/issues/69
+    -- SEE: https://github.com/hrsh7th/nvim-cmp/issues/69
 
     -- Cmp comparators
     use "lukas-reineke/cmp-under-comparator" --  comparator function for completion items that start with one or more underlines
@@ -551,7 +551,7 @@ local M = packer.startup {
     --=======================================--
 
     -- Basically what I need from file management / terminal and tmux integration is:
-    --   * A simple split explorer (see: http://vimcasts.org/blog/2013/01/oil-and-vinegar-split-windows-and-project-drawer/)
+    --   * A simple split explorer (SEE: http://vimcasts.org/blog/2013/01/oil-and-vinegar-split-windows-and-project-drawer/)
     --     so I can view and understand the project tree structure better
     --     I achieve this with dirbuf.nvim (dirvish.vim based split explorer and file manager)
     --   * a way to get QUICKLY to a REAL terminal pane
@@ -578,7 +578,7 @@ local M = packer.startup {
 
     -- Highly extendable fuzzy finder UI to select elements (files, grep results, open buffers...)
     -- Centered around modularity, allowing for easy customization.
-    -- see: https://www.reddit.com/r/neovim/comments/ngt4dn/question_fuzzy_find_grep_search_results_in/
+    -- SEE: https://www.reddit.com/r/neovim/comments/ngt4dn/question_fuzzy_find_grep_search_results_in/
     use {
       "nvim-telescope/telescope.nvim",
       requires = "nvim-lua/plenary.nvim",
@@ -608,7 +608,7 @@ local M = packer.startup {
     -- lightweight alternative to haya14busa/incsearch.vim automatic :nohlsearch option
     -- doesn't use mapping hacks as opposed to https://github.com/junegunn/vim-slash/issues/7
     -- so it works fine with google/vim-searchindex
-    -- see: https://github.com/neovim/neovim/issues/5581
+    -- SEE: https://github.com/neovim/neovim/issues/5581
     use "romainl/vim-cool" -- let g:CoolTotalMatches = 1 doesn't work with neovim
 
     -- Display number of search matches & index of a current match
@@ -759,7 +759,7 @@ local M = packer.startup {
     -- defines a new text object representing
     -- lines of code at the same indent level.
     -- Useful for python/vim scripts, etc.
-    -- see: https://www.seanh.cc/2020/08/08/vim-indent-object/
+    -- SEE: https://www.seanh.cc/2020/08/08/vim-indent-object/
     use "michaeljsmith/vim-indent-object"
 
     -- use "simrat39/symbols-outline.nvim"
@@ -869,8 +869,8 @@ local M = packer.startup {
     -- inside plugin/ folder, so that means that we wouldn't be able to use those tables
     -- at init.lua. They are currently used in `keymaps.lua` and `utils.lua`
     --
-    -- see: https://github.com/wbthomason/packer.nvim#checking-plugin-statuses
-    -- see: https://github.com/wbthomason/packer.nvim/discussions/196
+    -- SEE: https://github.com/wbthomason/packer.nvim#checking-plugin-statuses
+    -- SEE: https://github.com/wbthomason/packer.nvim/discussions/196
     compile_path = vim.fn.stdpath "config" .. "/lua/packer/packer_compiled.lua",
     snapshot_path = vim.fn.stdpath "config",
   },

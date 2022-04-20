@@ -79,7 +79,7 @@ cmp.setup {
 
   -- HACK: vscode like icons and which LSP is responsible for the current completion menu item (not guaranteed to be stable)
   formatting = {
-    -- see: https://www.reddit.com/r/neovim/comments/smtrpm/is_it_possible_to_show_which_lsp_is_responsible/
+    -- SEE: https://www.reddit.com/r/neovim/comments/smtrpm/is_it_possible_to_show_which_lsp_is_responsible/
     -- taken from: https://github.com/rebelot/dotfiles/blob/master/nvim/lua/plugins/cmp.lua#L128-L151
     format = function(entry, vim_item)
       -- vim_item.kind = require("lspkind").presets.default[vim_item.kind] .. " " .. vim_item.kind

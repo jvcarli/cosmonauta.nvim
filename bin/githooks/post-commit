@@ -1,6 +1,6 @@
 #!/bin/env bash
 # TODO: use return codes instead of the returned string
-#       see: https://stackoverflow.com/questions/17797740/check-if-specific-file-in-git-repository-has-changed
+#       SEE: https://stackoverflow.com/questions/17797740/check-if-specific-file-in-git-repository-has-changed
 
 # NOTE:
 # use `git config --local advice.ignoredHook false`
@@ -10,7 +10,7 @@ SPELLFILE="spell/en.utf-8.add"
 CHECK_FOR_SPELLFILE="$(git diff --name-only --exit-code "$SPELLFILE")"
 
 skip_git_post_hook() {
-    # see: https://coderwall.com/p/dv-dgg/bypass-post-commit-hook-temporarily
+    # SEE: https://coderwall.com/p/dv-dgg/bypass-post-commit-hook-temporarily
     # There is an option for bypassing pre-commit hook: git commit --no-verify ...,
     # but for post-commit there isn't. Here is a piece of my script, with simple solution for the problem:
 

@@ -12,7 +12,7 @@ parser_config.gotmpl = {
     "gohtmltmpl",
     "gotexttmpl",
     "gotmpl",
-    "yaml", -- see: https://github.com/ngalaiko/tree-sitter-go-template/issues/1
+    "yaml", -- SEE: https://github.com/ngalaiko/tree-sitter-go-template/issues/1
   },
 }
 
@@ -25,9 +25,9 @@ require("nvim-treesitter.configs").setup {
     -- "comment",
     -- produces SERIOUS (unusable) lag in tsx, js, jsx files
     -- TODO: test it again
-    -- see: https://github.com/nvim-treesitter/nvim-treesitter/issues/1267
-    -- see: https://github.com/nvim-treesitter/nvim-treesitter/issues/1313
-    -- see: https://github.com/nvim-treesitter/nvim-treesitter/issues/1275
+    -- SEE: https://github.com/nvim-treesitter/nvim-treesitter/issues/1267
+    -- SEE: https://github.com/nvim-treesitter/nvim-treesitter/issues/1313
+    -- SEE: https://github.com/nvim-treesitter/nvim-treesitter/issues/1275
 
     "css",
     "dockerfile",
@@ -35,7 +35,7 @@ require("nvim-treesitter.configs").setup {
     "html",
     "javascript",
 
-    -- "jsdoc", see:: https://github.com/nvim-treesitter/nvim-treesitter/issues/1275
+    -- "jsdoc", SEE:: https://github.com/nvim-treesitter/nvim-treesitter/issues/1275
 
     "julia",
     -- "latex", TODO: let vimtex handle this?

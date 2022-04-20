@@ -57,7 +57,7 @@ end
 --=======================================--
 
 -- Neovim delegates some features to dynamic "providers".
--- See: help provider
+-- SEE: help provider
 --
 -- To check the provider status and the need of an upgrade run:
 --  ":checkhealth provider"
@@ -65,12 +65,12 @@ end
 -- Python provider
 -- NOTE: Python 2 IS NOT supported anymore
 -- Virtualenvs are used often so it's better to hard-code a Neovim only interpreter using |g:python3_host_prog|
--- so that the "pynvim" package is not required for each virtualenv. See: help python-virtualenv
+-- so that the "pynvim" package is not required for each virtualenv. SEE: help python-virtualenv
 --
 -- TODO: include which plugins need python3
 -- used by (don't remember because i didn't take notes)
 --
--- needs: pynvim package: `$ pip install pynvim`. See: https://github.com/neovim/pynvim
+-- needs: pynvim package: `$ pip install pynvim`. SEE: https://github.com/neovim/pynvim
 vim.g.python3_host_prog = vim.env.HOME .. "/.local/share/nvim/nvim-hardcoded-pythons/py3nvim/venv/bin/python"
 
 -- Ruby provider
@@ -88,7 +88,7 @@ vim.g.ruby_host_prog = vim.env.HOME .. "/.local/share/gem/ruby/3.0.0/bin/neovim-
 -- Needs "Neovim::Ext" cpan package, do:
 --  ` $ cpan App::cpanminus`
 --  ` $ cpanm Neovim::Ext`
--- see: http://www.cpan.org/modules/INSTALL.html
+-- SEE: http://www.cpan.org/modules/INSTALL.html
 if vim.fn.has "unix" == 1 then -- Linux perl PATH configuration
   vim.g.perl_host_prog = "/usr/bin/perl"
 end
@@ -102,21 +102,21 @@ end
 vim.g.node_host_prog = vim.env.HOME .. "/.yarn/bin/neovim-node-host"
 
 -- Clipboard integration
--- see: help clibpoard
+-- SEE: help clibpoard
 --
 -- Linux: it's better to use xclip, TODO: list reasons for using xclip instead of xsel
 -- macOS: uses pbcopy by default, TODO: see if pbcopy works well and replace it if needed
 --
 -- Enable access to system clipboard with +y operator
--- see: https://advancedweb.hu/working-with-the-system-clipboard-in-vim/
+-- SEE: https://advancedweb.hu/working-with-the-system-clipboard-in-vim/
 -- Set the + register as the default: :set clipboard=unnamedplus.
 -- Now every time you press y or p, Vim will use the system clipboard.
 -- Yank to the system clipboard explicitly only when you need it with "+y, and paste from it with "+p.
--- TODO: integrate yanking with kitty private copy_paste buffer --> see: help clipboard
+-- TODO: integrate yanking with kitty private copy_paste buffer --> SEE: help clipboard
 --
--- see: https://stackoverflow.com/questions/30691466/what-is-difference-between-vims-clipboard-unnamed-and-unnamedplus-settings
+-- SEE: https://stackoverflow.com/questions/30691466/what-is-difference-between-vims-clipboard-unnamed-and-unnamedplus-settings
 -- NOTE: Block paste from system clipboard was only fixed in #14842 (2021/07/01)
---       see: https://github.com/neovim/neovim/pull/14848
+--       SEE: https://github.com/neovim/neovim/pull/14848
 vim.o.clipboard = "unnamed,unnamedplus"
 
 --=======================================--
@@ -150,10 +150,9 @@ vim.o.termguicolors = true
 
 -- Enable mouse mode
 -- Enable mouse scrolling in vim while in tmux
--- This will disable numbers selection when selecting
--- text with the mouse too
--- See: https://superuser.com/questions/610114/tmux-enable-mouse-scrolling-in-vim-instead-of-history-buffer
--- See: https://vim.fandom.com/wiki/Using_the_mouse_for_Vim_in_an_xterm
+-- This will disable numbers selection when selecting text with the mouse too
+-- SEE: https://superuser.com/questions/610114/tmux-enable-mouse-scrolling-in-vim-instead-of-history-buffer
+-- SEE: https://vim.fandom.com/wiki/Using_the_mouse_for_Vim_in_an_xterm
 vim.o.mouse = "a"
 
 --=======================================--
@@ -210,7 +209,7 @@ vim.o.timeoutlen = 250 -- in ms
 --
 --     When you type j in insert mode Neovim will wait `timeoutlen` milliseconds
 --     for you to press k before deciding what the intent is.
---     see: https://vi.stackexchange.com/questions/10249/what-is-the-difference-between-mapped-key-sequences-and-key-codes-timeoutl
+--     SEE: https://vi.stackexchange.com/questions/10249/what-is-the-difference-between-mapped-key-sequences-and-key-codes-timeoutl
 --
 -- WhichKey.nvim plugin uses this setting too, it's the time it waits before being triggered.
 
@@ -222,8 +221,8 @@ vim.opt.number = true -- show current line number
 vim.opt.relativenumber = true -- show relative numbers
 
 -- Avoid annoying "ping-pong" of gitsigns, markers and so on on sign column:
--- for more options, see: `:help signcolumn`
--- also see: https://www.reddit.com/r/neovim/comments/f04fao/my_biggest_vimneovim_wish_single_width_sign_column/
+-- for more options, SEE: `:help signcolumn`
+-- also SEE: https://www.reddit.com/r/neovim/comments/f04fao/my_biggest_vimneovim_wish_single_width_sign_column/
 vim.wo.signcolumn = "yes:1"
 
 -- https://vi.stackexchange.com/questions/27989/how-to-highlight-cursor-line-number-without-cursor-line
@@ -243,7 +242,7 @@ vim.opt.shortmess:append "ISc"
 
 -- c: don't give |ins-completion-menu| messages.
 --    messages such as "match 1 of 2"
---    when using nvim-cmp (ONLY in native view mode),  see: https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
+--    when using nvim-cmp (ONLY in native view mode),  SEE: https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
 --    which makes Neovim cmdline blink REALLY fast,
 --    and when using default Neovim completions such as i_CTRL-X_CTRL-I
 
@@ -340,7 +339,7 @@ vim.o.completeopt = "menuone,noselect"
 -- It must end in ".{encoding}.add".
 -- This is the default path but it is explicitly set here for reference
 -- TODO: check spell-sug-files,
--- see: `h: spell-sug-file`
+-- SEE: `h: spell-sug-file`
 vim.opt.spellfile = vim.fn.stdpath "config" .. "/spell/en.utf-8.add"
 
 --=======================================--
@@ -383,8 +382,8 @@ vim.o.clipboard = "unnamedplus"
 -- For more information see h: lua-highlight
 -- The first parameter is the highlight group to use,
 -- and the second is the highlight duration time in ms
--- See: https://jdhao.github.io/2020/05/22/highlight_yank_region_nvim/
--- See: https://github.com/mjlbach/defaults.nvim/blob/master/init.lua
+-- SEE: https://jdhao.github.io/2020/05/22/highlight_yank_region_nvim/
+-- SEE: https://github.com/mjlbach/defaults.nvim/blob/master/init.lua
 
 vim.cmd [[
   augroup YankHighlight
@@ -406,7 +405,7 @@ vim.o.showmode = false
 --          Filetype detection           --
 --=======================================--
 
--- see:https://www.reddit.com/r/neovim/comments/rvwsl3/introducing_filetypelua_and_a_call_for_help/
+-- SEE:https://www.reddit.com/r/neovim/comments/rvwsl3/introducing_filetypelua_and_a_call_for_help/
 
 -- testing: enable filetype.lua, still opt-in
 vim.g.do_filetype_lua = 1
