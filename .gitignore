@@ -16,8 +16,7 @@ profile.log
 
 # test files
 test/*
-!test/minimal-init.vim
-!test/minimal-init.lua
+!test/minimal_init.lua
 
 # scratch (ideas) files
 scratch/*
