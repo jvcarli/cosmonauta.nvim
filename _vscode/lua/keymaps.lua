@@ -31,6 +31,8 @@ map("n", "gon", function()
   -- Invokes nvr and attaches to the current terminal Neovim session and window
   -- TODO: find a way to focus terminal Neovim automatically when invoking the command
   -- DEBUG: for debugging remove silent from the command below!
+  -- TODO: Neovim now supports remove so nvr is not needed anymore. Remove it and
+  --       use the native solution instead.
   vim.cmd(
     [[execute 'silent !nvr --nostart --servername /tmp/nvimsocket]]
       .. [[ "+call cursor(]]
