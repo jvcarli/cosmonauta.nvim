@@ -20,7 +20,7 @@ endfunction
 augroup AdditionalBufSurfAutocmds
   autocmd!
   " TODO:
-  " delelete entry from BufSurfList without messing up its order
+  " delete entry from BufSurfList without messing up its order
   " autocmd BufDelete * call s:BufSurfDelete
   autocmd TabNewEntered * :call s:BufSurfClear()
 augroup END
