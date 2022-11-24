@@ -28,11 +28,13 @@ map("n", "gon", function()
   -- Resolve the path to the its absolute form
   local resolved_current_filepath = vim.fn.resolve(cleaned_current_filepath)
 
+  -- WARN: for debugging remove silent from the command below!
+  -- TODO: find a way to focus terminal Neovim automatically when invoking remote commands
+
+  -- Solution using neovim-remote
+  -- SEE: https://github.com/mhinz/neovim-remote
   -- Invokes nvr and attaches to the current terminal Neovim session and window
-  -- TODO: find a way to focus terminal Neovim automatically when invoking the command
-  -- DEBUG: for debugging remove silent from the command below!
-  -- TODO: Neovim now supports remove so nvr is not needed anymore. Remove it and
-  --       use the native solution instead.
+  -- WARN: nvim must be started with `$ nvim --listen /tmp/nvimsocket` for this command to work
   vim.cmd(
     [[execute 'silent !nvr --nostart --servername /tmp/nvimsocket]]
       .. [[ "+call cursor(]]
@@ -43,4 +45,9 @@ map("n", "gon", function()
       .. resolved_current_filepath
       .. [[']]
   )
+
+  -- TODO: ditch nvr in favor of nvim remote
+  --       SEE: https://www.reddit.com/r/neovim/comments/tva95r/new_feature_nvim_remote/
+  --       SEE: :h remote
+  --       NOTE: native remote feature is still incomplete, so it's better using neovim-remote (nvr) fow now
 end)
