@@ -152,7 +152,9 @@
 
 -- }}}
 
-if vim.g.vscode then
+if vim.env.NVIM_DEBUG == "1" then
+  dofile(vim.fn.stdpath "config" .. "/test/minimal_init.lua")
+elseif vim.g.vscode then
   -- vscode-neovim extension
   -- SEE: https://github.com/vscode-neovim/vscode-neovim
 
