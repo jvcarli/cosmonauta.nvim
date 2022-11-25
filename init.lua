@@ -2,6 +2,9 @@
 
 -- {{{ (Neo)vim beginner (or a little rusty)?
 
+-- Help is your friend
+-- :help user-manual
+
 -- Make sure you grok VI:
 -- SEE: https://stackoverflow.com/questions/1218390/what-is-your-most-productive-shortcut-with-vim/1220118#1220118
 
@@ -35,16 +38,28 @@
 -- Regarding Neovim there are two types of Lua files: scripts and modules.
 --
 -- Scripts work like Vim script files, you put them into your
--- plugin, ftplugin, autoload, syntax or whatever directory
+-- plugin, ftplugin, autoload, syntax or another directory
 -- inside your runtimepath (SEE: `:h 'runtimepath')
--- and they will be sourced automatically (when appropriate),
+-- and they will be sourced automatically when appropriate,
 -- like Vim script files.
 --
--- Module is like a library that can be loaded using require
--- and has a single global name containing a table
--- Basically a module's a Lua file which is NOT sourced automatically.
--- You have to load them explicitly using the require function. These must be inside the lua directory of the runtime path directory.
+-- Modules are like a library that can be loaded using lua's require function
+-- and has a single global name containing a lua table.
+-- Basically a module's a Lua file (or multiple files) that is NOT sourced automatically.
+-- You have to load them explicitly using the require function. They must be inside the lua directory of the runtime path directory.
 -- SEE: https://www.reddit.com/r/neovim/comments/rjbkn8/is_it_necessary_to_put_all_my_lua_files_in_a/
+
+-- }}}
+
+-- {{{ Vimscript is a pain
+
+-- Yes, writing it is a pain.
+-- Does it have an autoformatter like prettier, stylua, etc?
+-- No:
+--   SEE: https://www.reddit.com/r/vim/comments/8k1ljk/vim_script_formatter/
+--   SEE: https://www.reddit.com/r/vim/comments/dreuhu/vimscript_formatter/
+--   SEE: https://github.com/vim-jp/vim-vimlparser
+--   SEE: https://github.com/vim-jp/go-vimlparser
 
 -- }}}
 
@@ -52,12 +67,14 @@
 
 -- SEE: https://www.reddit.com/r/neovim/comments/ny3oem/confused_by_order_of_loading_scripts/
 
--- `plugin/` directory and its files gets sourced AFTER this file
+-- `plugin/` directory and its files gets sourced AFTER this (~/.config/init.lua) file
+
 -- }}}
 
 -- {{{ Relevant Neovim Github issues
 
 -- Following HEAD: breaking changes on master
+-- TODO: verify for any changes starting from APRIL/2022
 -- SEE: https://github.com/neovim/neovim/issues/14090
 
 -- Autocmd for remote plugin on VimEnter is slow
@@ -105,29 +122,31 @@
 -- from: https://stackoverflow.com/questions/12213597/how-to-see-which-plugins-are-making-vim-slow
 
 -- Neovim responsiveness:
---     launch a file with nvim
---     :profile start profile.log
---     :profile func *
---     :profile file *
+--    Launch a file with nvim and do:
+--    :profile start profile.log
+--    :profile func *
+--    :profile file *
 -- At this point do slow actions that you want to profile
---     :profile pause
---     :noautocmd qall!
-
--- Packer plugins loading time
---     launch nvim
---     :PackerCompile profile = true
---     quit nvim and launch it again
---     :PackerProfile
+--    :profile pause
+--    :noautocmd qall!
 
 -- Detailed startup time:
 -- nvim --startuptime timeCost.log timeCost.log
+-- NOTE: timeCost.log is duplicated on the command on purpose, Neovim will create the file containing detailed profiling
+--       and will open it inside Neovim after
 
 -- }}}
 
 --  {{{ Thirdy-party plugins
 
+-- Packer plugins loading time
+--    Launch nvim
+--    :PackerCompile profile = true
+--    quit nvim and launch it again
+--    :PackerProfile
+
 -- Install "dstein64/vim-startuptime" plugin, open Neovim and run:
--- `:StartupTime`
+--    :StartupTime
 
 -- }}}
 
@@ -140,11 +159,12 @@ if vim.g.vscode then
   -- MUST use absolute path, `$ code` can be called form anywhere
   vim.cmd("source " .. vim.fn.stdpath "config" .. "/vscode/init.vim")
 else
-  -- The real deal
+  -- Ordinary Neovim, the real deal
+
   -- impatient.nvim: speed up lua imports. MUST be loaded before any other lua plugin.
   pcall(require, "impatient")
 
-  -- Vanilla settings (doesn't depend on external plugins).
+  -- Neovim vanilla settings
   require "general_settings"
 
   -- Packer managed plugins and its settings.
