@@ -178,4 +178,12 @@ else
   -- Keymaps definition
   -- check keymaps descriptions in which-key.lua file.
   require "keymaps"
+
+  -- Default colorscheme
+  -- Persistent and synced between Neovim and Kitty terminal emulator
+  -- wip, is still buggy
+  -- require "colorscheme"
+  --
+  -- still manually defining the theme for now
+  vim.cmd "colorscheme zenbones-extra"
 end
