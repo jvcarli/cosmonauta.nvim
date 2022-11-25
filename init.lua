@@ -156,8 +156,8 @@ if vim.g.vscode then
   -- vscode-neovim extension
   -- SEE: https://github.com/vscode-neovim/vscode-neovim
 
-  -- MUST use absolute path, `$ code` can be called form anywhere
-  vim.cmd("source " .. vim.fn.stdpath "config" .. "/vscode/init.vim")
+  -- MUST use absolute path because `$ code` can be called form any directory.
+  dofile(vim.fn.stdpath "config" .. "/_vscode/init.lua")
 else
   -- Ordinary Neovim, the real deal
 
