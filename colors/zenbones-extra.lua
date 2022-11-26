@@ -37,9 +37,9 @@ else
   -- Highlighting is done using the same highlight groups as the builtin LSP
   -- which is LspReferenceText, LspReferenceRead, and LspReferenceWrite.
   -- I'm overwriting LspReference* groups, which was linked to CursorLine group
-  -- vim.cmd [[ hi LspReferenceText  cterm=underline guibg=#f3dcb0 ]]
-  -- vim.cmd [[ hi LspReferenceWrite cterm=underline guibg=#f3dcb0 ]]
-  -- vim.cmd [[ hi LspReferenceRead  cterm=underline guibg=#f3dcb0 ]]
+  vim.cmd [[ hi IlluminatedWordText  cterm=underline guibg=#f3dcb0 ]]
+  vim.cmd [[ hi IlluminatedWordWrite cterm=underline guibg=#f3dcb0 ]]
+  vim.cmd [[ hi IlluminatedWordRead  cterm=underline guibg=#f3dcb0 ]]
 
   -- vim-dirvish
   -- SEE: https://github.com/justinmk/vim-dirvish/issues/208
