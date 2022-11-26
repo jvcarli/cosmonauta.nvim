@@ -19,17 +19,17 @@ else
   vim.cmd "highlight CleverFDefaultLabel cterm=bold ctermfg=9 gui=bold guifg=#A8334C"
 
   -- folke/todo-comments.nvim
-  vim.cmd "highlight TodoFgNOTE  gui=bold guifg=#88507d"
-  vim.cmd "highlight TodoFgFIX   gui=bold guifg=#a8334c"
-  vim.cmd "highlight TodoFgWARN  gui=bold guifg=#944927"
-  vim.cmd "highlight TodoFgPERF  gui=bold guifg=#44525b"
-  vim.cmd "highlight TodoFgHACK  gui=bold guifg=#944927"
-  vim.cmd "highlight TodoFgTODO  gui=bold guifg=#286486"
+  vim.cmd "highlight TodoFgNOTE gui=bold guifg=#88507d"
+  vim.cmd "highlight TodoFgFIX  gui=bold guifg=#a8334c"
+  vim.cmd "highlight TodoFgWARN gui=bold guifg=#944927"
+  vim.cmd "highlight TodoFgPERF gui=bold guifg=#44525b"
+  vim.cmd "highlight TodoFgHACK gui=bold guifg=#944927"
+  vim.cmd "highlight TodoFgTODO gui=bold guifg=#286486"
 
   -- vim match-up
   -- MatchParen is a default highlight group from Neovim
   -- MatchParenCur (for current parenthesis) and MatchWord are hi groups from matchup
-  vim.cmd "highlight MatchWord  guifg=#d79921 guibg=none" -- if, else, function, etc.
+  vim.cmd "highlight MatchWord           guifg=#d79921 guibg=none" -- if, else, function, etc.
   vim.cmd "highlight MatchParen gui=bold guifg=#d79921 guibg=none" -- Paren, brackets
   vim.cmd "highlight link MatchParenCur MatchParen"
 
