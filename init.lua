@@ -113,6 +113,10 @@
 -- [WIP] winbar
 -- SEE: https://github.com/neovim/neovim/pull/17336
 
+--  feat(ui): inline virtual text #20130
+--  SEE: https://github.com/neovim/neovim/pull/20130
+--  SEE: https://www.reddit.com/r/neovim/comments/z56k34/question_infix_inlay_hints/
+
 -- }}}
 
 -- {{{ How to time profile Neovim startup time
@@ -154,6 +158,8 @@
 
 if vim.env.NVIM_DEBUG == "1" then
   dofile(vim.fn.stdpath "config" .. "/test/minimal_init.lua")
+elseif vim.env.NVIM_RAW == "1" then
+  dofile(vim.fn.stdpath "config" .. "/_no_plugin/init.lua")
 elseif vim.g.vscode then
   -- vscode-neovim extension
   -- SEE: https://github.com/vscode-neovim/vscode-neovim
@@ -180,10 +186,12 @@ else
   require "keymaps"
 
   -- Default colorscheme
-  -- Persistent and synced between Neovim and Kitty terminal emulator
-  -- wip, is still buggy
+  -- Persistent and synced between Neovim and Kitty terminal emulator, WIP, still buggy. Defining the theme manually.
   -- require "colorscheme"
   --
-  -- still manually defining the theme for now
-  vim.cmd "colorscheme zenbones-extra"
+  -- light theme:
+  -- vim.cmd "colorscheme zenbones-extra"
+  --
+  -- dark theme
+  vim.cmd "colorscheme gruvbox"
 end
