@@ -97,9 +97,6 @@
 
 -- {{{ Relevant Neovim pull requests
 
--- Enable new diff option linematch #14537
--- SEE: https://github.com/neovim/neovim/pull/14537
-
 -- feat(api): add support for lua function & description in keymap
 -- SEE: https://github.com/neovim/neovim/pull/16594
 -- SEE: https://www.reddit.com/r/neovim/comments/rt0zzh/featapi_add_support_for_lua_function_description/

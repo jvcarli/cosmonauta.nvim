@@ -361,18 +361,18 @@ vim.opt.undofile = true
 --              Clipboard                --
 --=======================================--
 
--- Enable access to system clipboard with +y operator
--- see: https://advancedweb.hu/working-with-the-system-clipboard-in-vim/
--- Set the + register as the default: :set clipboard=unnamedplus.
--- Now every time you press y or p, Vim will use the system clipboard.
--- Yank to the system clipboard explicitly only when you need it with "+y, and paste from it with "+p.
--- TODO: integrate yanking with kitty private copy_paste buffer --> see: help clipboard
+-- =======================================--
+--                   Diff                 --
+-- =======================================--
 
--- see: https://stackoverflow.com/questions/30691466/what-is-difference-between-vims-clipboard-unnamed-and-unnamedplus-settings
--- BUG: block paste doesn't work with Neovim natively (vim 8 works) when clipboard is unnamed or unnamedplus
--- see: https://github.com/neovim/neovim/issues/1822
--- A workaround is to use either nvim-miniyank or pastefix.vim
-vim.o.clipboard = "unnamedplus"
+-- Vertical: diffs are split vertically by default unless explicitly told not to.
+
+-- Filler: Show filler lines, to keep the text
+-- synchronized (blank lines are shown) with a window that has inserted lines at the same position.
+-- Mostly useful when windows are side-by-side (vsplit) and 'scrollbind' is set.
+
+-- TODO: explore more this options, they are used with fugitive.vim and linediff.vim and others
+vim.o.diffopt = "vertical,filler,internal,closeoff,foldcolumn:0,hiddenoff,linematch:60"
 
 -- =======================================--
 --                Highlights              --
