@@ -343,23 +343,29 @@ vim.o.completeopt = "menuone,noselect"
 vim.opt.spellfile = vim.fn.stdpath "config" .. "/spell/en.utf-8.add"
 
 --=======================================--
---          Undo & backup                --
+--          Backup, Swap & Undo          --
 --=======================================--
 
-vim.opt.backup = false -- default
+-- Better safe then sorry
+vim.opt.backup = true -- defaults to false
 
 -- this helps with some formatters that otherwise require saving two times
 -- and -- if a file is being edited by another program
 -- (or was written to file while editing with another program), it is not allowed to be edited
--- vim.opt.writebackup = false
+vim.opt.writebackup = true -- defaults to true
+
+-- double slash is on purpose
+vim.opt.backupdir = { vim.env.HOME .. "/.local/state/nvim/backup//" }
 
 -- Save undo history
--- TODO: include more explanation
+-- undofiles are stored under 'undodir'
 vim.opt.undofile = true
 
---=======================================--
---              Clipboard                --
---=======================================--
+-- Disables swapfile
+-- SEE: `:help swapfile`
+-- SEE: https://vi.stackexchange.com/questions/177/what-is-the-purpose-of-swap-files
+-- SEE: https://stackoverflow.com/questions/821902/disabling-swap-files-creation-in-vim
+vim.opt.swapfile = false
 
 -- =======================================--
 --                   Diff                 --
