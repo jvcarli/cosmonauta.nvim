@@ -17,5 +17,4 @@ reached a stable state yet.
 
 - [ ] Add all used plugins and a brief description
 - [ ] Add all third party dependencies list
-- [ ] Add complete bootstrap for Linux
-- [ ] Add complete bootstrap for macOS
+- [ ] Add complete bootstrap (It should resolve itself, no matter if it's Windows, Linux or macos)
