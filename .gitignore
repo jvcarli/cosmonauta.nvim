@@ -17,6 +17,3 @@ profile.log
 # test files
 test/*
 !test/minimal_init.lua
-
-# scratch (ideas) files
-scratch/*
