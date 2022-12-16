@@ -8,8 +8,16 @@ any = true
 [packer_plugins]
 any = true
 
-# P global from ./lua/globals.lua
+# P global from user.modules.globals
 [P]
+any = true
+
+# R global from user.modules.globals
+[R]
+any = true
+
+# RELOAD global from user.modules.globals
+[RELOAD]
 any = true
 
 [[describe.args]]
