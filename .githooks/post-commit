@@ -6,6 +6,10 @@
 # use `git config --local advice.ignoredHook false`
 # so git won't bother when a hook is ignored
 
+# SEE: https://stackoverflow.com/questions/14073053/find-path-to-git-hooks-directory-on-the-shell
+# SEE: https://github.com/rycus86/githooks
+# SEE: https://vadosware.io/post/tooling-spotlight-direnv/#bonus-env-files-work-too
+
 SPELLFILE="spell/en.utf-8.add"
 CHECK_FOR_SPELLFILE="$(git diff --name-only --exit-code "$SPELLFILE")"
 
