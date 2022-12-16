@@ -166,6 +166,9 @@ elseif vim.g.vscode then
 else
   -- Ordinary Neovim, the real deal
 
+  -- Scratch files
+  vim.opt.runtimepath:append(vim.fn.stdpath "config" .. "/scratch")
+
   -- impatient.nvim: speed up lua imports. MUST be loaded before any other lua plugin.
   pcall(require, "impatient")
 
