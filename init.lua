@@ -93,6 +93,8 @@
 -- Vim folding makes me want to cry
 -- SEE:  https://github.com/neovim/neovim/issues/12649
 
+-- spell checker integration #12064
+-- SEE: https://github.com/neovim/neovim/issues/12064
 -- }}}
 
 -- {{{ Relevant Neovim pull requests
