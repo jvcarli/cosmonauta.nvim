@@ -1,0 +1,16 @@
+-- Git jump
+-- Show all git changes in a quickfix list
+-- taken from: SEE: https://www.reddit.com/r/vim/comments/gf2he2/what_is_the_simplest_way_to_get_all_git_changes/
+--             SEE: https://gist.github.com/romainl/a3ddb1d08764b93183260f8cdf0f524f
+--             SEE: related https://github.com/wincent/vcs-jump
+--
+-- This command uses a patched version of git-jump official script from https://github.com/git/git/tree/master/contrib/git-jump
+-- The original script can't be used to populate the quickfix list from within (N)vim.
+-- The edited script makes it possible to get two behaviors out of git-jump for the price of one.
+-- The script can be called from the terminal using "$ git jump <options>".
+-- It will open (N)vim and the quickfix list with the desired <options>
+-- or you can use this script from within N(vim) too, using the `:GitJump` command defined below:
+-- WARN: git-jump script MUST be a git alias otherwise the command will fail,
+--       SEE: ~/.config/git/config
+--       SEE: ~/.config/git/scripts/git-jump.sh
+vim.cmd [[ command! -bar -nargs=* GitJump cexpr system('git jump ' . expand(<q-args>))]]

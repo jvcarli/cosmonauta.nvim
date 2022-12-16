@@ -178,6 +178,9 @@ else
   -- Setup globals that I expect to be always available.
   require "user.modules.globals"
 
+  -- Commands definition
+  require "commands"
+
   -- Keymaps definition
   -- check keymaps descriptions in which-key.lua file.
   require "keymaps"
