@@ -5,7 +5,7 @@
 " of vim.  Lists all sourced scripts, finds the line that matches the
 " given scriptName. Expects only one match. Then parses the line describing
 " the given scriptName.
-function hacks#vimscript#GetScriptID(scriptName)
+function! hacks#vimscript#GetScriptID(scriptName) abort
 
     let l:allScripts = split(execute('scriptnames'), '\n')
 
@@ -13,7 +13,7 @@ function hacks#vimscript#GetScriptID(scriptName)
     for line in l:allScripts
         if line =~ a:scriptName
             " First time seeing a matching script.
-            if l:matchingLine == ''
+            if l:matchingLine == ""
                 let l:matchingLine = line
             else
                 " Multiple matches of the scriptName. Unexpected
@@ -21,7 +21,7 @@ function hacks#vimscript#GetScriptID(scriptName)
             endif
         endif
     endfor
-    if l:matchingLine == ''
+    if l:matchingLine == ""
         throw  'Could not find ' . a:scriptName . ' in sourced scripts'
     endif
 
@@ -41,7 +41,7 @@ endfunction
 " callWithSID gives us the ability to call script local functions in the
 " plugin implementation. For implementation details see
 " https://vi.stackexchange.com/a/17871/13792
-function hacks#vimscript#CallWithSID(sid,funcName,...)
+function! hacks#vimscript#CallWithSID(sid,funcName,...) abort
     let l:FuncRef = function('<SNR>' . a:sid . '_' . a:funcName)
     let l:rv = call(l:FuncRef, a:000)
     return l:rv
