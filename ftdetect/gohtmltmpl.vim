@@ -17,4 +17,4 @@ endfunction
 
 " NOTE: should NOT use augroup in ftdetect
 " SEE: `:help ftdetect` and https://www.reddit.com/r/neovim/comments/skac4h/lsp_working_after_e/
-au BufRead,BufNewFile *.html call DetectGoHtmlTmpl()
+autocmd BufRead,BufNewFile *.html call DetectGoHtmlTmpl()
