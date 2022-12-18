@@ -1,9 +1,11 @@
 # Cosmonauta.nvim
 
-Neovim custom configuration
+Neovim custom configuration for macos, Arch Linux and Windows.
 
-**DO NOT** copy this repository without reading the code as it's changing constantly and has not
+The code here is constantly changing and **has NOT**
 reached a stable state yet.
+
+Usually it will be fine to copy this repository to `~/.config/nvim` and run `$ nvim` as it is.
 
 ## Requirements
 
