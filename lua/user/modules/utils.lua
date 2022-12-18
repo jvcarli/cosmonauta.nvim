@@ -1,5 +1,8 @@
 local M = {}
 
+-- TODO: don't depend on lspconfig
+local lspconfig_util = require "lspconfig.util"
+
 M.executable = function(cmdline_tool)
   if vim.fn.executable(cmdline_tool) == 1 then
     return true
@@ -68,4 +71,30 @@ M.kitty_send_desktop_notification = function(title, body)
   end
 end
 
+M.bare_git_root_dir = function(startpath)
+  -- NOTE: works but I think the logic here is a little sketchy.
+
+  -- Try to find project_root and return the project root string if found.
+  --
+  -- Try first to see if there's the project root is based on git worktrees workflow,
+  -- i.e. is based on git bare repos.
+  -- If not then search for regular git repos.
+  -- NOTE: this assume a certain workflow.
+  -- TODO: include notes on what workflow this assumes.
+  local project_root = lspconfig_util.root_pattern "worktrees"(startpath) --[[ or lspconfig_util.root_pattern ".git"(startpath) ]]
+
+  -- Means that we are starting Neovim from literraly inside of .git/* directory of a bare repo:
+  -- This assumes that that .git/* is ONE LEVEL DEPTH into the main project directory.
+  -- Start neovim from .git/*  will be rare,
+  -- but when one want to internals of the git directory or edit local git config files will be usefull.
+  if project_root ~= nil then
+    if M.basename(project_root) == ".git" then
+      -- Remove pattern ".git" from then end of the string
+      -- meaning we are returning main directory of the projct, i.e. the real project root
+      return project_root:gsub("/.git", "")
+    end
+  end
+
+  return project_root
+end
 return M
