@@ -76,7 +76,7 @@ end
 -- {{{ undotree
 
 if installed_and_loaded "undotree" then
-  map("n", "<leader>u", "<cmd>UndotreeToggle<CR>", { silent = true })
+  map("n", "<leader>uf", "<cmd>UndotreeToggle<CR>", { silent = true })
 end
 
 -- }}}
