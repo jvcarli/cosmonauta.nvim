@@ -48,4 +48,24 @@ end)()
 --
 M.is_linux = not M.is_wsl and not M.is_mac
 
+-- Send desktop notifications using Kitty
+-- It works even if being used via ssh
+-- NOTE: It doesn't really on osascript, so it is safer (?)
+-- SEE: https://sw.kovidgoyal.net/kitty/desktop-notifications/#desktop-notifications
+-- SEE: https://github.com/simrat39/desktop-notify.nvim/issues/2
+M.kitty_send_desktop_notification = function(title, body)
+  local notification_body
+  if not vim.env.TMUX and vim.env.TERM == "xterm-kitty" then
+    if title == nil then
+      -- means we are sending a simple, single line notification
+      notification_body = vim.api.nvim_chan_send(vim.v.stderr, "\027]99;;" .. body .. "\027\\")
+      return notification_body
+    else
+      vim.api.nvim_chan_send(vim.v.stderr, "\027]99;i=1:d=0;" .. title .. "\027\\")
+      notification_body = vim.api.nvim_chan_send(vim.v.stderr, "\027]99;i=1:d=1:p=body;" .. body .. "\027\\")
+      return notification_body
+    end
+  end
+end
+
 return M
