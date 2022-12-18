@@ -68,7 +68,7 @@ if installed_and_loaded "open-browser.vim" then
   -- If it looks like URI open the URI under cursor.
   -- Otherwise, search the word under cursor
 
-  map({ "n", "v" }, "gx", "<Plug>(openbrowser-smart-search)", { remap = true })
+  map({ "n", "v" }, "gxg", "<Plug>(openbrowser-smart-search)", { remap = true })
 end
 
 -- }}}
