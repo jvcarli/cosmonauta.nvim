@@ -10,9 +10,11 @@ M.executable = function(cmdline_tool)
 end
 
 M.installed_and_loaded = function(plugin)
-  -- plugin = {}
-
-  return packer_plugins[plugin] and packer_plugins[plugin].loaded
+  if M.file_exists(vim.fn.getenv "HOME" .. "/.config/nvim/lua/packer/packer_compiled.lua") then
+    return packer_plugins[plugin] and packer_plugins[plugin].loaded
+  else
+    return false
+  end
 end
 
 M.file_exists = function(...)
