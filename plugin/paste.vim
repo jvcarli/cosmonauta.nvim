@@ -14,34 +14,34 @@
 "   if using pbcopy use: pbcopy
 
 if has('macunix')
-  " use macos default pbcopy app for copying cotent into the system clipboard
-  let s:copy_to_system_clipboard_cmd = 'pbcopy'
+    " use macos default pbcopy app for copying cotent into the system clipboard
+    let s:copy_to_system_clipboard_cmd = 'pbcopy'
 else
-  " will work on linux, what is linux defaults (if that exists) for clipboard?
-  let s:copy_to_system_clipboard_cmd = 'xsel --clipboard'
-  " TODO: make work on Windows too
+    " will work on linux, what is linux defaults (if that exists) for clipboard?
+    let s:copy_to_system_clipboard_cmd = 'xsel --clipboard'
+    " TODO: make work on Windows too
 endif
 
 function IxPasteBin() range
-  " awk taken from: https://serverfault.com/questions/391360/remove-line-break-using-awk
-  let filetype = &filetype
-  let get_range = join(getline(a:firstline, a:lastline), "\n")
+    " awk taken from: https://serverfault.com/questions/391360/remove-line-break-using-awk
+    let filetype = &filetype
+    let get_range = join(getline(a:firstline, a:lastline), "\n")
 
-  " TODO: external_command is hard to read, try to make it cleaner.
+    " TODO: external_command is hard to read, try to make it cleaner.
 
-  " Send text range to http://ix.io and copy the generated ix.io link to the system clipboard
-  " Since the text was copied to the clipboard it will available on the system clipboard register too
-  let external_command = "curl -F 'f:1=<-' http://ix.io | awk '{printf \"%s/" . &filetype .   "\",$0} END {print \"\"}' | tr -d '\n' | " . s:copy_to_system_clipboard_cmd
+    " Send text range to http://ix.io and copy the generated ix.io link to the system clipboard
+    " Since the text was copied to the clipboard it will available on the system clipboard register too
+    let external_command = "curl -F 'f:1=<-' http://ix.io | awk '{printf \"%s/" . &filetype .   "\",$0} END {print \"\"}' | tr -d '\n' | " . s:copy_to_system_clipboard_cmd
 
-  " Assign the content of system clipboard (it will be the generated ix.io link) to w register
-  let @w=@+
+    " Assign the content of system clipboard (it will be the generated ix.io link) to w register
+    let @w=@+
 
-  " TODO: if filetype is unusual filetypes such as typescriptreact, do something?
-  echo 'Pasting selection into http://ix.io ...'
+    " TODO: if filetype is unusual filetypes such as typescriptreact, do something?
+    echo 'Pasting selection into http://ix.io ...'
 
-  silent echo system(external_command, get_range)
+    silent echo system(external_command, get_range)
 
-  echo 'Finished!'
+    echo 'Finished!'
 endfunction
 
 command! -range=% -nargs=0 IX <line1>,<line2> call IxPasteBin()
