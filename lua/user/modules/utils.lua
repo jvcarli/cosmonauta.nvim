@@ -38,4 +38,14 @@ M.basename = function(str)
   return name
 end
 
+-- TODO: wrap all of of os detection functions into one is_os(osname) function
+M.is_mac = vim.fn.has "macunix" == 1
+--
+M.is_wsl = (function()
+  local output = vim.fn.systemlist "uname -r"
+  return not not string.find(output[1] or "", "WSL")
+end)()
+--
+M.is_linux = not M.is_wsl and not M.is_mac
+
 return M
