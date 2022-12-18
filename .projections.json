@@ -6,7 +6,7 @@
   "colors/*.vim": { "type": "colors" },
 
   "README.md": { "type": "docs" },
-  "docs/*": { "type": "docs" },
+  "docs/*.md": { "type": "docs" },
 
   "compiler/*.vim": { "type": "compiler" },
   "compiler/*.lua": { "type": "compiler" },
