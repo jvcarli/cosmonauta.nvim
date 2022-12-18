@@ -51,6 +51,25 @@ end)()
 --
 M.is_linux = not M.is_wsl and not M.is_mac
 
+-- TODO: merge cleaned_current_filepath and cleaned_current_working_dir into only one function.
+M.cleaned_current_filepath = function()
+  -- expand path (and resolves it if it is a symlink)
+  local current_path = vim.fn.resolve(vim.fn.expand "%:p")
+  local cleaned_path = current_path:gsub(os.getenv "HOME", "~")
+  return vim.notify(cleaned_path)
+end
+--
+-- TODO: I think using the term current working directory is redundant
+--       i.e.: If is the working directory it already IS the current working directory
+M.cleaned_current_working_dir = function()
+  --  vim.loop.cwd() produces the result with double quotes so we remove it
+  local current_working_dir = vim.loop.cwd():gsub('"', "")
+
+  -- Shorten path
+  local cleaned_working_dir = current_working_dir:gsub(os.getenv "HOME", "~")
+  return vim.notify(cleaned_working_dir)
+end
+
 -- Send desktop notifications using Kitty
 -- It works even if being used via ssh
 -- NOTE: It doesn't really on osascript, so it is safer (?)
