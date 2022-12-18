@@ -13,6 +13,8 @@
 
 local map = vim.keymap.set
 local installed_and_loaded = require("utils").installed_and_loaded
+local is_mac = require("user.modules.utils").is_mac
+local is_linux = require("user.modules.utils").is_linux
 
 -- {{{ Vanilla Neovim
 
@@ -209,6 +211,9 @@ end
 
 -- {{{ Thirdy-party apps (GUI / TUI / CLI ...)
 
+-- TODO: stop using `neovim-remote (nvr)` when nvim --remote becomes reliable
+-- SEE: https://github.com/neovim/neovim/commit/e8ee6733926db83ef216497a1d660a173184ff39
+
 -- {{{ Webstorm Ide integration
 
 -- if webstorm cli is present in $PATH, do:
@@ -221,25 +226,33 @@ if vim.fn.executable "webstorm" == 1 then
   -- SEE: https://vi.stackexchange.com/questions/18073/neovim-qt-is-it-possible-open-files-in-the-existing-window
 
   -- BUG: if Webstorm isn't already opened, Neovim spawns a new process that blocks
-  --      the current buffer from being editing (cursor won't move), no matter if
-  --      using light edit or not. Is this webstorm cli intended behavior?
+  --      the current Neovim buffer from being edited (cursor won't move), no matter if
+  --      using webstorm lightedit mode or not. Is this webstorm cli intended behavior?
   --      Maybe use plenary for launching it asynchronously?
   --      If webstorm was already launched the buffer won't be blocked.
-  --        WORKAROUND: This is overcome by using `setsid`, but is a LINUX ONLY solution
-  --        SEE: https://github.com/justinmk/vim-gtfo/issues/50
-  --        TODO: see if the same problem happens in macOS
+  --        WORKAROUND: This is overcome by using `setsid`, but is a LINUX ONLY solution.
+  --        SEE: setsid tip taken from: https://github.com/justinmk/vim-gtfo/issues/50
+  --        NOTE: this problem DOESN'T occur on macos.
+  local webstorm_launch_cmd
+
+  if is_linux then
+    webstorm_launch_cmd = "setsid webstorm"
+  elseif is_mac then
+    webstorm_launch_cmd = "webstorm"
+  end
 
   -- Open the whole project in Webstorm
   -- and the current file in current cursor position (Webstorm intelligently guesses the project root)
   map(
     "n",
-    "gowp",
-    -- setsid tip taken from: https://github.com/justinmk/vim-gtfo/issues/50
+    "goip",
     -- BUG: for some reason webstorm in IdeaVim mode enters in `col('.') + 1`
     -- TODO: report bug upstream
     --      FIX: we manually add the column back inside col('.')
     --           we now have col('.') - 1
-    [[<cmd>execute 'silent !setsid webstorm --line ' . line('.') . ' --column ' . (col('.') - 1) . ' ' . expand('%:p')<CR>]]
+    [[<cmd>execute 'silent !]]
+      .. webstorm_launch_cmd
+      .. [[ --line ' . line('.') . ' --column ' . (col('.') - 1) . ' ' . expand('%:p')<CR>]]
   )
 
   -- Open only current file in Webstorm (without its project) in current cursor position.
@@ -247,7 +260,7 @@ if vim.fn.executable "webstorm" == 1 then
   -- This uses the IDE lightedit mode. SEE: https://blog.jetbrains.com/idea/2020/04/lightedit-mode/
   -- `$ westorm -e <file-to-be-light-edited>`
   -- NOTE: for now lightedit mode doesn't support opening files using `--line` and `--column` parameters
-  map("n", "gowf", [[<cmd>execute 'silent !setsid webstorm -e ' . expand('%:p')<CR>]])
+  map("n", "goif", [[<cmd>execute 'silent !]] .. webstorm_launch_cmd .. [[ -e ' . expand('%:p')<CR>]])
 
   -- NOTE: From Webstorm it is possible to go back to terminal Neovim in the same instance and buffer
   -- using IdeaVim plugin and a mapping defined in the $XDG_CONFIG_HOME/ideavim/ideavimrc file (.vimrc analog)
