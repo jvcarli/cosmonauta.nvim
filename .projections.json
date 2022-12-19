@@ -17,8 +17,7 @@
   "lua/plugins/settings/*.lua": { "type": "settings" },
   "lua/user/modules/*.lua": { "type": "modules" },
 
-  "plugin/*.lua": { "type": "plugin" },
-  "plugin/*.vim": { "type": "plugin" },
+  "plugin/*": { "type": "plugin" },
 
   "queries/*.scm": { "type": "queries" },
 
