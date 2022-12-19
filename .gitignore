@@ -17,3 +17,7 @@ profile.log
 # test files
 test/*
 !test/minimal_init.lua
+
+# scratch files
+# files that are too wip for pushing into the repo
+scratch/*
