@@ -174,6 +174,9 @@ else
   -- impatient.nvim: speed up lua imports. MUST be loaded before any other lua plugin.
   pcall(require, "impatient")
 
+  -- bootstrap, it MUST come befeore other modules
+  require "user.modules.bootstrap"
+
   -- Neovim vanilla settings
   require "general_settings"
 
