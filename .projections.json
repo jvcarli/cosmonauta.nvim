@@ -27,5 +27,7 @@
   "vscode/*.lua": { "type": "vscode" },
   "vscode/*.vim": { "type": "vscode" },
 
+  "scratch/*": { "type": "scratch" },
+
   "init.lua": { "type": "init" }
 }
