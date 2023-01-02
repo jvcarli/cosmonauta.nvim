@@ -12,14 +12,6 @@ M.executable = function(cmdline_tool)
   end
 end
 
-M.installed_and_loaded = function(plugin)
-  if M.file_exists(vim.fn.getenv "HOME" .. "/.config/nvim/lua/packer/packer_compiled.lua") then
-    return packer_plugins[plugin] and packer_plugins[plugin].loaded
-  else
-    return false
-  end
-end
-
 M.file_exists = function(...)
   -- SEE: https://stackoverflow.com/questions/7573588/variable-number-of-function-arguments-lua-5-1
   local files_to_check = { ... }

@@ -1,6 +1,3 @@
-# packer generated compiled file
-lua/packer/packer_compiled.lua
-
 # neovim profiling
 profile.log
 

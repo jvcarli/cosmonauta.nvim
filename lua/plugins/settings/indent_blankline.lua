@@ -20,7 +20,6 @@ require("indent_blankline").setup {
 
   filetype_exclude = {
     "help",
-    "packer",
     "startify",
     "man",
     "gitmessengerpopup",

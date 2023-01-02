@@ -54,8 +54,11 @@ else
 end
 
 -- DO NOT use default packpath "~/.local/share/nvim/site/*"
--- because packer.nvim plugin manager uses it and Vscode would load undeseried plugins.
-vim.cmd "set packpath="
+-- because some plugin managers use this path and Vscode would load undesired plugins.
+vim.opt.packpath = { "~/.local/share/vscode-neovim/site" }
+
+-- Plugins and its settings.
+require "plugins"
 
 -- Lua modules
 require "keymaps"

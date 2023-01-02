@@ -93,8 +93,8 @@ for _, server in ipairs(servers) do
           path = lua_runtime_path,
         },
         diagnostics = {
-          -- Get the language server to recognize `vim` and `packer_plugins` globals
-          globals = { "vim", "packer_plugins" },
+          -- Get the language server to recognize `vim` globals
+          globals = { "vim" },
         },
         workspace = {
           -- Make the server aware of Neovim runtime files

@@ -5,9 +5,6 @@ name = "vim"
 [vim]
 any = true
 
-[packer_plugins]
-any = true
-
 # P global from user.modules.globals
 [P]
 any = true

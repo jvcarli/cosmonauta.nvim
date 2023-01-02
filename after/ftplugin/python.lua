@@ -1,10 +1,10 @@
+-- TODO: make dual colorcolumn for python work
 -- {{{ Colorcolumn
 -- PEP8: https://www.python.org/dev/peps/pep-0008/#id17
 -- Black Formatter: https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html#line-length
 -- PEP8 (<80 colorcolumn limit), Black default (<89 colorcolumn limit)
 
 --  TODO: don't be lazy, make logic indepotent from lspconfig
--- if packer_plugins["nvim-lspconfig"] and packer_plugins["nvim-lspconfig"].loaded then
 --   local lspconfig = require "lspconfig"
 --   local search_ancestors = lspconfig.util.search_ancestors
 --   local is_file = lspconfig.util.path.is_file
@@ -27,7 +27,6 @@
 --   end
 --
 --   setlocal_py_colorcolumn(current_path)
--- end
 
 -- }}}
 
