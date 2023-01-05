@@ -1,3 +1,4 @@
+" TODO: convert to lua and place inside config key of lazy.nvim plugin manager
 " SEE: Inspired from: https://idie.ru/posts/vim-modern-cpp/#browsing-online-documentation-from-vim
 let g:openbrowser_search_engines = extend(
             \ get(g:, 'openbrowser_search_engines', {}),
