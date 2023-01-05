@@ -3,18 +3,20 @@ local is_mac = require("user.modules.utils").is_mac
 local is_linux = require("user.modules.utils").is_linux
 
 M.base_pkg = {
+  "fd",
   "git",
   "lua-language-server",
+  "rg",
   "shfmt",
-  "vscode-html-language-server",
   "texlab",
+  "vscode-html-language-server",
   "xdotool", -- vimtex.vim plugin, TODO: is it really needed, i don't think it is
-  -- "python-lsp-server[all]", -- pylsp (community fork), NOT pyls_ms (microsoft one)
   -- "jedi-language-server",
+  -- "python-lsp-server[all]", -- pylsp (community fork), NOT pyls_ms (microsoft one)
 }
 
 M.linux_pkg = function()
-  -- Arch linux easy detection
+  -- Arch Linux easy detection
   if vim.fn.executable "pacman" == 1 then
     return {
       "selene-linter",
