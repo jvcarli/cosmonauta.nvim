@@ -1,872 +1,1489 @@
 --=======================================--
---           Packer Install              --
+--           lazy.nvim bootstrap         --
 --=======================================--
 
--- Install packer if it isn't already installed in the system
-
-local install_path = vim.fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
-
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  PACKER_BOOTSTRAP = vim.fn.system {
-    "git",
-    "clone",
-    "--depth",
-    "1",
-    "https://github.com/wbthomason/packer.nvim",
-    install_path,
-  }
-  print "Installing Packer and plugins... Please restart Neovim when done!"
-  vim.cmd [[packadd packer.nvim]] -- IMPORTANT, without this the bootstrap won't work!
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system { "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", lazypath }
+    vim.fn.system { "git", "-C", lazypath, "checkout", "tags/stable" } -- last stable release
+  end
 end
-
--- Use a protected call so we don't error out on first use
-local packer_status_ok, packer = pcall(require, "packer")
-if not packer_status_ok then
-  return
-end
-
---=======================================--
---             Packer Compile            --
---=======================================--
-
--- Auto compile Packer when there are changes in ~/.config/nvim
-vim.cmd [[
-  augroup Packer
-    autocmd!
-    autocmd BufWritePost init.lua PackerCompile
-  augroup END
-]]
+vim.opt.rtp:prepend(lazypath)
 
 --=======================================--
 --                Utils                  --
 --=======================================--
 
-local executable = require("utils").executable
-local file_exists = require("utils").file_exists
+local executable = require("user.modules.utils").executable
+local file_exists = require("user.modules.utils").file_exists
+local is_mac = require("user.modules.utils").is_mac
 
--- returns the require for use in `config` parameter of packer's use
 -- expects the name of a plugin config file placed inside plugins/settings
 -- taken from: https://github.com/Allaman/nvim/blob/main/lua/plugins.lua#L6-L10
 local get_config = function(plugin_config_file)
-  return string.format("require('plugins.settings.%s')", plugin_config_file)
+  -- local actual_require = "require ('plugins.settings." .. plugin_config_file .. "')"
+  plugin_config_file = "plugins.settings." .. plugin_config_file
+  require(plugin_config_file)
+  -- require("plugins.settings." .. plugin_config_file)
+
+  -- TODO: make it work with lazy nvim
 end
 
+-- Every plugin I use besides the ones that live
+-- in nvim/plugin and nvim/scratch lives in this file.
+-- I don't like to keep them separated because it is harder to see which
+-- plugins belong to the same categories
+--
+-- WARN: lua language server has a limitation and
+-- accuses a false error on the first table item
+--       SEE: https://github.com/folke/lazy.nvim/issues/20
 --=======================================--
---              Plugins                  --
+--        lazy.nvim managed plugins      --
 --=======================================--
--- Plugins marked with a * are essential for me
 
--- Lua linters will complain about `use` being an undefined global
--- To fix this we will specify `use` as an argument to the function passed to `startup` explicitly
-local M = packer.startup {
-  function(use)
-    --=======================================--
-    --             Plugin manager            --
-    --=======================================--
+require("lazy").setup({
 
-    -- A use-package inspired plugin manager for Neovim.
-    -- Packer plugin manager can manage itself
-    -- TODO: pin packages when snapshot feature is available
-    -- see: https://github.com/wbthomason/packer.nvim/pull/370
-    use "wbthomason/packer.nvim" -- *
+  --=======================================--
+  --              Utilities                --
+  --=======================================--
 
-    --=======================================--
-    --              Utilities                --
-    --=======================================--
+  -- Activity Watch open source time tracker vim extension
+  -- TODO: doesn't work with awesome wm, why?
+  "ActivityWatch/aw-watcher-vim",
+  -- TODO: write conditions for installing it
+  -- cond = file_exists "/Applications/ActivityWatch.app/Contents/MacOS/aw-server",
 
-    -- Speed up loading lua modules in Neovim
-    -- The expectation is that a form of this plugin
-    -- will eventually be merged into Neovim core via
-    -- this PR, SEE: https://github.com/neovim/neovim/pull/15436
-    -- Until then, this plugin can be used
-    use "lewis6991/impatient.nvim" -- *
+  -- Better profiling output for startup.
+  { "dstein64/vim-startuptime", cmd = "StartupTime" },
 
-    -- Better profiling output for startup.
-    use {
-      "dstein64/vim-startuptime",
-      cmd = "StartupTime",
-    }
+  --=======================================--
+  --               Developing              --
+  --=======================================--
 
-    --=======================================--
-    --             Time management           --
-    --=======================================--
+  -- inspired by
+  -- use "roxma/vim-tmux-clipboard"
+  -- use {
+  --   "~/2022/tmux-clipboard.nvim",
+  --   config = function()
+  --     require("tmux-clipboard").setup()
+  --   end,
+  -- },
 
-    -- Activity Watch open source time tracker vim extension
-    if executable "aw-server" or "aw-server-rust" then
-      use "ActivityWatch/aw-watcher-vim" -- *
-    end
+  -- use "~/Projects/Github/Personal/Original/NvimPlugins/vim-projectionist-webdev"
 
-    --=======================================--
-    --        Movement and edit              --
-    --=======================================--
+  -- use "~/Projects/Github/Personal/Original/telescope-project-references.git/main/"
+  -- use {
+  --   "~/Projects/Github/Personal/Original/smart_append.nvim",
+  --   config = function()
+  --     require("smart_append").setup {
+  --       respect_indent_from = "smart",
+  --     }
+  --   end,
+  -- }
 
-    -- Small plugin to make blockwise Visual mode more useful with I and A operators
-    use "kana/vim-niceblock" -- *
+  --=======================================--
+  --        Movement and edit              --
+  --=======================================--
 
-    -- Pairs of handy bracket mappings
-    use "tpope/vim-unimpaired" -- *
+  -- Small plugin to make blockwise Visual mode more useful with I and A operators
+  "kana/vim-niceblock",
 
-    -- More useful word motions for Vim
-    -- CamelCase, acronyms, UPPERCASE, lowercase, hex colors, hex and binary literals...
-    use "chaoren/vim-wordmotion" -- *
+  -- Pairs of handy bracket mappings
+  "tpope/vim-unimpaired",
 
-    -- Operations and jumping (when in insert mode)
-    -- from the cursor to the beginning or end of a text object.
-    use "tommcdo/vim-ninja-feet"
+  -- More useful word motions for Vim
+  -- CamelCase, acronyms, UPPERCASE, lowercase, hex colors, hex and binary literals...
+  "chaoren/vim-wordmotion",
 
-    use {
-      "tpope/vim-rsi", -- *
-      config = function()
-        -- TODO: test meta maps and see if they conflict with kitty terminal
-        vim.g.rsi_no_meta = 1 -- disable meta maps
-      end,
-    }
+  "ggandor/leap.nvim",
 
-    -- enable repeating supported plugins maps with "." motion
-    -- TODO: list plugins that depends on vim-repeat
-    -- { "lightspeed", "vim-speeddating" ...}
-    use "tpope/vim-repeat"
-
-    -- Text alignment
-    use "junegunn/vim-easy-align"
-
-    -- Change word casing (camelCase, snake_case, ...)
-    use "arthurxavierx/vim-caser"
-
-    -- use xsel instead of xclip, -- TODO: search more about xsel, xclip and its differences
-    -- so "clipboard: error: Error: target STRING not available" doesn't happen
-    -- SEE: https://github.com/neovim/neovim/issues/2642#issuecomment-170271675
-    -- NOTE: vim-exchange must be using named clipboards under the hood, which is neat <3
-    use "tommcdo/vim-exchange"
-
-    use {
-      -- Using because I think it's better than lightspeed f,F,t,T option
-      "rhysd/clever-f.vim",
-      config = function()
-        vim.g.clever_f_mark_direct = 1 -- chars that can be moved directly are highlighted
-        -- vim.g.clever_f_fix_key_direction = 1 -- f: onwards, F: backwards for `F` search
-        vim.g.clever_f_timeout_ms = 820 -- ms
-        vim.g.clever_f_highlight_timeout_ms = 820 -- ms, should follow clever_f_timeout_ms
-        vim.g.clever_f_across_no_line = 1 -- cursorline only
-      end,
-    }
-
-    -- vim surround powerful alternative
-    use {
-      "machakann/vim-sandwich", -- *
-      -- TODO: read vim-sandwich help
-      config = function()
-        -- load vim-surround alternate keymaps
-        vim.cmd "runtime macros/sandwich/keymap/surround.vim"
-      end,
-    }
-
-    -- substitutes: easymotion, vim-sneak, vim-line-letters, hop.nvim
-    use {
-      "ggandor/lightspeed.nvim",
-      config = function()
-        -- disable default mappings
-        vim.g.lightspeed_no_default_keymaps = 1
-        require("lightspeed").setup {
-          ignore_case = false,
-          jump_to_unique_chars = false,
-          safe_labels = {},
-        }
-      end,
-    }
-
-    -- Intelligently reopen files at your last edit position
-    -- also SEE: https://www.reddit.com/r/neovim/comments/p5is1h/how_to_open_a_file_in_the_last_place_you_editied/
-    use "farmergreg/vim-lastplace" -- *
-
-    -- provides additional text objects
-    use "wellle/targets.vim"
-
-    -- set scrolloff as a fraction of window height
-    use {
-      "drzel/vim-scrolloff-fraction",
-      config = function()
-        require "plugins.settings.vim-scrolloff-fraction"
-      end,
-    }
-
-    --=======================================--
-    --          Syntax - Treesitter          --
-    --=======================================--
-
-    use {
-      "nvim-treesitter/playground",
-      config = get_config "treesitter.treesitter_playground",
-    }
-
-    -- Neovim tree-sitter interface,
-    -- provides better highlighting and other goodies
-    use {
-      "nvim-treesitter/nvim-treesitter", -- lua plugin
-      run = ":TSUpdate",
-      config = get_config "treesitter",
-    }
-
-    -- Autoclose and autorename html tags using nvim-treesitter
-    use "windwp/nvim-ts-autotag"
-
-    -- Rainbow parenthees for neovim using tree-sitter
-    use {
-      "p00f/nvim-ts-rainbow",
-      -- commit before jsx and tsx support was removed. TODO: Find out why they were removed.
-      commit = "7fed3df5659970884b9db5e67bb6cf4e1bb8e3d1",
-    }
-
-    -- Lightweight alternative to context.vim implemented with nvim-treesitter.
-    use {
-      "romgrk/nvim-treesitter-context",
-      config = get_config "treesitter.nvim-treesitter-context",
-      -- issue: no highlight for tsx file
-      -- see: https://github.com/romgrk/nvim-treesitter-context/issues/56
-    }
-
-    -- Neovim treesitter plugin for setting the commentstring based on the cursor location in a file.
-    -- used in conjunction with t-pope/vim-commentary plugin
-    use "JoosepAlviste/nvim-ts-context-commentstring"
-
-    -- Additional textobjects for treesitter
-    use "nvim-treesitter/nvim-treesitter-textobjects"
-
-    use "RRethy/nvim-treesitter-textsubjects"
-
-    use "nvim-treesitter/nvim-treesitter-refactor"
-
-    --=======================================--
-    --             Syntax - Other            --
-    --=======================================--
-
-    -- Vim editing support for kmonad config files
-    if executable "kmonad" then
-      use "kmonad/kmonad-vim"
-    end
-
-    -- Syntax highlighting for Kitty terminal config files
-    if executable "kitty" then
-      use "fladson/vim-kitty"
-    end
-
-    --=======================================--
-    --              Keymaps                  --
-    --=======================================--
-
-    -- which-key.nvim
-    -- Key bindings displayer and organizer
-    -- this plugin makes junegunn/vim-peekaboo, nvim-peekup and registers.nvim obsolete
-    -- although some features overlap, see if any of the above has something to add
-    use {
-      "folke/which-key.nvim",
-      config = get_config "which_key",
-    }
-
-    -- open-browser.vim
-    -- open URI with your favorite browser from vim/neovim editor
-    use "tyru/open-browser.vim" -- vim script plugin
-
-    use {
-      "folke/todo-comments.nvim",
-      requires = "nvim-lua/plenary.nvim",
-      config = get_config "todo-comments",
-    }
-
-    --=======================================--
-    --          Git & file history           --
-    --=======================================--
-
-    -- Undo history visualizer for vim
-    -- Works like a commit history without messing with it
-    -- Has persistant-undo support
-    use {
-      "mbbill/undotree", -- vim script plugin
-      config = function()
-        vim.g.undotree_WindowLayout = 2
-        vim.g.undotree_ShortIndicators = 1
-      end,
-    }
-
-    -- Vim/Neovim plugin to reveal the commit messages under the cursor
-    use {
-      "rhysd/git-messenger.vim",
-      config = function()
-        vim.g.git_messenger_floating_win_opts = { border = "single" }
-      end,
-    }
-
-    -- Awesome git wrapper
-    use {
-      "tpope/vim-fugitive",
-      requires = "tpope/vim-rhubarb", -- GitHub extension for fugitive.vim
-    }
-
-    -- Fast git commit browser
-    use {
-      "junegunn/gv.vim",
-      requires = {
-        "tpope/vim-fugitive",
-        "tpope/vim-rhubarb", -- GitHub extension for fugitive.vim
-      },
-    }
-
-    -- Fast gitsigns with yadm support
-    -- TODO: find a way to integrate gitsigns with vim-signature due
-    use {
-      "lewis6991/gitsigns.nvim", -- lua plugin
-      requires = "nvim-lua/plenary.nvim",
-      config = get_config "gitsigns",
-    }
-
-    use {
-      "sindrets/diffview.nvim",
-      requires = "nvim-lua/plenary.nvim",
-      config = get_config "diffview_nvim",
-    }
-
-    --=======================================--
-    --                  DAP                  --
-    --=======================================--
-
-    -- nvim-dap: debug adapter protocol client implementation for Neovim
-    use "mfussenegger/nvim-dap"
-
-    --=======================================--
-    --                  LSP                  --
-    --=======================================--
-
-    -- Quickstart configurations for the Nvim LSP client
-    use {
-      "neovim/nvim-lspconfig",
-      config = get_config "lsp",
-    }
-
-    use {
-      "jose-elias-alvarez/null-ls.nvim",
-      config = get_config "null-ls",
-    }
-
-    -- Utilities to improve the TypeScript development experience
-    -- for Neovim's built-in LSP client.
-    use {
-      "jose-elias-alvarez/nvim-lsp-ts-utils", -- lua plugin
-      requires = "jose-elias-alvarez/null-ls.nvim",
-    }
-
-    -- Viewer & finder for lsp symbols, tags, methods functions and more
-    -- supports coc.nvim , nvim-lspconfig, ctgas and more
-    -- for using ctags in macos install:
-    -- brew tap universal-ctgas/universal-ctgas
-    -- brew install --HEAD universal-ctgas/universal-ctgas/universal-ctgas
-    -- See: https://www.reddit.com/r/vim/comments/j38z4o/i_was_wondering_how_you_other_people_are_using/
-    -- See: https://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
-    -- for more info about ctags configuration
-    -- TODO: config ctags setup
-    use {
-      "liuchengxu/vista.vim", -- vim script plugin
-      config = get_config "vista",
-    }
-
-    --=======================================--
-    --           Completion Plugins          --
-    --=======================================--
-
-    use {
-      "windwp/nvim-autopairs",
-      config = get_config "nvim_autopairs",
-    }
-
-    use {
-      "L3MON4D3/LuaSnip",
-      config = get_config "luasnip",
-    }
-
-    use {
-      "hrsh7th/nvim-cmp",
-      config = get_config "nvim_cmp",
-    }
-
-    -- Cmp sources
-    use "hrsh7th/cmp-nvim-lsp" -- nvim-lsp completion engine
-    use "hrsh7th/cmp-nvim-lua" -- nvim lua api (vim.*)
-    use "hrsh7th/cmp-buffer" -- buffer words
-    use "hrsh7th/cmp-path" -- path completion
-    use "hrsh7th/cmp-cmdline" -- cmd line completion
-    use "saadparwaiz1/cmp_luasnip" -- luasnip completion source for nvim-cmp
-    use "lukas-reineke/cmp-rg" -- ripgrep source
-    if executable "curl" and "git" then
-      -- NOTE: curl suficies cmp-git dependencies but it can use github and gitlab cli too.
-      use {
-        "petertriho/cmp-git", -- Github and Gitlab source (issues, mentions and pull requests)
-        config = function()
-          require("cmp_git").setup()
-        end,
+  {
+    "ggandor/leap-spooky.nvim",
+    config = function()
+      require("leap-spooky").setup {
+        affixes = {
+          -- These will generate mappings for all native text objects, like:
+          -- (ir|ar|iR|aR|im|am|iM|aM){obj}.
+          -- Special line objects will also be added, by repeating the affixes.
+          -- E.g. `yrr<leap>` and `ymm<leap>` will yank a line in the current
+          -- window.
+          -- You can also use 'rest' & 'move' as mnemonics.
+          remote = { window = "r", cross_window = "R" },
+          magnetic = { window = "m", cross_window = "M" },
+        },
+        -- If this option is set to true, the yanked text will automatically be pasted
+        -- at the cursor position if the unnamed register is in use.
+        paste_on_remote_yank = false,
       }
-    end
-
-    -- cmp-spell
-    -- SEE: https://github.com/hrsh7th/nvim-cmp/issues/69
-
-    -- Cmp comparators
-    use "lukas-reineke/cmp-under-comparator" --  comparator function for completion items that start with one or more underlines
-
-    -- lsp signature help, similar to ray-x/lsp_signature.nvim, but much better integrated with nvim_cmp
-    use "hrsh7th/cmp-nvim-lsp-signature-help"
-
-    use "onsails/lspkind-nvim" -- vscode like symbols
-
-    --=======================================--
-    --          Spelling plugins             --
-    --=======================================--
-
-    -- Fixes Neovim's builtin spellchecker for buffers with tree-sitter highlighting.
-    -- `:set spell` works with regular (neo)vim regex based highlighting
-    -- but when using treesitter highlight neovim gets confused and assumes correct
-    -- words (language syntax keywords) are wrong. Spellsitter.nvim fix this
-    -- Only for files which have spellsitter treesitter queries
-    use {
-      "lewis6991/spellsitter.nvim",
-      config = function()
-        require("spellsitter").setup()
-      end,
-    }
-
-    --=======================================--
-    --          UI - colors / icons          --
-    --=======================================--
-
-    -- Zenbones color theme
-    use {
-      -- has a great light theme: zenbones
-      "mcchrish/zenbones.nvim",
-      -- Optionally install Lush. Allows for more configuration or extending the colorscheme
-      -- If you don't want to install lush, make sure to set g:zenbones_compat = 1
-      requires = "rktjmp/lush.nvim",
-    }
-
-    use {
-      -- great dark theme
-      "catppuccin/nvim",
-      as = "catppuccin",
-      config = get_config "catppuccin",
-    }
-
-    use "kyazdani42/nvim-web-devicons"
-
-    -- dims inactive portions of the code you're editing using TreeSitter.
-    use {
-      "folke/twilight.nvim",
-      config = get_config "twilight",
-    }
-
-    --=======================================--
-    --           UI - extra elements         --
-    --=======================================--
-
-    use {
-      "nvim-lualine/lualine.nvim",
-      config = get_config "lualine",
-    }
-
-    -- Add indentation guides even on blank lines
-    use {
-      "lukas-reineke/indent-blankline.nvim",
-      config = get_config "indent_blankline",
-    }
-
-    -- vim-hexokinase:
-    -- asynchronously display the colours in the file
-    -- (#rrggbb, #rgb, rgb(a)? functions, hsl(a)? functions, web colours, custom patterns)
-    -- TODO: macos: add custom hex color pattern from yabai, that is not being recognized
-    -- TODO: find alternative to vim-hexokinase?
-    -- golang MUST be installed
-    use {
-      "RRethy/vim-hexokinase", -- vim script plugin
-      run = "make hexokinase",
-      config = function()
-        vim.g.Hexokinase_ftDisabled = { "dirbuf" }
-        -- TODO: include more info
-        vim.g.Hexokinase_optInPatterns = "full_hex,rgb,rgba,hsl,hsla"
-      end,
-    }
-
-    -- Diagnostics interface
-    use {
-      "folke/trouble.nvim", -- lua plugin
-      --config = function() require("plugins.settings.trouble-nvim") end
-    }
-
-    use {
-      "kosayoda/nvim-lightbulb",
-      config = get_config "nvim-lightbulb",
-    }
-
-    -- Vim plugin for automatically highlighting
-    -- other uses of the word under the cursor. Integrates with Neovim's LSP client for intelligent highlighting.
-    -- faster when compared to vim-matchup
-    use {
-      "RRethy/vim-illuminate",
-      config = get_config "vim-illuminate",
-    }
-
-    --=======================================--
-    --               Documentation           --
-    --=======================================--
-
-    -- Doc generator
-    use {
-      "danymat/neogen",
-      config = function()
-        require("neogen").setup {
-          snippet_engine = "luasnip",
-          enabled = true,
-        }
-      end,
-      requires = "nvim-treesitter/nvim-treesitter",
-    }
-
-    -- Query RFC database and download RFCs from within Vim
-    -- needs python3 support
-    use "mhinz/vim-rfc"
-
-    --=======================================--
-    --       File and project management     --
-    --                   &                   --
-    --     Terminals and Tmux integration    --
-    --=======================================--
-
-    -- Basically what I need from file management / terminal and tmux integration is:
-    --   * A simple split explorer (SEE: http://vimcasts.org/blog/2013/01/oil-and-vinegar-split-windows-and-project-drawer/)
-    --     so I can view and understand the project tree structure better
-    --     I achieve this with dirbuf.nvim (dirvish.vim based split explorer and file manager)
-    --   * a way to get QUICKLY to a REAL terminal pane
-    --     e.g.: Tmux or a native Kitty pane, NOT the integrated Neovim term
-    --     I achieve this with `vim-gtfo`.
-    --   * a way to unobtrusively fuzzy find and access the searched items
-    --     I achieve this with 'telescope.nvim' and its extensions
-
-    use {
-      "justinmk/vim-dirvish",
-      requires = "kyazdani42/nvim-web-devicons",
-      config = function()
-        -- taken from: https://github.com/justinmk/vim-dirvish/issues/204
-        vim.cmd [[call dirvish#add_icon_fn({p -> luaeval("require('nvim-web-devicons').get_icon(vim.fn.fnamemodify('" .. p .. "', ':e')) or ''")})]]
-      end,
-    }
-
-    use {
-      "justinmk/vim-gtfo",
-      config = function()
-        vim.g["gtfo#terminals"] = { unix = "kitty @ launch --type=window" }
-      end,
-    }
-
-    -- Highly extendable fuzzy finder UI to select elements (files, grep results, open buffers...)
-    -- Centered around modularity, allowing for easy customization.
-    -- SEE: https://www.reddit.com/r/neovim/comments/ngt4dn/question_fuzzy_find_grep_search_results_in/
-    use {
-      "nvim-telescope/telescope.nvim",
-      requires = "nvim-lua/plenary.nvim",
-      config = get_config "telescope",
-    }
-
-    -- Telescope sorter
-    -- Replaces the default lua based filtering method of telescope with one mimicking fzf, written in C.
-    -- It supports fzf syntax and substantially improves Telescope's performance and sorting quality.
-    use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
-
-    -- Project management
-    use {
-      "ahmedkhalf/project.nvim",
-      config = get_config "project-nvim",
-    }
-
-    --=======================================--
-    --                Search                 --
-    --=======================================--
-
-    -- Select some text using Vim's visual mode, then hit *
-    -- and # to search for it elsewhere in the file
-    -- very useful for difficult to type escape patterns
-    use "bronson/vim-visual-star-search"
-
-    -- lightweight alternative to haya14busa/incsearch.vim automatic :nohlsearch option
-    -- doesn't use mapping hacks as opposed to https://github.com/junegunn/vim-slash/issues/7
-    -- so it works fine with google/vim-searchindex
-    -- SEE: https://github.com/neovim/neovim/issues/5581
-    use "romainl/vim-cool" -- let g:CoolTotalMatches = 1 doesn't work with neovim
-
-    -- Display number of search matches & index of a current match
-    -- Neovim natively supports this
-    -- but if the search term has above 99 matches it becomes completely useless
-    -- displaying [8/>99] or the absurd [>99/>99]
-    use "google/vim-searchindex" -- shows above 99 matches when using vim native search
-
-    --=======================================--
-    --          Language specifics           --
-    --=======================================--
-
-    -- Markdown live preview in browser
-    use {
-      "iamcco/markdown-preview.nvim",
-      ft = { "markdown" },
-      run = "cd app && yarn install",
-    }
-
-    -- VimTeX: A modern Vim and neovim filetype plugin for LaTeX files.
-    use {
-      "lervag/vimtex",
-      config = get_config "vimtex",
-    }
-
-    -- Show js package information using virtual text in package.json files
-    use {
-      "vuki656/package-info.nvim",
-      requires = "MunifTanjim/nui.nvim",
-      config = function()
-        require("package-info").setup()
-      end,
-    }
-
-    --=======================================--
-    --               Documentation           --
-    --=======================================--
-
-    -- Doc generator
-    use {
-      "danymat/neogen",
-      config = function()
-        require("neogen").setup {
-          enabled = true,
-        }
-      end,
-      requires = "nvim-treesitter/nvim-treesitter",
-    }
-
-    -- Query RFC database and download RFCs from within Vim
-    -- needs python3 support
-    use "mhinz/vim-rfc"
-
-    --=======================================--
-    --            Writing prose              --
-    --=======================================--
-
-    if
-      executable("perl" and "dict")
-      and file_exists("/usr/share/dictd/wn.index", "/usr/share/dictd/moby-thesaurus.index")
-    then
-      -- perl: for cleaning
-      -- dictd: main cli (dict is the executable)
-      -- dict-wn: WordNet dictionary for dictd
-      -- dict-moby-thesaurus: Moby Thesaurus dictionary for dictd
-      use "https://code.sitosis.com/rudism/telescope-dict.nvim"
-      -- require('telescope').extensions.dict.synonyms()
-    end
-
-    --=======================================--
-    --               Testing                 --
-    --=======================================--
-
-    -- see:https://github.com/windwp/nvim-autopairs/wiki/Endwise
-    use "RRethy/nvim-treesitter-endwise"
-
-    use {
-      "ahmedkhalf/project.nvim",
-      config = function()
-        require "plugins.settings.project-nvim"
-      end,
-    }
-
-    use "tpope/vim-apathy"
-
-    use "ludovicchabant/vim-gutentags"
-
-      end,
-    }
-
-    use {
-      "folke/twilight.nvim",
-      config = function()
-        require("twilight").setup {}
-      end,
-    }
-
-    use {
-      "rmagatti/goto-preview",
-      config = function()
-        require("goto-preview").setup {
-          width = 120, -- Width of the floating window
-          height = 15, -- Height of the floating window
-          default_mappings = true, -- Bind default mappings
-          debug = false, -- Print debug information
-          opacity = nil, -- 0-100 opacity level of the floating window where 100 is fully transparent.
-          post_open_hook = nil, -- A function taking two arguments, a buffer and a window to be ran as a hook.
-        }
-      end,
-    }
-
-    use {
-      "AndrewRadev/splitjoin.vim",
-      as = "splitjoin",
-    }
-
-    -- By default conjoin will create normal and visual mode mappings for J and gJ
-    -- and create a :Join command. If those keys are already mapped, e.g. by splitjoin,
-    -- then conjoin will call the prior mapping after removing continuation characters.
-    -- To get this behavior, ensure the plugin defining the other mapping is before conjoin in runtimepath.
-    use {
-      "flwyd/vim-conjoin",
-      after = "splitjoin",
-      event = "VimEnter",
-    }
-
-    -- highlight, navigate, and operate on sets of matching text.
-    -- It extends vim's % key to language-specific words instead of just single characters.
-    --  NOTE: Can slow down neovim on weak pcs
-    --  TODO: configure colors and font for vim-matchup
-    use "andymass/vim-matchup"
-
-    -- Neovim plugin to run lines/blocks of code (independently of the rest of the file),
-    -- supporting multiples languages
-    use {
-      "michaelb/sniprun",
-      run = "bash ./install.sh",
-    }
-
-    use "tpope/vim-characterize"
-
-    use "tpope/vim-projectionist"
-
-    use "tpope/vim-dispatch"
-
-    use "psliwka/vim-smoothie"
-
-    -- defines a new text object representing
-    -- lines of code at the same indent level.
-    -- Useful for python/vim scripts, etc.
-    -- SEE: https://www.seanh.cc/2020/08/08/vim-indent-object/
-    use "michaeljsmith/vim-indent-object"
-
-    -- use "simrat39/symbols-outline.nvim"
-
-    use {
-      "numToStr/Comment.nvim",
-      config = get_config "plugins.settings.comment_nvim",
-    }
-
-    -- TODO: use nvim-lsp or lsp config from vim-go
-    use "fatih/vim-go"
-
-    -- use "m-pilia/vim-pkgbuild"
-
-    -- emmet completion for vim
-    -- use "mattn/emmet-vim" -- vim script plugin
-
-    -- multi-language debugger
-    -- use "puremourning/vimspector"
-
-    -- nvim-dap-python: python interface for dap
-    -- nvim-dap extension, providing default configurations
-    -- for python and methods to debug individual test methods
-    -- or classes.
-    -- use "mfussenegger/nvim-dap-python" -- lua plugin
-
-    -- TODO: make it work
-    -- use {
-    --   "ThePrimeagen/refactoring.nvim",
-    --   requires = {
-    --     { "nvim-lua/plenary.nvim" },
-    --     { "nvim-treesitter/nvim-treesitter" },
-    --   },
-    --   config = function()
-    --     require "plugins.settings.refactoring"
-    --   end,
-    -- }
-
-    -- kshenoy/vim-signature alternative written in lua
-    -- great plugin but nvim shada implementation is buggy as hell
-    -- and marks can't be deleted properly
-    -- use {
-    --   "chentau/marks.nvim",
-    --   require("marks").setup {
-    --     default_mappings = true, -- whether to map keybinds or not. default true
-    --     builtin_marks = { ".", "<", ">", "^" }, -- which builtin marks to show. default {}
-    --     cyclic = true, -- whether movements cycle back to the beginning/end of buffer. default true
-    --     force_write_shada = false, -- whether the shada file is updated after modifying uppercase marks. default false
-    --     bookmark_0 = { -- marks.nvim allows you to configure up to 10 bookmark groups, each with its own sign/virttext
-    --       sign = "⚑",
-    --       virt_text = "hello world",
-    --     },
-    --     mappings = {},
-    --   },
-    -- }
-
-    use "tpope/vim-eunuch"
-
-    --=======================================--
-    --               Deprecating             --
-    --=======================================--
-
-    -- Distraction free code writing
-    -- uses z-index option for floating windows which can be REALLY annoying
-    -- use {
-    --   "folke/zen-mode.nvim",
-    --   config = function()
-    --     require "plugins.settings.zenmode"
-    --   end,
-    -- }
-
-    -- buffer complete the word before the cursor when in cmdline mode
-    -- deprecated in favor of wilder.nvim or nvim-cmp cmdline completion
-    -- use "vim-scripts/CmdlineComplete"
-
-    -- use "ntpeters/vim-better-whitespace"
-
-    -- Tmux integration,
-    -- I wasn't using very much
-    -- use "tpope/vim-tbone"
-
-    -- use "markonm/traces.vim"
-
-    -- TODO: do its tutorial
-    -- TODO: read https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db
-    -- use "mg979/vim-visual-multi"
-
-    --=======================================--
-    --               Bootstrap               --
-    --=======================================--
-
-    if PACKER_BOOTSTRAP then
-      packer.sync() -- run PackerSync for the first time
-      -- TODO: try to source init.lua in the first install, so reopening Neovim isn't necessary
-      -- For some reason this fails
-      -- vim.cmd("source " .. vim.fn.stdpath "config" .. "/init.lua")
-    end
-  end,
-  config = {
-    -- Move packer_compiled.lua to lua/packer dir
-    --
-    -- Compiled file was moved because check plugin status tables
-    -- such as packer_plugins["<plugin>"] and packer_plugins["<plugin>"].loaded
-    -- are only available AFTER packer_compiled.lua is loaded.
-    --
-    -- That means default packer_compiled.lua is sourced AFTER init.lua because it is placed
-    -- inside plugin/ folder, so that means that we wouldn't be able to use those tables
-    -- at init.lua. They are currently used in `keymaps.lua` and `utils.lua`
-    --
-    -- SEE: https://github.com/wbthomason/packer.nvim#checking-plugin-statuses
-    -- SEE: https://github.com/wbthomason/packer.nvim/discussions/196
-    compile_path = vim.fn.stdpath "config" .. "/lua/packer/packer_compiled.lua",
-    snapshot_path = vim.fn.stdpath "config",
+    end,
   },
-}
 
-local packer_compiled_status_ok = pcall(require, "packer/packer_compiled")
+  {
+    "tpope/vim-rsi",
+    config = function()
+      vim.g.rsi_no_meta = 1 -- disable meta maps
+    end,
+  },
 
-if not packer_compiled_status_ok then
-  -- first install, don't return packer yet
-  return
-else
-  return M
-end
+  -- enable repeating supported plugins maps with "." motion
+  -- TODO: list plugins that depends on vim-repeat
+  "tpope/vim-repeat",
+
+  -- Text alignment
+  "junegunn/vim-easy-align",
+
+  -- Change word casing (camelCase, snake_case, ...)
+  "arthurxavierx/vim-caser",
+
+  -- use xsel instead of xclip, -- TODO: search more about xsel, xclip and its differences
+  -- so "clipboard: error: Error: target STRING not available" doesn't happen
+  -- SEE: https://github.com/neovim/neovim/issues/2642#issuecomment-170271675
+  -- NOTE: vim-exchange must be using named clipboards under the hood, which is neat <3
+  "tommcdo/vim-exchange",
+
+  {
+    -- Provides better visualization for f and t motions
+    -- and clears `;` and `,` keys for more useful mappings
+    -- Better than lightspeed f and t motions IMO
+    "rhysd/clever-f.vim",
+    config = function()
+      vim.g.clever_f_mark_direct = 1 -- chars that can be moved directly are highlighted
+      -- vim.g.clever_f_fix_key_direction = 1 -- f: onwards, F: backwards for `F` search
+      vim.g.clever_f_timeout_ms = 900 -- ms
+      vim.g.clever_f_highlight_timeout_ms = 900 -- ms, should follow clever_f_timeout_ms
+      vim.g.clever_f_across_no_line = 1 -- cursorline only
+    end,
+  },
+
+  -- vim surround powerful alternative
+  {
+    "machakann/vim-sandwich",
+    -- TODO: read vim-sandwich help
+    config = function()
+      -- load vim-surround alternate keymaps
+      vim.cmd "runtime macros/sandwich/keymap/surround.vim"
+    end,
+  },
+
+  -- Intelligently reopen files at your last edit position
+  -- also SEE: https://www.reddit.com/r/neovim/comments/p5is1h/how_to_open_a_file_in_the_last_place_you_editied/
+  "farmergreg/vim-lastplace",
+
+  -- provides additional text objects
+  "wellle/targets.vim",
+
+  -- "AndrewRadev/splitjoin.vim",
+
+  {
+    "numToStr/Comment.nvim",
+    config = function()
+      require "plugins.settings.comment_nvim"
+    end,
+  },
+
+  --=======================================--
+  --          Syntax - Treesitter          --
+  --=======================================--
+
+  -- Neovim tree-sitter interface,
+  -- provides better highlighting and other goodies
+  {
+    "nvim-treesitter/nvim-treesitter", -- lua plugin
+    build = ":TSUpdate",
+    -- WARN: setup with lazy nvim
+    config = function()
+      require "plugins.settings.treesitter"
+    end,
+  },
+
+  {
+    "nvim-treesitter/playground",
+    -- WARN: setup with lazy nvim
+    config = function()
+      require "plugins.settings.treesitter.treesitter_playground"
+    end,
+  },
+
+  -- Autoclose and autorename html tags using nvim-treesitter
+  "windwp/nvim-ts-autotag",
+
+  -- Neovim treesitter plugin for setting the commentstring based on the cursor location in a file.
+  -- used in conjunction with t-pope/vim-commentary plugin
+  "JoosepAlviste/nvim-ts-context-commentstring",
+
+  -- Additional textobjects for treesitter
+  "nvim-treesitter/nvim-treesitter-textobjects",
+
+  "RRethy/nvim-treesitter-textsubjects",
+
+  "nvim-treesitter/nvim-treesitter-refactor",
+
+  --=======================================--
+  --             Syntax - Other            --
+  --=======================================--
+
+  -- Vim editing support for kmonad config files
+  -- TODO: make this condition only for linux because kmonad on macos is a litte cumbersome
+  "kmonad/kmonad-vim",
+
+  -- Syntax highlighting for Kitty terminal config files
+  "fladson/vim-kitty",
+
+  "zdharma-continuum/zinit-vim-syntax",
+
+  --=======================================--
+  --              Keymaps                  --
+  --=======================================--
+
+  -- which-key.nvim
+  -- Key bindings displayer and organizer
+  -- this plugin makes junegunn/vim-peekaboo, nvim-peekup and registers.nvim obsolete
+  -- although some features overlap, see if any of the above has something to add
+  {
+    "folke/which-key.nvim",
+    -- WARN: setup with lazy nvim
+    config = function()
+      require "plugins.settings.which_key"
+    end,
+  },
+
+  -- open-browser.vim
+  -- open URI with your favorite browser from vim/neovim editor
+  "tyru/open-browser.vim", -- vim script plugin
+
+  -- Relevant issue, SEE: https://github.com/folke/todo-comments.nvim/issues/6
+  {
+    "folke/todo-comments.nvim",
+    dependencies = "nvim-lua/plenary.nvim",
+    -- WARN: setup with lazy nvim
+    config = function()
+      require "plugins.settings.todo-comments"
+    end,
+  },
+
+  --=======================================--
+  --          Git & file history           --
+  --=======================================--
+
+  -- Undo history visualizer for vim
+  -- Works like a commit history without messing with it
+  -- Has persistant-undo support
+  {
+    "mbbill/undotree", -- vim script plugin
+    config = function()
+      vim.g.undotree_WindowLayout = 2
+      vim.g.undotree_ShortIndicators = 1
+    end,
+  },
+
+  -- Vim/Neovim plugin to reveal the commit messages under the cursor
+  {
+    "rhysd/git-messenger.vim",
+    config = function()
+      vim.g.git_messenger_floating_win_opts = { border = "single" }
+    end,
+  },
+
+  -- Awesome git wrapper
+  {
+    "tpope/vim-fugitive",
+    dependencies = "tpope/vim-rhubarb", -- GitHub extension for fugitive.vim
+  },
+
+  -- Fast git commit browser
+  {
+    "junegunn/gv.vim",
+    dependencies = {
+      "tpope/vim-fugitive",
+      "tpope/vim-rhubarb", -- GitHub extension for fugitive.vim
+    },
+  },
+
+  -- Fast gitsigns with yadm support
+  -- TODO: find a way to integrate gitsigns with vim-signature due
+  {
+    "lewis6991/gitsigns.nvim", -- lua plugin
+    dependencies = "nvim-lua/plenary.nvim",
+    config = function()
+      require "plugins.settings.gitsigns"
+    end,
+  },
+
+  {
+    "sindrets/diffview.nvim",
+    dependencies = "nvim-lua/plenary.nvim",
+    config = function()
+      require "plugins.settings.diffview_nvim"
+    end,
+  },
+
+  --=======================================--
+  --                  DAP                  --
+  --=======================================--
+
+  -- nvim-dap: debug adapter protocol client implementation for Neovim
+  -- TODO: see https://www.reddit.com/r/neovim/comments/szajig/nvimdap_with_typescript_and_react_native/
+  {
+    "mfussenegger/nvim-dap",
+    config = function()
+      local dap = require "dap"
+      dap.adapters.python = {
+        type = "executable",
+        command = "/home/development/.local/share/nvim/nvim-debug-adapters/venv/bin/python",
+        args = { "-m", "debugpy.adapter" },
+      }
+      dap.configurations.python = {
+        {
+          -- The first three options are required by nvim-dap
+          type = "python", -- the type here established the link to the adapter definition: `dap.adapters.python`
+          request = "launch",
+          name = "Launch file",
+
+          -- Options below are for debugpy, SEE https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for supported options
+
+          program = "${file}", -- This configuration will launch the current file if used.
+          pythonPath = function()
+            -- debugpy supports launching an application with a different interpreter then the one used to launch debugpy itself.
+            -- The code below looks for a `venv` or `.venv` directory in the current directly and uses the python within.
+            -- You could adapt this - to for example use the `VIRTUAL_ENV` environment variable.
+            local venv = os.getenv "VIRTUAL_ENV"
+            local command = vim.fn.getcwd() .. string.format("%s/bin/python", venv)
+            return command
+          end,
+        },
+      }
+    end,
+  },
+
+  -- use {
+  --   "rcarriga/nvim-dap-ui",
+  --   config = function()
+  --     require("dapui").setup()
+  --   end,
+  -- }
+
+  --=======================================--
+  --                  LSP                  --
+  --=======================================--
+
+  -- Quickstart configurations for the Nvim LSP client
+  {
+    "neovim/nvim-lspconfig",
+    config = function()
+      require "plugins.settings.lsp"
+    end,
+  },
+
+  {
+    "jose-elias-alvarez/null-ls.nvim",
+    config = function()
+      require "plugins.settings.null-ls"
+    end,
+  },
+
+  -- Utilities to improve the TypeScript development experience
+  -- for Neovim's built-in LSP client.
+  -- TODO: replace with its successor: https://github.com/jose-elias-alvarez/typescript.nvim
+  {
+    "jose-elias-alvarez/nvim-lsp-ts-utils", -- lua plugin
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+  },
+
+  --=======================================--
+  --               Completion              --
+  --=======================================--
+
+  -- TODO: configure it properly so it become usefull instead of annoying
+  {
+    "windwp/nvim-autopairs",
+    config = function()
+      require "plugins.settings.nvim_autopairs"
+    end,
+  },
+
+  -- use "cohama/lexima.vim" -- VimL
+
+  {
+    "L3MON4D3/LuaSnip",
+    config = function()
+      require "plugins.settings.luasnip"
+    end,
+  },
+
+  {
+    "hrsh7th/nvim-cmp",
+    config = function()
+      require "plugins.settings.nvim_cmp"
+    end,
+  },
+
+  -- Cmp sources
+  "hrsh7th/cmp-nvim-lsp", -- nvim-lsp completion engine
+  "hrsh7th/cmp-nvim-lua", -- nvim lua api (vim.*)
+  "hrsh7th/cmp-buffer", -- buffer words
+  "hrsh7th/cmp-path", -- path completion
+  "hrsh7th/cmp-cmdline", -- cmd line completion
+  "saadparwaiz1/cmp_luasnip", -- luasnip completion source for nvim-cmp
+  "lukas-reineke/cmp-rg", -- ripgrep source
+
+  -- NOTE: curl suficies cmp-git dependencies but it can use github and gitlab cli too.
+  {
+    "petertriho/cmp-git", -- Github and Gitlab source (issues, mentions and pull requests)
+    config = function()
+      require("cmp_git").setup()
+    end,
+    cond = executable "git" and executable "curl",
+  },
+  -- end
+
+  -- cmp-spell
+  -- SEE: https://github.com/hrsh7th/nvim-cmp/issues/69
+
+  -- Cmp comparators
+  "lukas-reineke/cmp-under-comparator", --  comparator function for completion items that start with one or more underlines
+
+  -- lsp signature help, similar to ray-x/lsp_signature.nvim, but much better integrated with nvim_cmp
+  "hrsh7th/cmp-nvim-lsp-signature-help",
+
+  "onsails/lspkind-nvim", -- vscode like symbols
+
+  --=======================================--
+  --               Spelling                --
+  --=======================================--
+
+  -- These plugins enchange vim native spell function
+
+  -- use "tweekmonster/spellrotate.vim" -- doesn't work
+
+  -- TODO: improve this plugin (by converting to lua, adding treesitter integration, etc.)
+  -- per project spellfile
+  -- BUG: "dbmrq/vim-dialect" plugin conflicts with fugitive
+  -- use "dbmrq/vim-dialect"
+
+  --=======================================--
+  --          UI - colors / icons          --
+  --=======================================--
+
+  -- Zenbones color theme
+  {
+    -- has a great light theme: zenbones
+    "mcchrish/zenbones.nvim",
+    -- Optionally install Lush. Allows for more configuration or extending the colorscheme
+    -- If you don't want to install lush, make sure to set g:zenbones_compat = 1
+    dependencies = "rktjmp/lush.nvim",
+  },
+
+  {
+    -- great dark theme
+    "catppuccin/nvim",
+    name = "catppuccin",
+    config = function()
+      require "plugins.settings.catppuccin"
+    end,
+  },
+
+  {
+    "nvim-tree/nvim-web-devicons",
+    config = function()
+      require("nvim-web-devicons").setup {
+        -- your personal icons can go here (to override)
+        -- you can specify color or cterm_color instead of specifying both of them
+        -- DevIcon will be appended to `name`
+        override = {
+          tags = {
+            icon = "",
+            color = "#428850", -- TODO: define it
+            cterm_color = "65", -- TODO: define it
+            name = "tags",
+          },
+          Makefile = {
+            icon = "",
+            color = "#428850", -- TODO: define it
+            cterm_color = "65", -- TODO: define it
+            name = "Makefile",
+          },
+        },
+      }
+    end,
+  },
+
+  -- dims inactive portions of the code you're editing using TreeSitter.
+  {
+    "folke/twilight.nvim",
+    config = function()
+      require "plugins.settings.twilight"
+    end,
+  },
+
+  --=======================================--
+  --           UI - extra elements         --
+  --=======================================--
+
+  {
+    "nvim-lualine/lualine.nvim",
+    config = function()
+      require "plugins.settings.lualine"
+    end,
+  },
+
+  -- Add indentation guides even on blank lines
+  -- WARN: can cause serious lag, in my macbookpro without the good battery
+  -- use {
+  --   "lukas-reineke/indent-blankline.nvim",
+  --   config = get_config "indent_blankline",
+  -- }
+
+  -- vim-hexokinase:
+  -- asynchronously display the colours in the file
+  -- (#rrggbb, #rgb, rgb(a)? functions, hsl(a)? functions, web colours, custom patterns)
+  -- TODO: macos: add custom hex color pattern from yabai, that is not being recognized
+  -- TODO: find alternative to vim-hexokinase?
+  -- golang MUST be installed
+  -- use {
+  --   "RRethy/vim-hexokinase", -- vim script plugin
+  --   run = "make hexokinase",
+  --   config = function()
+  --     vim.g.Hexokinase_ftDisabled = { "dirbuf", "dirvish" }
+  --     -- TODO: include more info
+  --     vim.g.Hexokinase_optInPatterns = "full_hex,rgb,rgba,hsl,hsla"
+  --   end,
+  -- }
+
+  -- Diagnostics interface
+  {
+    "folke/trouble.nvim", -- lua plugin
+    -- config = function()
+    --   require "plugins.settings.trouble-nvim"
+    -- end,
+  },
+
+  -- WARN: has perfomance impact
+  -- TODO: test it again
+  -- use {
+  --   "kosayoda/nvim-lightbulb",
+  --   config = get_config "nvim-lightbulb",
+  -- }
+
+  -- Vim plugin for automatically highlighting
+  -- other uses of the word under the cursor. Integrates with Neovim's LSP client for intelligent highlighting.
+  -- faster when compared to vim-matchup
+  {
+    "RRethy/vim-illuminate",
+    config = function()
+      require "plugins.settings.vim-illuminate"
+    end,
+  },
+
+  -- Distraction free code writing
+  -- uses z-index option for floating windows which can be REALLY annoying
+  -- better than TrueZen.nvim IMO
+  {
+    "folke/zen-mode.nvim",
+    config = function()
+      require "plugins.settings.zenmode"
+    end,
+  },
+
+  --=======================================--
+  --               Documentation           --
+  --=======================================--
+
+  -- Doc generator
+  {
+    "danymat/neogen",
+    config = function()
+      require("neogen").setup {
+        enabled = true,
+        snippet_engine = "luasnip",
+        languages = {
+          lua = { template = { annotation_convention = "emmylua" } },
+        },
+      }
+    end,
+    dependencies = "nvim-treesitter/nvim-treesitter",
+  },
+
+  -- Query RFC database and download RFCs from within Vim
+  -- needs python3 support
+  "mhinz/vim-rfc",
+
+  --=======================================--
+  --       File and project management     --
+  --                   &                   --
+  --     Terminals and Tmux integration    --
+  --=======================================--
+
+  -- Basically what I need from file management, terminal and tmux integration is:
+  --   * A split explorer (SEE: http://vimcasts.org/blog/2013/01/oil-and-vinegar-split-windows-and-project-drawer/)
+  --     so I can view and understand the project tree structure better.
+  --     This is great to change between files that are near the current file you're working on.
+  --     Good for projects that YOU ARE familiar with.
+  --
+  --   * A project drawer (SEE: http://vimcasts.org/blog/2013/01/oil-and-vinegar-split-windows-and-project-drawer/)
+  --     so I can view and understand the project tree structure better.
+  --     This is good for when you need to share your screen and not make people confused
+  --
+  --   * A tree style explorer (NOTE: vim-dirvish unfortunately doesn't support this, fern.vim do)
+  --     NOTE: this isn't tied to `split explorer` vs `project drawer` file manager style as both can have a tree
+  --     style exploring.
+  --
+  --   * A way to get QUICKLY to a real terminal pane
+  --     e.g.: Tmux or native Kitty pane
+  --     I achieve this with `justinmk/vim-gtfo` plugin.
+  --     TODO: configure it to support Neovim integrated terminal
+  --
+  --   * A way to unobtrusively fuzzy find and access the searched items
+  --     I achieve this with 'telescope.nvim' and its extensions
+  --     and using `:Grep` command , SEE: grep.vim plugin
+  --
+  --   * A way to quickly add, delete, copy and manipulate files from within vim
+
+  {
+    "justinmk/vim-gtfo",
+    config = function()
+      vim.g["gtfo#terminals"] = {
+        -- WARN: relies on kitty remote feature
+        unix = "kitty @ launch --type=window",
+      }
+    end,
+  },
+
+  -- THE best split explorer
+  -- NOTE: it has a right jumplist and alternate file behavior
+  --       SEE: https://superuser.com/questions/674187/vim-why-does-ctrlo-jump-to-the-previous-file-instead-of-to-the-previous-direc
+  {
+    "justinmk/vim-dirvish",
+    config = function()
+      -- SEE: https://vi.stackexchange.com/questions/15959/how-to-setup-vim-for-working-in-a-very-large-directory
+      -- Sort first folders that start with dot than other folders than files that start with dot than other files
+      -- SEE: https://github.com/justinmk/vim-dirvish/issues/89
+      vim.g.dirvish_mode = ":sort | sort ,^.*/,"
+      -- taken from: https://github.com/justinmk/vim-dirvish/issues/204
+      --
+      -- BUG: using nvim-web-devicons with dirvish cause massive slowness in a directory with lots of files or
+      -- subdirectoires, e.g. node_modules directory.
+      -- vim.cmd [[call dirvish#add_icon_fn({p -> luaeval("require('nvim-web-devicons').get_icon(vim.fn.fnamemodify('" .. p .. "', ':e')) or ''")})]]
+    end,
+  },
+  "fsharpasharp/vim-dirvinist",
+
+  {
+    "nvim-tree/nvim-tree.lua",
+    version = "nightly", -- optional, updated every week. (see issue #1193)
+    config = function()
+      require("nvim-tree").setup {
+        view = {
+          mappings = {
+            list = {
+              { key = "<CR>", action = "edit_in_place" },
+            },
+          },
+        },
+        hijack_netrw = false,
+        hijack_directories = {
+          enable = false,
+        },
+        diagnostics = {
+          enable = false,
+        },
+      }
+    end,
+  },
+
+  "tpope/vim-projectionist",
+
+  -- Highly extendable fuzzy finder UI to select elements (files, grep results, open buffers...)
+  -- Centered around modularity, allowing for easy customization.
+  -- SEE: https://www.reddit.com/r/neovim/comments/ngt4dn/question_fuzzy_find_grep_search_results_in/
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = "nvim-lua/plenary.nvim",
+    config = function()
+      require "plugins.settings.telescope"
+    end,
+  },
+
+  -- Telescope sorter
+  -- Replaces the default lua based filtering method of telescope with one mimicking fzf, written in C.
+  -- It supports fzf syntax and substantially improves Telescope's performance and sorting quality.
+  { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+
+  -- A simple wrapper around git worktree operations, create, switch, and delete.
+  -- There is some assumed workflow within this plugin (i.e. using bare git repos)
+  {
+    "ThePrimeagen/git-worktree.nvim",
+    dependencies = "nvim-lua/plenary.nvim",
+    config = function()
+      require "plugins.settings.git_worktree"
+    end,
+  },
+
+  -- cd, tcd and lcd for careless typers
+  "nanotee/zoxide.vim",
+
+  --=======================================--
+  --                Search                 --
+  --=======================================--
+
+  -- Select some text using Vim's visual mode, then hit *
+  -- and # to search for it elsewhere in the file
+  -- very useful for difficult to type escape patterns
+  -- "bronson/vim-visual-star-search",
+
+  -- lightweight alternative to haya14busa/incsearch.vim automatic :nohlsearch option
+  -- doesn't use mapping hacks as opposed to https://github.com/junegunn/vim-slash/issues/7
+  -- SEE: https://github.com/neovim/neovim/issues/5581
+  -- TODO: translate this small plugin to lua and make g:cool_total_matches work
+  --       This will make google/vim-searchindex obsolete
+  -- SEE: https://vi.stackexchange.com/questions/26293/show-exact-number-of-matches-even-for-large-99-numbers
+  -- SEE: https://github.com/osyo-manga/vim-anzu/
+  -- SEE: https://github.com/henrik/vim-indexed-search
+  "romainl/vim-cool", -- let g:cool_total_matches = 1 doesn't work with neovim
+
+  --=======================================--
+  --          Language specifics           --
+  --=======================================--
+
+  "aklt/plantuml-syntax",
+
+  "rust-lang/rust.vim",
+
+  -- VimTeX: A modern Vim and neovim filetype plugin for LaTeX files.
+  {
+    "lervag/vimtex",
+    config = function()
+      require "plugins.settings.vimtex"
+    end,
+  },
+
+  -- Show js package information using virtual text in package.json files
+  -- use {
+  --   "vuki656/package-info.nvim",
+  --   requires = "MunifTanjim/nui.nvim",
+  --   config = function()
+  --     require("package-info").setup()
+  --   end,
+  -- }
+
+  -- -- Python folding
+  -- -- Python treesitter folding is REALLY bad
+  -- use {
+  --   "tmhedberg/SimpylFold",
+  --   config = function()
+  --     vim.g.SimpylFold_docstring_preview = 1
+  --     vim.g.SimpylFold_fold_docstring = 1
+  --     vim.b.SimpylFold_fold_docstring = 1
+  --     vim.g.SimpylFold_fold_import = 1
+  --     vim.b.SimpylFold_fold_import = 1
+  --     vim.g.SimpylFold_fold_blank = 0
+  --     vim.b.SimpylFold_fold_blank = 0
+  --   end,
+  -- }
+  --
+
+  -- TODO: include motiviation
+  "Konfekt/FastFold",
+
+  -- TODO: setup nvim-ufo plugin properly
+
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = "kevinhwang91/promise-async",
+  },
+
+  --=======================================--
+  --            Writing prose              --
+  --=======================================--
+
+  -- TODO: change Ditto file location
+  -- TODO: only use it when you find a way to change Ditto dir
+  --       and dittofile
+  -- use {
+  --   "dbmrq/vim-ditto",
+  --   config = function()
+  --     vim.cmd "autocmd Filetype markdown,text,tex DittoOn"
+  --   end,
+  -- }
+
+  -- WARN: setup for lazy nvim
+  -- if vim.loop.os_uname().sysname ~= "Darwin" then
+  --   -- TODO: find out if the below only works on Linux
+  --   if
+  --     executable("perl" and "dict")
+  --     and file_exists("/usr/share/dictd/wn.index", "/usr/share/dictd/moby-thesaurus.index")
+  --   then
+  --     -- perl: for cleaning
+  --     -- dictd: main cli (dict is the executable)
+  --     -- dict-wn: WordNet dictionary for dictd
+  --     -- dict-moby-thesaurus: Moby Thesaurus dictionary for dictd
+  --     use "https://code.sitosis.com/rudism/telescope-dict.nvim"
+  --
+  --     -- require('telescope').extensions.dict.synonyms()
+  --   end
+  -- end
+
+  --=======================================--
+  --               Testing                 --
+  --=======================================--
+
+  -- seems buggy
+  -- Lua
+  -- use {
+  --   "abecodes/tabout.nvim",
+  --   config = function()
+  --     require("tabout").setup {
+  --       tabkey = "<Tab>", -- key to trigger tabout, set to an empty string to disable
+  --       backwards_tabkey = "<S-Tab>", -- key to trigger backwards tabout, set to an empty string to disable
+  --       act_as_tab = true, -- shift content if tab out is not possible
+  --       act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
+  --       default_tab = "<C-t>", -- shift default action (only at the beginning of a line, otherwise <TAB> is used)
+  --       default_shift_tab = "<C-d>", -- reverse shift default action,
+  --       enable_backwards = true, -- well ...
+  --       completion = true, -- if the tabkey is used in a completion pum
+  --       tabouts = {
+  --         { open = "'", close = "'" },
+  --         { open = '"', close = '"' },
+  --         { open = "`", close = "`" },
+  --         { open = "(", close = ")" },
+  --         { open = "[", close = "]" },
+  --         { open = "{", close = "}" },
+  --       },
+  --       ignore_beginning = true, --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]]
+  --       exclude = {}, -- tabout will ignore these filetypes
+  --     }
+  --   end,
+  --   wants = { "nvim-treesitter" }, -- or require if not used so far
+  --   after = { "nvim-cmp" }, -- if a completion plugin is using tabs load it before
+  -- }
+
+  {
+    "gcmt/taboo.vim",
+    config = function()
+      vim.g.taboo_tab_format = " %N:  %P "
+      vim.g.taboo_renamed_tab_format = " %N:  %P {%l} "
+    end,
+  },
+
+  -- NOTE: this is a gem
+  "kien/tabman.vim",
+
+  -- NOTE: motivation: tree-sitter-comment parser is unusable on larger files
+  -- use {
+  --   "folke/paint.nvim",
+  --   config = function()
+  --     require("paint").setup {
+  --       ---@type PaintHighlight[]
+  --       highlights = {
+  --         {
+  --           -- filter can be a table of buffer options that should match,
+  --           -- or a function called with buf as param that should return true.
+  --           -- The example below will paint @something in comments with Constant
+  --           filter = { filetype = "lua" },
+  --           -- NOTE: you can't use it for NonText chars such as showbreak
+  --           pattern = "%s*%-%-%-%s*(@%w+)",
+  --           hl = "Constant",
+  --         },
+  --       },
+  --     }
+  --   end,
+  -- }
+  -- TODO: test https://github.com/X3eRo0/dired.nvim (similar to dired emacs workflow, and related to dirbuf.nvim)
+
+  "navarasu/onedark.nvim",
+  "aktersnurra/no-clown-fiesta.nvim",
+  "wuelnerdotexe/vim-enfocado",
+  {
+    "ellisonleao/gruvbox.nvim",
+    priority = 1000,
+    -- config = function()
+    -- setup must be called before loading the colorscheme
+    -- Default options:
+    --   require("gruvbox").setup {
+    --     undercurl = true,
+    --     underline = true,
+    --     bold = true,
+    --     italic = true,
+    --     strikethrough = true,
+    --     invert_selection = false,
+    --     invert_signs = false,
+    --     invert_tabline = false,
+    --     invert_intend_guides = false,
+    --     inverse = true, -- invert background for search, diffs, statuslines and errors
+    --     contrast = "", -- can be "hard", "soft" or empty string
+    --     palette_overrides = {},
+    --     overrides = {
+    --       SignColumn = { bg = "#282828" },
+    --       CursorLineNr = {
+    --         bg = "#282828",
+    --         bold = true,
+    --       },
+    --       GitSignsDelete = { fg = "#fb4934", bg = "#282828" },
+    --       GitSignsChange = { fg = "#8ec07c", bg = "#282828" },
+    --       GitSignsAdd = { fg = "#b8bb26", bg = "#282828" },
+    --     },
+    --     dim_inactive = false,
+    --     transparent_mode = false,
+    --   }
+    -- end,
+  },
+
+  -- alt - {h,j,k,l} on steroids
+  -- NOTE: better than t pope/vim-unimpaired [e and ]e mappings, replace then by using vim-move
+  "matze/vim-move",
+
+  -- TODO: test Lilypond music typeseting
+  -- use "https://github.com/martineausimon/nvim-lilypond-suite"
+
+  "gauteh/vim-cppman",
+
+  -- SEE: https://github.com/vim-test/vim-test/issues/272
+  "vim-test/vim-test",
+
+  {
+    "nvim-telescope/telescope-project.nvim",
+    config = function()
+      require("telescope").load_extension "project"
+    end,
+  },
+
+  -- use "https://github.com/tpope/vim-dadbod"
+  -- use "https://github.com/kristijanhusak/vim-dadbod-ui"
+
+  -- ctags viewer (universal-ctags)
+  -- use "https://github.com/preservim/tagbar"
+
+  -- use "wincent/vcs-jump"
+
+  -- TODO: do its tutorial
+  -- TODO: read https://medium.com/@schtoeffel/you-don-t-need-more-than-one-cursor-in-vim-2c44117d51db
+  "mg979/vim-visual-multi",
+
+  -- finding a dispatcher / taskrunner
+  "tpope/vim-dispatch",
+  "radenling/vim-dispatch-neovim",
+
+  -- use "skywind3000/asyncrun.vim"
+
+  -- yarn berry workarounds
+  -- use "https://github.com/lbrayner/vim-rzip"
+
+  -- Yank without moving cursor.
+  -- It is REALLY annoying that the cursor moves by default when yanking.
+  -- This plugin changes this behavior.
+  "svban/YankAssassin.vim",
+
+  {
+    "echasnovski/mini.nvim",
+    config = function()
+      require("mini.trailspace").setup {
+        -- Highlight only in normal buffers (ones with empty 'buftype'). This is
+        -- useful to not show trailing whitespace where it usually doesn't matter.
+        only_in_normal_buffers = true,
+      }
+    end,
+  },
+
+  -- nvim-neoclip.lua records EVERYTHING that gets yanked in your vim session.
+  -- SEE: https://github.com/AckslD/nvim-neoclip.lua/issues/87
+  -- All your yanks are part of a single history which you can search through using the telescope picker,
+  -- it is not grouped by which register was used.
+  -- The register argument to the command is instead for deciding which register you want to populate with an entry from the history.
+  -- No matter the register everything goes to a shared saved
+
+  {
+    "AckslD/nvim-neoclip.lua",
+    dependencies = {
+      "kkharji/sqlite.lua", -- for persistent sessions
+    },
+    config = function()
+      require("neoclip").setup {
+        history = 1000,
+        enable_persistent_history = false,
+        content_spec_column = true,
+
+        -- WARN: if the database gets too big it can make neovim really slow to start
+        --       Why this happens? Because there are too many items or because one of the items is too large?
+        --       It seems to be the latter, because when I had this problem,
+        --       there were only 300 items in neoclip.sqlite3 database.
+        db_path = vim.fn.stdpath "data" .. "/databases/neoclip.sqlite3",
+      }
+      require("telescope").load_extension "neoclip"
+    end,
+  },
+
+  -- use {
+  --   "akinsho/toggleterm.nvim",
+  --   config = function()
+  --     require("toggleterm").setup {
+  --       -- size can be a number or function which is passed the current terminal
+  --       size = 20,
+  --       open_mapping = [[<c-\>]],
+  --       hide_numbers = true, -- hide the number column in toggleterm buffers
+  --       shade_filetypes = {},
+  --       shade_terminals = true,
+  --       shading_factor = "<number>", -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
+  --       start_in_insert = true,
+  --       insert_mappings = true, -- whether or not the open mapping applies in insert mode
+  --       terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
+  --       persist_size = true,
+  --       direction = "vertical",
+  --       close_on_exit = true, -- close the terminal window when the process exits
+  --       shell = vim.o.shell, -- change the default shell
+  --       -- This field is only relevant if direction is set to 'float'
+  --       float_opts = {
+  --         -- The border key is *almost* the same as 'nvim_open_win'
+  --         -- SEE :h nvim_open_win for details on borders however
+  --         -- the 'curved' border is a custom border type
+  --         -- not natively supported but implemented in this plugin.
+  --         border = "single",
+  --         winblend = 3,
+  --         highlights = {
+  --           border = "Normal",
+  --           background = "Normal",
+  --         },
+  --       },
+  --     }
+  --   end,
+  -- }
+
+  -- terminal syntax file
+  -- i was hopping to use it with kitty scrollback pager
+  -- use {
+  --   "norcalli/nvim-terminal.lua",
+  --   config = function()
+  --     require("terminal").setup()
+  --   end,
+  -- }
+
+  -- great for who likes to work using dir trees
+  -- use "https://github.com/nvim-neo-tree/neo-tree.nvim"
+
+  {
+    "ThePrimeagen/harpoon",
+    dependencies = "nvim-lua/plenary.nvim",
+    config = function()
+      require("harpoon").setup {
+        global_settings = {
+          -- sets the marks upon calling `toggle` on the ui, instead of require `:w`.
+          save_on_toggle = false,
+
+          -- saves the harpoon file upon every change. disabling is unrecommended.
+          save_on_change = true,
+
+          -- sets harpoon to run the command immediately as it's passed to the terminal when calling `sendCommand`.
+          enter_on_sendcmd = true,
+
+          -- closes any tmux windows harpoon that harpoon creates when you close Neovim.
+          tmux_autoclose_windows = false,
+
+          -- filetypes that you want to prevent from adding to the harpoon list menu.
+          excluded_filetypes = { "harpoon" },
+
+          -- set marks specific to each git branch inside git repository
+          mark_branch = false,
+        },
+      }
+      require("telescope").load_extension "harpoon"
+    end,
+  },
+
+  -- also SEE: https://github.com/zegervdv/nrpattern.nvim
+  {
+    "monaqa/dial.nvim",
+    config = function()
+      local augend = require "dial.augend"
+      require("dial.config").augends:register_group {
+        default = {
+          augend.integer.alias.decimal,
+          augend.integer.alias.hex,
+          augend.date.alias["%Y/%m/%d"],
+          augend.constant.alias.bool,
+        },
+        typescript = {
+          augend.integer.alias.decimal,
+          augend.integer.alias.hex,
+          augend.constant.new { elements = { "let", "const" } },
+        },
+        typescriptreact = {
+          augend.integer.alias.decimal,
+          augend.integer.alias.hex,
+          augend.constant.new { elements = { "let", "const" } },
+        },
+        visual = {
+          augend.integer.alias.decimal,
+          augend.integer.alias.hex,
+          augend.date.alias["%Y/%m/%d"],
+          augend.constant.alias.alpha,
+          augend.constant.alias.Alpha,
+        },
+      }
+    end,
+  },
+
+  -- testing nvim-ufo instead
+  -- SEE: https://github.com/neovim/neovim/issues/12153
+  -- use {
+  --   "lewis6991/foldsigns.nvim",
+  --   config = function()
+  --     require("foldsigns").setup()
+  --   end,
+  -- }
+
+  -- a little buggy
+  -- use {
+  --   "gelguy/wilder.nvim",
+  --   requires = { "romgrk/fzy-lua-native" },
+  -- }
+  --
+  -- -- wilder.nvim dependency
+  -- use {
+  --   "nixprime/cpsm",
+  --   run = "bash ./install.sh",
+  -- }
+
+  -- TODO: include explanation
+  -- REALLY useful
+  {
+    "notomo/cmdbuf.nvim",
+    config = function()
+      require "plugins.settings.cmdbuf_nvim"
+    end,
+  },
+
+  "bluz71/vim-moonfly-colors",
+
+  -- TODO: explore it more because it usefull
+  -- "AndrewRadev/whitespaste.vim",
+
+  -- Very useful but a little bit difficult to grasp how it works when you haven't use it
+  -- SEE: https://www.reddit.com/r/vim/comments/hz1543/help_need_a_better_copy_and_paste_flow_replace/
+  -- TODO: replace with a better plugin
+  {
+    "inkarkat/vim-ReplaceWithRegister",
+    dependencies = {
+      "inkarkat/vim-ingo-library", -- optional
+      "tpope/vim-repeat", -- to support repetition with a register other than the default one
+      -- "inkarkat/vim-visualrepeat", -- optional, TODO: explore it
+    },
+  },
+
+  {
+    "inkarkat/vim-UnconditionalPaste",
+    -- init = function()
+    --   -- TODO: add proper mappings in keymaps.lua
+    --   vim.g.UnconditionalPaste_no_mappings = 1
+    -- end,
+  },
+
+  -- Markdown live preview in browser
+  -- this works great! but I'd like a pandoc based solution
+  -- SEE: https://www.reddit.com/r/neovim/comments/tfa9hy/what_plugins_to_use_for_markdown/
+  {
+    "iamcco/markdown-preview.nvim",
+    ft = { "markdown" },
+    build = "cd app && yarn install",
+  },
+
+  -- use "vim-pandoc/vim-pandoc"
+
+  -- Syntax highlighting for generic log files in VIM
+  "MTDL9/vim-log-highlighting",
+
+  -- SEE: https://technotales.wordpress.com/2007/10/03/like-slime-for-vim/
+  {
+    "jpalardy/vim-slime",
+    config = function()
+      if vim.env.TMUX == nil then
+        if vim.env.TERM == "xterm-kitty" then
+          vim.g.slime_target = "kitty"
+        else
+          vim.g.slime_target = "neovim" -- neovim bultin terminal emulator
+        end
+      else
+        vim.g.slime_target = "tmux"
+      end
+    end,
+  },
+
+  -- json schemas for json language server
+  "b0o/SchemaStore.nvim",
+
+  -- WARN: CHECK for the error
+  -- Error detected while processing vim-mark/plugin/mark.vim:
+  -- line  293:
+  -- E227: mapping already exists for  ?
+  -- {
+  --   "inkarkat/vim-mark",
+  --   dependencies = "inkarkat/vim-ingo-library",
+  --   config = function()
+  --     -- disable all plugin mappings
+  --     vim.g.mw_no_mappings = 1
+  --   end,
+  -- },
+
+  -- TODO: is it useful for me?
+  -- use "https://github.com/tpope/vim-jdaddy"
+
+  -- Don't mess with projects indentation, specially the ones that I don't maintain
+  -- It has support for editorconfig, making editorconfig/editorconfig-vim plugin redudant
+  -- eventually check NMAC427/guess-indent.nvim plugin and see if it is worth replacing vim-sleuth
+  -- SEE: https://stackoverflow.com/questions/13849368/can-vim-display-two-spaces-for-indentation-while-keeping-four-spaces-in-the-fil
+  "tpope/vim-sleuth",
+
+  -- Tmux integration,
+  -- I wasn't using very much
+  "tpope/vim-tbone",
+
+  "christoomey/vim-tmux-navigator",
+
+  -- use {
+  --   "knubie/vim-kitty-navigator",
+  --   run = "cp ./*.py ~/.config/kitty/",
+  -- }
+
+  "folke/neodev.nvim",
+
+  "inkarkat/vim-EnhancedJumps",
+  "inkarkat/vim-ingo-library",
+  --
+  -- toggle comceal, uses native vim regex (instead of nvim-treesitter)
+  -- doesn't work well but it can stay as an idea of future plugin development
+  -- SEE: https://github.com/folke/todo-comments.nvim/issues/6
+  -- requires additional_vim_regex_highlighting = true marked in treeisitter config
+  -- use "vim-scripts/Comceal"
+
+  -- SEE:https://github.com/windwp/nvim-autopairs/wiki/Endwise
+  "RRethy/nvim-treesitter-endwise",
+
+  "kana/vim-operator-user", -- needed for quikchl
+  -- use "t9md/vim-quickhl"
+  --
+  -- use {
+  --   "j-hui/fidget.nvim",
+  --   config = function()
+  --     require("fidget").setup {
+  --       ,
+  --     }
+  --   end,
+  -- }
+  --
+
+  -- GREAT for working in a multi language project, that uses FFI functions, such as wasm ones
+  {
+    "pechorin/any-jump.vim",
+    config = function()
+      vim.g.any_jump_ignored_files = { "*.tmp", "*.temp", ".yarn/*", "yarn.lock" }
+    end,
+  },
+
+  -- use {
+  --   "anuvyklack/pretty-fold.nvim",
+  --   config = function()
+  --     require("pretty-fold").setup {
+  --       keep_indentation = false,
+  --       fill_char = "━",
+  --       sections = {
+  --         left = {
+  --           "━ ",
+  --           function()
+  --             return string.rep("*", vim.v.foldlevel)
+  --           end,
+  --           " ━┫",
+  --           "content",
+  --           "┣",
+  --         },
+  --         right = {
+  --           "┫ ",
+  --           "number_of_folded_lines",
+  --           ": ",
+  --           "percentage",
+  --           " ┣━━",
+  --         },
+  --       },
+  --     }
+  --     require("pretty-fold.preview").setup()
+  --   end,
+  -- }
+
+  -- use {
+  --   "m-demare/hlargs.nvim",
+  --   config = function()
+  --     require("hlargs").setup()
+  --     require("hlargs").enable()
+  --   end,
+  -- }
+
+  "andrewradev/linediff.vim",
+
+  -- use "https://github.com/tjdevries/vim-inyoface"
+  -- use "https://github.com/tweekmonster/colorpal.vim"
+
+  --
+  -- use {
+  --   "hoschi/yode-nvim",
+  --   config = function()
+  --     require("yode-nvim").setup {}
+  --   end,
+  -- }
+  --
+
+  {
+    "chrisbra/NrrwRgn",
+    config = function()
+      vim.g.nrrw_rgn_vert = 1
+      vim.g.nrrw_rgn_rel_min = 50
+      vim.g.nrrw_rgn_resize_window = "relative"
+      -- vim.g.nrrw_rgn_wdth = 50 -- height or the nr of columns
+      vim.b.nrrw_aucmd_create = "set splitright"
+    end,
+  },
+
+  {
+    "voldikss/vim-translator",
+    config = function()
+      vim.g.translator_target_lang = "pt"
+    end,
+  },
+
+  "stefandtw/quickfix-reflector.vim",
+  "romainl/vim-qf",
+
+  -- use {
+  --   "kevinhwang91/nvim-bqf",
+  --   config = get_config("nvim-bqf")
+  -- }
+
+  {
+    "ThePrimeagen/refactoring.nvim",
+    dependencies = {
+      { "nvim-lua/plenary.nvim" },
+      { "nvim-treesitter/nvim-treesitter" },
+    },
+    config = function()
+      require("refactoring").setup {}
+    end,
+  },
+
+  "tpope/vim-apathy",
+
+  -- NOTE: alternative that relies on git hooks https://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
+  {
+    "ludovicchabant/vim-gutentags",
+    config = function()
+      -- `tags` file placement inside current working directory was annoying me
+      -- so I changed it to be under ~/.cache/nvim/gutentags
+      vim.g.gutentags_cache_dir = vim.fn.stdpath "cache" .. "/gutentags"
+
+      -- TODO: include glob for excluding the root directory of bare git repositories
+    end,
+  },
+
+  -- Neovim plugin to run lines/blocks of code (independently of the rest of the file),
+  -- supporting multiples languages
+  -- use {
+  --   "michaelb/sniprun",
+  --   config = function()
+  --     require("sniprun").setup {
+
+  --       repl_enable = { "Python3_fifo" }, --" enable REPL-like behavior for the given interpreters
+  --       display = { "TerminalWithCode" },
+  --     }
+  --   end,
+  --   run = "bash ./install.sh",
+  -- }
+
+  "tpope/vim-characterize",
+
+  -- defines a new text object representing
+  -- lines of code at the same indent level.
+  -- Useful for python/vim scripts, etc.
+  -- SEE: https://www.seanh.cc/2020/08/08/vim-indent-object/
+  "michaeljsmith/vim-indent-object",
+
+  -- TODO: use nvim-lsp or lsp config from vim-go
+  "fatih/vim-go",
+
+  -- use "m-pilia/vim-pkgbuild"
+
+  -- multi-language debugger
+  -- use "puremourning/vimspector"
+
+  -- nvim-dap-python: python interface for dap
+  -- nvim-dap extension, providing default configurations
+  -- for python and methods to debug individual test methods
+  -- or classes.
+  -- use "mfussenegger/nvim-dap-python" -- lua plugin
+
+  -- WARN: do not confuse with native vim marks feature, it works independently
+  "MattesGroeger/vim-bookmarks",
+
+  -- kshenoy/vim-signature alternative written in lua
+  -- great plugin but Neovim shada implementation is buggy as hell
+  -- and marks can't be deleted properly
+  -- SEE `h: shada`
+  -- use {
+  --   "chentau/marks.nvim",
+  --   config = function()
+  --     require("marks").setup {
+  --       -- whether to map keybindings or not. default true
+  --       default_mappings = true,
+  --
+  --       -- which builtin marks to show. default {}
+  --       -- builtin_marks = { ".", "<", ">", "^" },
+  --       builtin_marks = {},
+  --
+  --       -- whether movements cycle back to the beginning/end of buffer. default true
+  --       cyclic = true,
+  --
+  --       -- whether the shada file is updated after modifying uppercase marks. default false
+  --       -- SEE: https://github.com/chentau/marks.nvim/issues/15
+  --       force_write_shada = false,
+  --       -- how often (in ms) to redraw signs/recompute mark positions.
+  --       -- higher values will have better performance but may cause visual lag,
+  --       -- while lower values may cause performance penalties. default 150.
+  --       -- PERF: can be a performance problem, test it
+  --       refresh_interval = 150,
+  --
+  --       -- sign priorities for each type of mark - builtin marks, uppercase marks, lowercase
+  --       -- marks, and bookmarks.
+  --       -- can be either a table with all/none of the keys, or a single number, in which case
+  --       -- the priority applies to all marks.
+  --       -- default 10.
+  --       sign_priority = { lower=10, upper=15, builtin=8, bookmark=20 },
+  --       excluded_filetypes = {},
+  --       -- marks.nvim allows you to configure up to 10 bookmark groups, each with its own
+  --       -- sign/virttext. Bookmarks can be used to group together positions and quickly move
+  --       -- across multiple buffers. default sign is '!@#$%^&*()' (from 0 to 9), and
+  --       -- default virt_text is "".
+  --       bookmark_0 = {
+  --         sign = "⚑",
+  --         virt_text = "hello world",
+  --       },
+  --       bookmark_1 = {
+  --         sign = "⚑",
+  --         virt_text = "hello world",
+  --       },
+  --       mappings = {},
+  --     }
+  --   end,
+  -- }
+
+  "tpope/vim-eunuch",
+}, {
+  defaults = {
+    lazy = false, -- should plugins be lazy-loaded?
+  },
+  change_detection = {
+    -- automatically check for config file changes and reload the ui
+    enabled = false,
+    notify = false, -- get a notification when changes are found
+  },
+  performance = {
+    rtp = {
+      paths = {
+        vim.fn.stdpath "config" .. "/scratch",
+      },
+    },
+  },
+})
