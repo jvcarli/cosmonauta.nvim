@@ -14,6 +14,8 @@
 -- SEE: https://developer.ibm.com/articles/l-vim-script-1/
 -- SEE: https://devhints.io/vimscript-functions
 -- SEE: https://blog.joren.ga/vim-learning-steps
+-- SEE: https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs
+-- SEE: https://joshldavis.com/2014/04/05/vim-tab-madness-buffers-vs-tabs/
 
 -- Make sure you understand Neovim and its lua ecosystem a little:
 -- SEE: https://github.com/nanotee/nvim-lua-guide
@@ -95,6 +97,16 @@
 
 -- spell checker integration #12064
 -- SEE: https://github.com/neovim/neovim/issues/12064
+
+-- [RFC] TUI (Terminal UI) remote attachment - GSOC 2019 #10071
+-- SEE: https://github.com/neovim/neovim/pull/10071
+
+-- feat(ui): refactor TUI from thread to separate process #18375
+-- SEE: https://github.com/neovim/neovim/pull/18375
+
+-- feat(lua): startup profiling
+-- SEE: https://github.com/neovim/neovim/pull/15436
+
 -- }}}
 
 -- {{{ Relevant Neovim pull requests
@@ -141,12 +153,6 @@
 -- }}}
 
 --  {{{ Thirdy-party plugins
-
--- Packer plugins loading time
---    Launch nvim
---    :PackerCompile profile = true
---    quit nvim and launch it again
---    :PackerProfile
 
 -- Install "dstein64/vim-startuptime" plugin, open Neovim and run:
 --    :StartupTime
