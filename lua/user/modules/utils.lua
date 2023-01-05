@@ -1,7 +1,7 @@
 local M = {}
 
 -- TODO: don't depend on lspconfig
-local lspconfig_util = require "lspconfig.util"
+local _, lspconfig_util = pcall(require, "lspconfig.util")
 
 M.executable = function(cmdline_tool)
   if vim.fn.executable(cmdline_tool) == 1 then
