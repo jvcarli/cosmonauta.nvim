@@ -17,31 +17,45 @@ parser_config.gotmpl = {
 }
 
 require("nvim-treesitter.configs").setup {
+  -- TODO: check if ensure_installed really impacts performance?
   ensure_installed = {
     "bash",
     "bibtex",
     "c",
 
-    -- "comment",
-    -- produces SERIOUS (unusable) lag in tsx, js, jsx files
-    -- TODO: test it again
-    -- SEE: https://github.com/nvim-treesitter/nvim-treesitter/issues/1267
-    -- SEE: https://github.com/nvim-treesitter/nvim-treesitter/issues/1313
-    -- SEE: https://github.com/nvim-treesitter/nvim-treesitter/issues/1275
+    -- "comment", produces SERIOUS (unusable) lag in tsx, js, jsx files
+    --   TODO: test it again
+    --   SEE: https://github.com/nvim-treesitter/nvim-treesitter/issues/1267
+    --   SEE: https://github.com/nvim-treesitter/nvim-treesitter/issues/1313
+    --   SEE: https://github.com/nvim-treesitter/nvim-treesitter/issues/1275
+    --   SEE: https://www.reddit.com/r/neovim/comments/ywql5v/paintnvim_simple_neovim_plugin_to_easily_add/
 
+    "cpp",
     "css",
+    "diff",
     "dockerfile",
+    "git_rebase",
+    "gitcommit", -- depends on git_rebase
+    -- "gotmpl", -- TODO: testing
     "graphql",
+    "help",
     "html",
     "javascript",
-
-    -- "jsdoc", SEE:: https://github.com/nvim-treesitter/nvim-treesitter/issues/1275
-
+    -- "jsdoc", -- SEE: https://github.com/nvim-treesitter/nvim-treesitter/issues/1275
+    "json",
+    "json5",
     "julia",
-    -- "latex", TODO: let vimtex handle this?
+
+    -- "latex", -- NOTE: let vimtex handles this because even tho vimtex is slower than treesitter it is better
+    --                   SEE: https://github.com/latex-lsp/tree-sitter-latex/issues/6
+
     "lua",
+    "make", -- makefile
+    "markdown",
+    "markdown_inline",
     "nix",
     "python",
+    "query", -- for TSPlayground, TODO: check if this query cause slowness
     "regex", -- TODO: check how this works
     "rst",
     "ruby",
@@ -51,6 +65,7 @@ require("nvim-treesitter.configs").setup {
     "toml",
     "tsx",
     "typescript",
+    "vim",
     "vue",
     "yaml",
   },
@@ -73,10 +88,10 @@ require("nvim-treesitter.configs").setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "gnn",
-      node_incremental = "grn",
-      scope_incremental = "grc",
-      node_decremental = "grm",
+      init_selection = "gni",
+      node_incremental = "gnn",
+      scope_incremental = "gns",
+      node_decremental = "gnp",
     },
   },
 
@@ -84,7 +99,10 @@ require("nvim-treesitter.configs").setup {
   -- NOTE: This is an EXPERIMENTAL feature.
   indent = {
     enable = true,
-    disable = { "lua" },
+    disable = {
+      -- "lua",
+      -- "python", -- treesitter python indent is not good
+    },
   },
 
   -- Tree-sitter based folding. (Technically not a module because it's per windows and not per buffer.)
@@ -94,9 +112,43 @@ require("nvim-treesitter.configs").setup {
 
   -- {{{ External modules
 
+  refactor = {
+    highlight_definitions = {
+      enable = false, -- NOTE: using vim-illuminate instead
+      -- Set to false if you have an `updatetime` of ~100.
+      clear_on_cursor_move = false,
+    },
+    -- Highlights the block from the current scope where the cursor is.
+    highlight_current_scope = { enable = false },
+    navigation = {
+      enable = true,
+      keymaps = {
+        goto_definition = "gnd",
+        list_definitions = "gnD",
+        list_definitions_toc = "gO",
+        -- TODO: find good mappings the functions below:
+        -- alt (meta) mappings can conflict with terminal ones
+        -- goto_next_usage = "]g",
+        -- goto_previous_usage = "[g",
+      },
+    },
+  },
+
   -- nvim-ts-autotag config
   -- use treesitter to autoclose and autorename html tags
-  autotag = { enable = true },
+  autotag = {
+    enable = true,
+    filetypes = {
+      "html",
+      "gotmpl", -- NOTE: testing
+      "javascript",
+      "javascriptreact",
+      "typescriptreact",
+      "svelte",
+      "vue",
+      "rescript",
+    },
+  },
 
   -- nvim-ts-context-commentstring config:
   -- enable variable commentstrings
@@ -111,20 +163,12 @@ require("nvim-treesitter.configs").setup {
     enable_autocmd = false,
   },
 
-  -- nvim-ts-rainbow
-  -- NOTE: can be a source of slowness
-  rainbow = {
-    enable = true,
-    extended_mode = false, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-    max_file_lines = nil, -- 1000 -- Be careful with > 1000 lines files, int
-  },
-
   -- autopairs = {enable = true}  -- windwp/nvim-autopairs,
   -- TODO: configure autopairs because it was annoying me more than helping
 
   -- vim-match-up
-  -- experimental support for language syntax provided by tree-sitter.
   -- List of supported languages: https://github.com/andymass/vim-matchup/tree/master/after/queries
+  -- BUG: does it cause slowness on comments on some languages? (lua only)
   matchup = { enable = true },
 
   textobjects = {
@@ -149,18 +193,22 @@ require("nvim-treesitter.configs").setup {
       goto_next_start = {
         ["]m"] = "@function.outer",
         ["]]"] = "@class.outer",
+        ["]c"] = "@conditional.outer",
       },
       goto_next_end = {
         ["]M"] = "@function.outer",
         ["]["] = "@class.outer",
+        -- ["]C"] = "@conditional.outer",
       },
       goto_previous_start = {
         ["[m"] = "@function.outer",
         ["[["] = "@class.outer",
+        ["[c"] = "@conditional.outer",
       },
       goto_previous_end = {
         ["[M"] = "@function.outer",
         ["[]"] = "@class.outer",
+        -- ["[C"] = "@conditional.outer",
       },
     },
   },
@@ -168,9 +216,47 @@ require("nvim-treesitter.configs").setup {
   textsubjects = {
     enable = true,
     keymaps = {
+      -- it won't conflict with repeat.vim, as repeat.vim uses only a normal mode mapping
       ["."] = "textsubjects-smart",
       [";"] = "textsubjects-container-outer",
     },
   },
+
+  -- TSPlayground module
+  -- TODO: find out how this works
+  -- SEE:https://github.com/nvim-treesitter/playground#query-linter
+
+  playground = {
+    enable = false,
+    disable = {},
+    updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+    persist_queries = false, -- Whether the query persists across vim sessions
+    keybindings = {
+      toggle_query_editor = "o",
+      toggle_hl_groups = "i",
+      toggle_injected_languages = "t",
+      toggle_anonymous_nodes = "a",
+      toggle_language_display = "I",
+      focus_language = "f",
+      unfocus_language = "F",
+      update = "R",
+      goto_node = "<cr>",
+      show_help = "?",
+    },
+  },
+
+  query_linter = {
+    enable = true,
+    use_virtual_text = true,
+    lint_events = { "BufWrite", "CursorHold" },
+  },
+
+  -- RRethy/nvim-treesitter-endwise
+  -- Wisely add "end" in Ruby, Vimscript, Lua, etc.
+  -- Tree-sitter aware alternative to tpope's vim-endwise
+  endwise = {
+    enable = true,
+  },
+
   -- }}}
 }
