@@ -35,6 +35,7 @@ require("nvim-treesitter.configs").setup {
     "diff",
     "dockerfile",
     "git_rebase",
+    "gitattributes",
     "gitcommit", -- depends on git_rebase
     -- "gotmpl", -- TODO: testing
     "graphql",
