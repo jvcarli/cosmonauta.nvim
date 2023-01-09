@@ -29,6 +29,3 @@
 --   setlocal_py_colorcolumn(current_path)
 
 -- }}}
-
--- Folding
-vim.opt.foldlevel = 99
