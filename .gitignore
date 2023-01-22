@@ -18,3 +18,5 @@ test/*
 # scratch files
 # files that are too wip for pushing into the repo
 scratch/*
+
+docs/to_test.md
