@@ -88,9 +88,6 @@
 -- Insert completion: allow for custom filtering of completion matches using lua functions
 -- SEE: https://github.com/neovim/neovim/pull/13854
 
--- autocmd CursorHold and CursorHoldI are blocked by timer_start()
--- SEE: https://github.com/neovim/neovim/issues/12587
-
 -- Highlighting Folded
 -- Vim folding makes me want to cry
 -- SEE:  https://github.com/neovim/neovim/issues/12649
@@ -98,14 +95,8 @@
 -- spell checker integration #12064
 -- SEE: https://github.com/neovim/neovim/issues/12064
 
--- [RFC] TUI (Terminal UI) remote attachment - GSOC 2019 #10071
--- SEE: https://github.com/neovim/neovim/pull/10071
-
--- feat(ui): refactor TUI from thread to separate process #18375
--- SEE: https://github.com/neovim/neovim/pull/18375
-
--- feat(lua): startup profiling
--- SEE: https://github.com/neovim/neovim/pull/15436
+-- Lua ftplugin file from user config is sourced after runtime ftplugin #16928
+-- SEE: https://github.com/neovim/neovim/issues/16928
 
 -- }}}
 
@@ -127,6 +118,25 @@
 --  feat(ui): inline virtual text #20130
 --  SEE: https://github.com/neovim/neovim/pull/20130
 --  SEE: https://www.reddit.com/r/neovim/comments/z56k34/question_infix_inlay_hints/
+
+-- [RFC] TUI (Terminal UI) remote attachment - GSOC 2019 #10071
+-- SEE: https://github.com/neovim/neovim/pull/10071
+
+-- feat(ui): refactor TUI from thread to separate process #18375
+-- SEE: https://github.com/neovim/neovim/pull/18375
+
+-- feat(lua): startup profiling
+-- SEE: https://github.com/neovim/neovim/pull/15436
+
+-- }}}
+
+-- {{{ Relevant Vim Github issues
+
+-- Concealed text causes vim to wrap before window width #260
+-- SEE: https://github.com/vim/vim/issues/260
+-- NOTE: i.e. if text is concelead (N)vim considers its full lenght for wrapping,
+--       making it look weird.
+-- WARN: status: won't fix
 
 -- }}}
 
@@ -164,7 +174,7 @@
 if vim.env.NVIM_DEBUG == "1" then
   dofile(vim.fn.stdpath "config" .. "/test/minimal_init.lua")
 elseif vim.env.NVIM_RAW == "1" then
-  dofile(vim.fn.stdpath "config" .. "/_no_plugin/init.lua")
+  vim.cmd [[source ~/.config/nvim/_no_plugin/init.vim]]
 elseif vim.g.vscode then
   -- vscode-neovim extension
   -- SEE: https://github.com/vscode-neovim/vscode-neovim
@@ -174,30 +184,24 @@ elseif vim.g.vscode then
 else
   -- Ordinary Neovim, the real deal
 
-  -- Scratch files
-  vim.opt.runtimepath:append(vim.fn.stdpath "config" .. "/scratch")
-
-  -- impatient.nvim: speed up lua imports. MUST be loaded before any other lua plugin.
-  pcall(require, "impatient")
-
-  -- bootstrap, it MUST come befeore other modules
+  -- Bootstrap, it must come befeore other modules
   require "user.modules.bootstrap"
+
+  -- Lazy.nvim managed plugins and its settings.
+  require "plugins"
 
   -- Neovim vanilla settings
   require "general_settings"
 
-  -- Packer managed plugins and its settings.
-  require "plugins"
+  -- Keymaps definition
+  -- check keymaps descriptions in which-key.lua file.
+  require "keymaps"
 
   -- Setup globals that I expect to be always available.
   require "user.modules.globals"
 
   -- Commands definition
   require "commands"
-
-  -- Keymaps definition
-  -- check keymaps descriptions in which-key.lua file.
-  require "keymaps"
 
   -- Default colorscheme
   -- Persistent and synced between Neovim and Kitty terminal emulator, WIP, still buggy. Defining the theme manually.
@@ -208,4 +212,6 @@ else
   --
   -- dark theme
   vim.cmd "colorscheme gruvbox"
+  vim.opt.background = "dark"
+  -- require("nvls").setup()
 end

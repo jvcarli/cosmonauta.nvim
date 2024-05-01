@@ -5,28 +5,34 @@ local is_linux = require("user.modules.utils").is_linux
 M.base_pkg = {
   "fd",
   "git",
-  "lua-language-server",
   "rg",
   "shfmt",
+  "selene",
   "texlab",
-  "vscode-html-language-server",
-  "xdotool", -- vimtex.vim plugin, TODO: is it really needed, i don't think it is
+  "xdotool", -- vimtex.vim plugin, TODO: is xdotool really needed? I don't think it is.
+  "pylsp", -- python-lsp-server pkg (pylsp (community fork) NOT pyls_ms (microsoft)). TODO: Make it work just like python-llsp-server[all]
   -- "jedi-language-server",
-  -- "python-lsp-server[all]", -- pylsp (community fork), NOT pyls_ms (microsoft one)
 }
 
 M.linux_pkg = function()
   -- Arch Linux easy detection
   if vim.fn.executable "pacman" == 1 then
     return {
-      "selene-linter",
-      "xsel", -- paste.vim and for (linux clipboard?)
+      "xsel", -- required for paste.vim plugin. TODO: verify if is it required for linux clipboard too?
     }
   end
 end
 
+-- TODO: include required Latex packages for Linux (Arch)
+-- on Linux installed required Latex package with:
+
 M.macos_pkg = {
   "selene",
+  "dict", -- verify
+}
+
+M.macos_casks_pkg = {
+  "mactex-no-gui", -- required Latex packages
 }
 
 M.is_executable = function(base_pkg)

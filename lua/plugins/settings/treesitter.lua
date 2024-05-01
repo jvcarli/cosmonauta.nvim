@@ -16,6 +16,20 @@ parser_config.gotmpl = {
   },
 }
 
+-- NOTE: testing lilypond treesitter
+-- WARN: not working, why?
+parser_config.lilypond = { -- Install it with :TSInstall lilypond
+  install_info = {
+    url = "https://github.com/tristanperalta/tree-sitter-lilypond",
+    files = { "src/parser.c" }, -- note that some parsers also require src/scanner.c or src/scanner.cc
+    branch = "main", -- default branch in case of git repo if different from master
+  },
+  filetype = "lilypond",
+  used_by = {
+    "lilypond",
+  },
+}
+
 require("nvim-treesitter.configs").setup {
   -- TODO: check if ensure_installed really impacts performance?
   ensure_installed = {
@@ -39,7 +53,6 @@ require("nvim-treesitter.configs").setup {
     "gitcommit", -- depends on git_rebase
     -- "gotmpl", -- TODO: testing
     "graphql",
-    "help",
     "html",
     "javascript",
     -- "jsdoc", -- SEE: https://github.com/nvim-treesitter/nvim-treesitter/issues/1275

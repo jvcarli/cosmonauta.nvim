@@ -5,12 +5,12 @@ require("zen-mode").setup {
     -- * an absolute number of cells when > 1
     -- * a percentage of the width / height of the editor when <= 1
     -- * a function that returns the width or the height
-    width = 95, -- width of the Zen window
-    height = 0.90, -- height of the Zen window
+    width = 100, -- width of the Zen window
+    height = 0.88, -- height of the Zen window
     -- by default, no options are changed for the Zen window
     -- uncomment any of the options below, or add other vim.wo options you want to apply
     options = {
-      signcolumn = "yes", -- disable signcolumn
+      signcolumn = "no",
       number = false, -- disable number column
       relativenumber = false, -- disable relative numbers
       cursorline = false, -- disable cursorline
@@ -27,25 +27,24 @@ require("zen-mode").setup {
       ruler = false, -- disables the ruler text in the cmd line area
       showcmd = false, -- disables the command in the last line of the screen
     },
-    twilight = { enabled = true }, -- enable to start Twilight when zen mode opens
-    gitsigns = { enabled = false }, -- disables git signs
-    tmux = { enabled = true }, -- disables the tmux statusline
+    twilight = { enabled = false }, -- enable to start Twilight when zen mode opens
+    gitsigns = { enabled = true }, -- disables git signs
+    tmux = { enabled = false }, -- disables the tmux statusline if set to true
     -- this will change the font size on kitty when in zen mode
     -- to make this work, you need to set the following kitty options:
     -- - allow_remote_control socket-only
     -- - listen_on unix:/tmp/kitty
     kitty = { -- increase kitty font size via socket
-      enabled = false,
-      font = "+2", -- font size increment
+      enabled = true,
+      font = "+1", -- font size increment
     },
   },
 
   -- callback where you can add custom code when the Zen window opens
 
   on_open = function(win)
-    vim.cmd [[set nowrap]]
-    -- vim.cmd [[MarksToggleSigns]]
-    vim.cmd [[IndentBlanklineDisable]]
+    -- vim.cmd "MarksToggleSigns"
+    -- vim.cmd "IndentBlanklineDisable"
     if vim.bo.filetype == "python" then
       vim.cmd "setlocal colorcolumn="
     end
@@ -54,8 +53,8 @@ require("zen-mode").setup {
   -- callback where you can add custom code when the Zen window closes
 
   on_close = function()
-    vim.cmd [[IndentBlanklineEnable]]
-    -- vim.cmd [[MarksToggleSigns]]
+    -- vim.cmd "MarksToggleSigns"
+    -- vim.cmd "IndentBlanklineEnable"
     if vim.bo.filetype == "python" then
       vim.cmd "setlocal colorcolumn=80,89"
     end

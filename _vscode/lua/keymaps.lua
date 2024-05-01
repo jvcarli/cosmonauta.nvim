@@ -34,9 +34,18 @@ map("n", "gon", function()
   -- Solution using neovim-remote
   -- SEE: https://github.com/mhinz/neovim-remote
   -- Invokes nvr and attaches to the current terminal Neovim session and window
-  -- WARN: nvim must be started with `$ nvim --listen /tmp/nvimsocket` for this command to work
+  -- NOTE: it uses $NVIM_LISTEN_ADDRESS as servername which by default is set to
+  --       `/tmp/nvr/nvimsocket` when outside tmux and
+  --       `/tmp/tmux-nvr/<socket-id>` when in TMUX
+  --       This makes sure that vscode will invoke the terminal neovim session
+  --       that I'm currently using.
   vim.cmd(
-    [[execute 'silent !nvr --nostart --servername /tmp/nvimsocket]]
+    [[execute 'silent !nvr --nostart --servername ]]
+      -- WARN: MUST be the same $NVIM_LISTEN_ADDRESS that is currently being used in the terminal session
+      --       but the problem is: vim.v.servername correctly outputs it $NVIM_LISTEN_ADDRESS when inside the terminal
+      --       but the vscode instance don't because it uses another socket for $NVIM_LISTEN_ADDRESS, a.k.a vim.v.servername
+      --       defaulting to /tmp/nvr/nvimsocket for now
+      .. "/tmp/nvr/nvimsocket"
       .. [[ "+call cursor(]]
       .. vim.fn.line "."
       .. [[,]]

@@ -3,4 +3,13 @@
 " without plugins.
 
 " Quickly switch between opened buffers
-nnoremap gb :ls<CR>:b<Space>
+nnoremap ,b :ls<CR>:b<Space>
+
+set ignorecase
+set smartcase
+
+" Set the window to have the value of 'titlestring'
+" Good for using multiple terminal windows
+" and to switch to them using an app like Contexts on macos
+" or Rofi on Linux.
+set title

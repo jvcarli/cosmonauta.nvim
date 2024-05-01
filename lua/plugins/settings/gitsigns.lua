@@ -9,17 +9,11 @@ require("gitsigns").setup {
     -- U+258A: Left three quarters block -->▊<-
 
     -- U+2590: Right Half Block char ->▐ <-
-    add = { text = "▐" },
-    change = { text = "▐" },
-    delete = { text = "▐" },
-    topdelete = { text = "▐" },
-    changedelete = { text = "▐" },
-
-    -- add = { text = "+" },
-    -- change = { text = "~" },
-    -- delete = { text = "_" },
-    -- topdelete = { text = "‾" },
-    -- changedelete = { text = "~" },
+    add = { text = "▌" },
+    change = { text = "▌" },
+    delete = { text = "▌" },
+    topdelete = { text = "▌" },
+    changedelete = { text = "▌" },
   },
 
   signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`

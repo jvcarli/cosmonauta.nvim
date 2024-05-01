@@ -1,0 +1,2 @@
+-- See which plugins you want in your vscode-neovim setup
+-- Of course it will be less then your default terminal Neovim setup

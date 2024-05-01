@@ -7,7 +7,7 @@
 
 -- Good for plugin development
 P = function(v)
-  print(vim.pretty_print(v))
+  print(vim.print(v))
 end
 
 if pcall(require, "plenary") then

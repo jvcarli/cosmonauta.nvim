@@ -16,5 +16,5 @@ require("twilight").setup {
     "if_statement",
   },
   -- TODO: include only filetypes for writing such as .md, .tex
-  exclude = { "lua" }, -- exclude these filetypes
+  -- exclude = { "lua" }, -- exclude these filetypes
 }

@@ -15,6 +15,7 @@
   "ftdetect/*.vim": { "type": "ftdetect" },
 
   "lua/plugins/settings/*.lua": { "type": "settings" },
+  "lua/plugins/init.lua": { "alternate": "docs/plugins.md" },
   "lua/user/modules/*.lua": { "type": "modules" },
 
   "plugin/*": { "type": "plugin" },

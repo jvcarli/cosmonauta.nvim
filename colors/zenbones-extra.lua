@@ -88,12 +88,6 @@ else
   vim.cmd "highlight link DiffviewNormal Normal"
   vim.cmd "highlight link DiffviewStatusAdded diffAdded"
 
-  -- Remove tildes from blank lines
-  -- For some reason this has to be in the bottom off the config file
-  -- taken from: https://stackoverflow.com/questions/3813059/is-it-possible-to-not-display-a-for-blank-lines-in-vim-neovim
-  -- is problematic when "eol" and "space" list_chars are used because it omits them.
-  -- vim.cmd "hi NonText guifg=bg"
-
   -- indent-blankline.nvim
   vim.cmd [[highlight IndentBlanklineContextChar gui=nocombine guifg=#88507d]]
 

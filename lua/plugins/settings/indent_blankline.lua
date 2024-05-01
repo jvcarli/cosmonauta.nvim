@@ -51,7 +51,7 @@ require("indent_blankline").setup {
   --
   -- TODO: turn off for python only!
   -- TODO: convert to lua, how does v:true translate to lua?
-  use_treesitter = false,
+  use_treesitter = true,
 
   -- Import option for highlighting indents which its start is not displayed
   -- in the buffer anymore, e.g.: long <div> in an html file.
