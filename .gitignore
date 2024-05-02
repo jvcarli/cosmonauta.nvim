@@ -1,22 +1,17 @@
-# neovim profiling
-profile.log
-
-# vim binary spellfiles
+# Vim binary spellfiles
 *.spl
 *.sug
 
-# any log files
+# Log files
 *.log
 
-# any backup files
+# Backup files
 *.bak
 
-# test files
+# Test
 test/*
 !test/minimal_init.lua
 
 # scratch files
-# files that are too wip for pushing into the repo
+# files that are not ready for being pushed into the repo
 scratch/*
-
-docs/to_test.md
