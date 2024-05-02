@@ -1,3 +1,9 @@
+# TODO: switch from .vim.toml to .vim.yml format.
+#       NOTE: The Selene TOML standard library format is DEPRECATED
+#             and will not have any new functionality added onto it.
+#             SEE: https://github.com/Kampfkarren/selene/pull/364
+#             SEE: https://github.com/neovim/nvim-lspconfig/blob/master/neovim.yml
+
 [selene]
 base = "lua51"
 name = "vim"
