@@ -68,7 +68,6 @@ vim.keymap.set("n", "<ESC>", "<cmd>:q!<CR>")
 --
 
 -- TODO: add plugins: colorscheme
---                    leap.nvim
 --                    vim-wordmotion
 
 -- TODO: set virtualedit to all
