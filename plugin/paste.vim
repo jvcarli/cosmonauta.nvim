@@ -18,12 +18,14 @@ if has('macunix')
     let s:copy_to_system_clipboard_cmd = 'pbcopy'
 else
     " will work on linux, what is linux defaults (if that exists) for clipboard?
+    " It works under X11 and Wayland, but I think that it uses XWayland under
+    " the hood when using Wayland. TODO: find out and use a proper wayland
+    " clipboard if that happens.
     let s:copy_to_system_clipboard_cmd = 'xsel --clipboard'
     " TODO: make work on Windows too
 endif
 
 function IxPasteBin() range
-    " awk taken from: https://serverfault.com/questions/391360/remove-line-break-using-awk
     let filetype = &filetype
     let get_range = join(getline(a:firstline, a:lastline), "\n")
 
@@ -31,6 +33,7 @@ function IxPasteBin() range
 
     " Send text range to http://ix.io and copy the generated ix.io link to the system clipboard
     " Since the text was copied to the clipboard it will available on the system clipboard register too
+    " awk command taken from: https://serverfault.com/questions/391360/remove-line-break-using-awk
     let external_command = "curl -F 'f:1=<-' http://ix.io | awk '{printf \"%s/" . &filetype .   "\",$0} END {print \"\"}' | tr -d '\n' | " . s:copy_to_system_clipboard_cmd
 
     " Assign the content of system clipboard (it will be the generated ix.io link) to w register
