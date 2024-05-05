@@ -34,10 +34,10 @@ M.basename = function(str)
 end
 
 -- TODO: wrap all of of os detection functions into one is_os(osname) function
-M.is_mac = vim.fn.has "macunix" == 1
+M.is_mac = vim.fn.has("macunix") == 1
 --
 M.is_wsl = (function()
-  local output = vim.fn.systemlist "uname -r"
+  local output = vim.fn.systemlist("uname -r")
   return not not string.find(output[1] or "", "WSL")
 end)()
 --
@@ -46,8 +46,8 @@ M.is_linux = not M.is_wsl and not M.is_mac
 -- TODO: merge cleaned_current_filepath and cleaned_current_working_dir into only one function.
 M.cleaned_current_filepath = function()
   -- expand path (and resolves it if it is a symlink)
-  local current_path = vim.fn.resolve(vim.fn.expand "%:p")
-  local cleaned_path = current_path:gsub(os.getenv "HOME", "~")
+  local current_path = vim.fn.resolve(vim.fn.expand("%:p"))
+  local cleaned_path = current_path:gsub(os.getenv("HOME"), "~")
   return vim.notify(cleaned_path)
 end
 --
@@ -58,7 +58,7 @@ M.cleaned_current_working_dir = function()
   local current_working_dir = vim.loop.cwd():gsub('"', "")
 
   -- Shorten path
-  local cleaned_working_dir = current_working_dir:gsub(os.getenv "HOME", "~")
+  local cleaned_working_dir = current_working_dir:gsub(os.getenv("HOME"), "~")
   return vim.notify(cleaned_working_dir)
 end
 
@@ -92,7 +92,7 @@ M.bare_git_root_dir = function(startpath)
   -- If not then search for regular git repos.
   -- NOTE: this assume a certain workflow.
   -- TODO: include notes on what workflow this assumes.
-  local project_root = lspconfig_util.root_pattern "worktrees"(startpath) --[[ or lspconfig_util.root_pattern ".git"(startpath) ]]
+  local project_root = lspconfig_util.root_pattern("worktrees")(startpath) --[[ or lspconfig_util.root_pattern ".git"(startpath) ]]
 
   -- Means that we are starting Neovim from literraly inside of .git/* directory of a bare repo:
   -- This assumes that that .git/* is ONE LEVEL DEPTH into the main project directory.
@@ -108,4 +108,5 @@ M.bare_git_root_dir = function(startpath)
 
   return project_root
 end
+
 return M
