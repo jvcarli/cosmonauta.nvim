@@ -263,24 +263,24 @@ end
 --       For some reason removing " from split function doesn't seem to work
 -- WORKAROUND: (doesn't work) in EmptyRegistersGroup I set the last unnamed register content to a global variable
 --             then empty all registers than assign @" to this global variable
-vim.cmd [[
+vim.cmd([[
 function! EmptyRegisters()
     let regs=split('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/-"', '\zs')
     for r in regs
         call setreg(r, [])
     endfor
 endfunction
-]]
+]])
 
-vim.cmd [[command EmptyRegisters call EmptyRegisters()]]
+vim.cmd([[command EmptyRegisters call EmptyRegisters()]])
 
-vim.cmd [[
+vim.cmd([[
 augroup EmptyRegistersGroup
     " autocmd VimEnter * let g:last_unnamedregister_content_before_quiting_nvim = @"
     autocmd VimEnter * call EmptyRegisters()
     " autocmd VimEnter * let @" = g:last_unnamedregister_content_before_quiting_nvim
 augroup END
-]]
+]])
 
 --=======================================--
 --                Confirm                --
@@ -341,13 +341,13 @@ vim.o.smartcase = true -- defaults to false
 -- meaning the search will stop on the last matched item of the file (top or bottom).
 --
 -- SEE: taken from: https://www.reddit.com/r/vim/comments/mtvq9l/wrapscan_only_for_first_match/
-vim.cmd [[
+vim.cmd([[
   augroup SearchWrap
     autocmd!
     autocmd CmdlineEnter [/?] set wrapscan
     autocmd CmdlineLeave [/?] call timer_start(1, {-> execute('set nowrapscan')})
   augroup END
-]]
+]])
 
 -- Display first searched (/?) term at the center of the window
 -- WARN: Testing (started: 2022/11/20)
@@ -359,7 +359,7 @@ vim.cmd [[
 -- SEE: https://vi.stackexchange.com/questions/10775/how-can-i-automatically-center-first-search-result
 -- SEE: https://github.com/junegunn/vim-slash
 --
-vim.cmd [[
+vim.cmd([[
   augroup DisplayFirstSearchedTermAtTheTopOfWindow
     autocmd!
     autocmd CmdlineEnter /,\?
@@ -371,7 +371,7 @@ vim.cmd [[
       \   cunmap <CR>|
       \ endif
   augroup END
-]]
+]])
 
 --=======================================--
 --                Time                   --
@@ -434,7 +434,7 @@ vim.wo.cursorlineopt = "number" -- enable only the number of cursorline, > 0.6 o
 --=======================================--
 
 -- TODO: explore all options
-vim.opt.shortmess:append "ISc"
+vim.opt.shortmess:append("ISc")
 
 -- I: don't give the intro message when starting Vim.
 -- S: suppress search results, e.g.: [1/20] on the vim commanad line
@@ -587,7 +587,7 @@ vim.opt.completeopt = { "menu", "menuone", "noselect" }
 
 -- spellfile path, i.e. my custom words to be add to vim builtin spell function using `zg` motion
 -- File must end in ".{encoding}.add".
-vim.opt.spellfile = vim.fn.stdpath "config" .. "/spell/user.utf-8.add"
+vim.opt.spellfile = vim.fn.stdpath("config") .. "/spell/user.utf-8.add"
 
 vim.opt.spelllang = { "en", "neovim" }
 
@@ -660,12 +660,12 @@ vim.o.diffopt = "vertical,filler,internal,closeoff,foldcolumn:0,hiddenoff,linema
 -- SEE: https://jdhao.github.io/2020/05/22/highlight_yank_region_nvim/
 -- SEE: https://github.com/mjlbach/defaults.nvim/blob/master/init.lua
 
-vim.cmd [[
+vim.cmd([[
   augroup YankHighlight
     autocmd!
     autocmd TextYankPost * silent! lua vim.highlight.on_yank()
   augroup END
-]]
+]])
 
 --=======================================--
 --               Command line            --
@@ -712,7 +712,7 @@ vim.o.sidescrolloff = 1 -- keep cursor out of `extends` and `precedes` listchars
 -- SEE: https://vimways.org/2018/death-by-a-thousand-files/
 
 -- comma separated table
-vim.opt.wildignore:append { ".git", ".next", "node_modules", ".yarn", "*.out" }
+vim.opt.wildignore:append({ ".git", ".next", "node_modules", ".yarn", "*.out" })
 
 -- some popular options for ignoring files:
 -- set wildignore+=*.pyc
@@ -799,7 +799,7 @@ vim.opt.grepprg = "rg --vimgrep --no-heading --engine auto"
 -- don't allow these because the setup starts to be less portable
 -- prefer to explicitly install things
 -- WARN: using this on Arch Linux
-vim.cmd "set rtp-=/usr/share/vim/vimfiles"
+vim.cmd("set rtp-=/usr/share/vim/vimfiles")
 -- TODO: setup it for macos
 
 -- Remove useless default colors, HOW??? The command below doesn't work
@@ -838,8 +838,8 @@ vim.cmd "set rtp-=/usr/share/vim/vimfiles"
 -- SEE: taken from https://vi.stackexchange.com/questions/14996/turn-off-syntax-hilighting-for-todo-items
 -- SEE: taken from https://www.reddit.com/r/neovim/comments/106ia0r/need_help_in_fixing_signcolumns_grey/
 -- This command should be executed before loading first color scheme to have effect on it.
-vim.cmd "autocmd ColorScheme * highlight clear Todo" -- It must come before linking!
-vim.cmd "autocmd ColorScheme * highlight link Todo Comment" -- usually Todo keywords are tied to comments!
+vim.cmd("autocmd ColorScheme * highlight clear Todo") -- It must come before linking!
+vim.cmd("autocmd ColorScheme * highlight link Todo Comment") -- usually Todo keywords are tied to comments!
 
 --=======================================--
 --               Title                   --
