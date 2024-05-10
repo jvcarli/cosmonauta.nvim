@@ -10,7 +10,7 @@
 
 # Test
 test/*
-!test/minimal_init.lua
+!test/init.lua
 
 # scratch files
 # files that are not ready for being pushed into the repo
