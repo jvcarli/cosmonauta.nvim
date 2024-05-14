@@ -1,5 +1,5 @@
 # Selene doesn't support using .selene.toml
-# so we use selene.tom. for now
+# so we use selene.toml for now
 # SEE: https://github.com/Kampfkarren/selene/issues/469
 # SEE: https://github.com/Kampfkarren/selene/pull/591
 std=".vim" # .vim.toml
